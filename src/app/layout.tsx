@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Providers } from "../components/providers";
+import { QueryClientProvider } from "../providers/query-client";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/theme";
+import { BreadcrumbProvider } from "@/providers/breadcrumb";
 
 export const metadata: Metadata = {
   title: "JStack App",
@@ -16,12 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <Providers>
-          {children}
-          <Toaster />
-        </Providers>
+        <ThemeProvider>
+          <BreadcrumbProvider>
+            <QueryClientProvider>
+              {children}
+              <Toaster />
+            </QueryClientProvider>
+          </BreadcrumbProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
