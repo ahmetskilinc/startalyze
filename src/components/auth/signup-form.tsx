@@ -21,7 +21,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export function SignupForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+export function SignupForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) {
   const [pending, setPending] = useState(false);
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -44,7 +47,8 @@ export function SignupForm({ className, ...props }: React.ComponentPropsWithoutR
         onRequest: () => setPending(true),
         onSuccess: async () => {
           toast.success("Account created", {
-            description: "Your account has been created. Check your email for a verification link.",
+            description:
+              "Your account has been created. Check your email for a verification link.",
           });
           await authClient.sendVerificationEmail({
             email: values.email,
@@ -157,7 +161,9 @@ export function SignupForm({ className, ...props }: React.ComponentPropsWithoutR
         </Form>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
+          <span className="relative z-10 bg-background px-2 text-muted-foreground">
+            Or
+          </span>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

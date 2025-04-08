@@ -22,7 +22,10 @@ import {
 } from "@/components/ui/form";
 import router from "next/router";
 
-export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) {
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
 
@@ -145,7 +148,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           </form>
         </Form>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
+          <span className="relative z-10 bg-background px-2 text-muted-foreground">
+            Or
+          </span>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Button variant="outline" className="w-full">

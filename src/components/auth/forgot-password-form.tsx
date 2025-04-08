@@ -18,7 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export function ForgotPasswordForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+export function ForgotPasswordForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) {
   const form = useForm<z.infer<typeof forgotPassSchema>>({
     resolver: zodResolver(forgotPassSchema),
     defaultValues: {
@@ -37,7 +40,9 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
           </div>
           <span className="sr-only">Startalyse</span>
         </a>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Forgot Password</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          Forgot Password
+        </h1>
         <p className="text-sm text-muted-foreground text-center">
           Already have an account?
           <br />

@@ -6,7 +6,11 @@ import { j } from "./jstack";
  *
  * @see https://jstack.app/docs/backend/app-router
  */
-const api = j.router().basePath("/api").use(j.defaults.cors).onError(j.defaults.errorHandler);
+const api = j
+  .router()
+  .basePath("/api")
+  .use(j.defaults.cors)
+  .onError(j.defaults.errorHandler);
 
 /**
  * This is the main router for your server.
