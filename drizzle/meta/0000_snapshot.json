@@ -1,11 +1,11 @@
 {
-  "id": "0b1d2351-ec99-47eb-8e23-1e7370f31624",
+  "id": "bd75b8c6-fabb-466b-8d70-61e631e22c0e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.unify_bio_account": {
-      "name": "unify_bio_account",
+    "public.startalyze_account": {
+      "name": "startalyze_account",
       "schema": "",
       "columns": {
         "id": {
@@ -89,10 +89,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "unify_bio_account_user_id_unify_bio_user_id_fk": {
-          "name": "unify_bio_account_user_id_unify_bio_user_id_fk",
-          "tableFrom": "unify_bio_account",
-          "tableTo": "unify_bio_user",
+        "startalyze_account_user_id_startalyze_user_id_fk": {
+          "name": "startalyze_account_user_id_startalyze_user_id_fk",
+          "tableFrom": "startalyze_account",
+          "tableTo": "startalyze_user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -105,8 +105,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.unify_bio_session": {
-      "name": "unify_bio_session",
+    "public.startalyze_session": {
+      "name": "startalyze_session",
       "schema": "",
       "columns": {
         "id": {
@@ -160,10 +160,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "unify_bio_session_user_id_unify_bio_user_id_fk": {
-          "name": "unify_bio_session_user_id_unify_bio_user_id_fk",
-          "tableFrom": "unify_bio_session",
-          "tableTo": "unify_bio_user",
+        "startalyze_session_user_id_startalyze_user_id_fk": {
+          "name": "startalyze_session_user_id_startalyze_user_id_fk",
+          "tableFrom": "startalyze_session",
+          "tableTo": "startalyze_user",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -172,8 +172,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "unify_bio_session_token_unique": {
-          "name": "unify_bio_session_token_unique",
+        "startalyze_session_token_unique": {
+          "name": "startalyze_session_token_unique",
           "nullsNotDistinct": false,
           "columns": ["token"]
         }
@@ -182,8 +182,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.unify_bio_user": {
-      "name": "unify_bio_user",
+    "public.startalyze_user": {
+      "name": "startalyze_user",
       "schema": "",
       "columns": {
         "id": {
@@ -233,8 +233,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "unify_bio_user_email_unique": {
-          "name": "unify_bio_user_email_unique",
+        "startalyze_user_email_unique": {
+          "name": "startalyze_user_email_unique",
           "nullsNotDistinct": false,
           "columns": ["email"]
         }
@@ -243,8 +243,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.unify_bio_verification": {
-      "name": "unify_bio_verification",
+    "public.startalyze_verification": {
+      "name": "startalyze_verification",
       "schema": "",
       "columns": {
         "id": {

@@ -1,13 +1,6 @@
-import {
-  text,
-  timestamp,
-  boolean,
-  pgTableCreator,
-  integer,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { text, timestamp, boolean, pgTableCreator } from "drizzle-orm/pg-core";
 
-export const createTable = pgTableCreator((name) => `unify_bio_${name}`);
+export const createTable = pgTableCreator((name) => `startalyze_${name}`);
 
 export const user = createTable("user", {
   id: text("id").primaryKey(),
