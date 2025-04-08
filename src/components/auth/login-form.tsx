@@ -20,12 +20,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
 
