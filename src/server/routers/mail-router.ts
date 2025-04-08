@@ -3,6 +3,7 @@ import { mailer } from "@/lib/mailer";
 import React from "react";
 import { emailTemplates } from "@/components/mail";
 import { mailerInputSchema } from "@/lib/zod";
+import { env } from "@/lib/env";
 
 export const mailerRouter = j.router({
   send: publicProcedure.input(mailerInputSchema).mutation(async ({ input, c }) => {
@@ -19,7 +20,7 @@ export const mailerRouter = j.router({
       const reactComponent = React.createElement(TemplateComponent);
 
       const { data } = await mailer.emails.send({
-        from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_ADDRESS}>`,
+        from: `${env.EMAIL_FROM_NAME} <${env.EMAIL_FROM_ADDRESS}>`,
         to: [input.to],
         subject: input.subject,
         react: reactComponent,
