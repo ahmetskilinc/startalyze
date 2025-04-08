@@ -96,3 +96,38 @@ export async function getUserChats() {
 
   return chats;
 }
+
+export async function saveMessage(
+  chatId: string,
+  content: string,
+  role: "user" | "assistant",
+) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) {
+    throw new Error("Not authenticated");
+  }
+
+  const chatResult = await db.query.chat.findFirst({
+    where: eq(chat.id, chatId),
+    columns: {
+      userId: true,
+    },
+  });
+
+  if (!chatResult) {
+    throw new Error("Chat not found");
+  }
+
+  if (chatResult.userId !== session.user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const newMessage = await db.insert(message).values({
+    id: nanoid(),
+    chatId,
+    content,
+    role,
+  });
+
+  return newMessage;
+}

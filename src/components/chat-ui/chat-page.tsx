@@ -1,7 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { getChat } from "@/lib/actions/chat";
+import { getChat, getChatMessages, saveMessage } from "@/lib/actions/chat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useChat } from "ai/react";
 import { useParams } from "next/navigation";
@@ -19,12 +19,26 @@ const ChatPage = () => {
   const params = useParams();
   const chatId = params.chatId as string;
   const [title, setTitle] = useState("");
+  const [initialMessages, setInitialMessages] = useState<
+    { id: string; content: string; role: "user" | "assistant" }[]
+  >([]);
 
   useEffect(() => {
     const loadChat = async () => {
       try {
-        const chat = await getChat(chatId);
+        const [chat, messages] = await Promise.all([
+          getChat(chatId),
+          getChatMessages(chatId),
+        ]);
+
         setTitle(chat.title || `Chat ${chatId.slice(0, 8)}`);
+        setInitialMessages(
+          messages.map((msg) => ({
+            id: msg.id,
+            content: msg.content,
+            role: msg.role as "user" | "assistant",
+          })),
+        );
       } catch (error) {
         console.error("Failed to load chat:", error);
       }
@@ -40,11 +54,29 @@ const ChatPage = () => {
   });
 
   const { messages, setInput, handleSubmit, status } = useChat({
+    initialMessages: initialMessages,
     id: chatId,
     body: { chatId },
     experimental_prepareRequestBody: ({ messages }) => {
       const last = messages[messages.length - 1];
       return { message: last };
+    },
+    onFinish: async (message) => {
+      try {
+        await saveMessage(chatId, message.content, "assistant");
+      } catch (error) {
+        console.error("Failed to save assistant message:", error);
+      }
+    },
+    onResponse: async (response) => {
+      const userMessage = form.getValues("prompt");
+      if (userMessage.trim()) {
+        try {
+          await saveMessage(chatId, userMessage, "user");
+        } catch (error) {
+          console.error("Failed to save user message:", error);
+        }
+      }
     },
   });
 
@@ -58,9 +90,7 @@ const ChatPage = () => {
   return (
     <main className="flex flex-col h-[calc(100dvh-4rem)]">
       <HeaderTitle breadcrumbs={[{ label: title }]} />
-
       <ChatMessages messages={memoMessages} status={status} />
-
       <ChatInput form={form} handleSubmit={handleSubmit} status={status} />
     </main>
   );
