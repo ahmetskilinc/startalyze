@@ -20,3 +20,10 @@ export const signInSchema = z.object({
 export const forgotPassSchema = z.object({
   email: z.string().email("Enter a valid email"),
 });
+
+export const mailerInputSchema = z.object({
+  to: z.string().email(),
+  subject: z.string().min(1),
+  template: z.enum(["verification"]),
+  payload: z.record(z.string(), z.any()).optional(),
+});

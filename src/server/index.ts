@@ -1,4 +1,5 @@
 import { j } from "./jstack";
+import { mailerRouter } from "./routers/mail-router";
 
 /**
  * This is your base API.
@@ -18,6 +19,7 @@ const api = j
  */
 const appRouter = j.mergeRouters(api, {
   // post: postRouter,
+  mailer: mailerRouter,
 });
 
 export type AppRouter = typeof appRouter;
