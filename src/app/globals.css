@@ -74,6 +74,7 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
+  --shiny-width: 100px;
 }
 
 .dark {
@@ -110,11 +111,37 @@
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
 
+@layer utilities {
+  @keyframes shiny-text {
+    0%,
+    90%,
+    100% {
+      background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+    30%,
+    60% {
+      background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .agent-response {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+  .agent-response strong {
+    @apply text-gray-800 dark:text-gray-100 font-semibold;
+  }
+  .agent-response ul {
+    @apply list-disc ml-4 space-y-2;
+  }
+  .agent-response a {
+    @apply text-blue-600 hover:text-blue-500 underline;
   }
 }
