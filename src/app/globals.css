@@ -132,4 +132,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  .agent-response {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+  .agent-response strong {
+    @apply text-gray-800 dark:text-gray-100 font-semibold;
+  }
+  .agent-response ul {
+    @apply list-disc ml-4 space-y-2;
+  }
 }

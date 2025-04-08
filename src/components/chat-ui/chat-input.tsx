@@ -7,13 +7,23 @@ import { ArrowUp } from "lucide-react";
 import { AutosizeTextarea } from "@/components/ui/resizable-textarea";
 import { geistSans, spaceGrotesk } from "@/lib/fonts";
 import { UseFormReturn } from "react-hook-form";
+import { ChatRequestOptions } from "ai";
+import { AIResponseStatus } from "./chat-bubble";
 
 const ChatInput = ({
   form,
+  handleSubmit,
 }: {
   form: UseFormReturn<{
     prompt: string;
   }>;
+  handleSubmit: (
+    event?: {
+      preventDefault?: () => void;
+    },
+    chatRequestOptions?: ChatRequestOptions,
+  ) => void;
+  status: AIResponseStatus;
 }) => {
   return (
     <Form {...form}>
@@ -24,7 +34,7 @@ const ChatInput = ({
         <div className="bg-background">
           <form
             onSubmit={(event) => {
-              alert(event.currentTarget.prompt.value);
+              handleSubmit(event);
               form.setValue("prompt", "");
             }}
             className="rounded-2xl relative border bg-neutral-100 dark:bg-[#2f2f2f] placeholder:text-muted-foreground transition-all"
@@ -58,7 +68,7 @@ const ChatInput = ({
                     form.watch("prompt") === "" ||
                     form.watch("prompt") === undefined
                   }
-                  className="aspect-square size-8 dark:disabled:bg-white/15 rounded-full border-blue-200 bg-blue-600 text-white hover:bg-blue-700"
+                  className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-blue-200 bg-blue-600 text-white hover:bg-blue-700"
                   style={spaceGrotesk.style}
                 >
                   <ArrowUp />
