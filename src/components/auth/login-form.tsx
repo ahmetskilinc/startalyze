@@ -60,9 +60,7 @@ export function LoginForm({
     setPendingGithub(false);
   };
 
-  const handleCredentialsSignIn = async (
-    values: z.infer<typeof signInSchema>,
-  ) => {
+  const handleCredentialsSignIn = async (values: z.infer<typeof signInSchema>) => {
     await authClient.signIn.email(
       {
         email: values.email,
@@ -136,22 +134,14 @@ export function LoginForm({
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="••••••••"
-                        />
+                        <Input {...field} type="password" placeholder="••••••••" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={pendingCredentials}
-              >
+              <Button type="submit" className="w-full" disabled={pendingCredentials}>
                 {pendingCredentials ? "Signing in..." : "Login"}
               </Button>
             </div>
@@ -185,8 +175,8 @@ export function LoginForm({
       </div>
 
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{" "}
+        <a href="#">Privacy Policy</a>.
       </div>
     </div>
   );

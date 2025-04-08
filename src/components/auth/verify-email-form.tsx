@@ -37,9 +37,7 @@ export function VerifyEmailForm({
       } catch (error) {
         toast.error("Verification failed", {
           description:
-            error instanceof Error
-              ? error.message
-              : "Invalid verification token.",
+            error instanceof Error ? error.message : "Invalid verification token.",
         });
       } finally {
         setPending(false);
@@ -75,9 +73,8 @@ export function VerifyEmailForm({
                 try {
                   await authClient.sendVerificationEmail({
                     email: window.location.search
-                      ? new URLSearchParams(window.location.search).get(
-                          "email",
-                        ) || ""
+                      ? new URLSearchParams(window.location.search).get("email") ||
+                        ""
                       : "",
                     callbackURL: "/account",
                   });
