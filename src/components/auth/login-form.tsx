@@ -3,7 +3,7 @@
 import { z } from "zod";
 import Link from "next/link";
 import { toast } from "sonner";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInSchema } from "@/lib/zod";
 import * as F from "@/components/ui/form";
@@ -15,6 +15,7 @@ import { authClient } from "@/server/auth/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export function LoginForm() {
+  const router = useRouter();
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
 
