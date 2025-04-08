@@ -1,17 +1,13 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { authClient } from "@/server/auth/client";
 import { Button } from "@/components/ui/button";
+import { GalleryVerticalEnd } from "lucide-react";
+import { authClient } from "@/server/auth/client";
 
-export function VerifyEmailForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function VerifyEmailForm() {
   const [pending, setPending] = useState(true);
   const router = useRouter();
 
@@ -48,7 +44,7 @@ export function VerifyEmailForm({
   }, []); // Run once when component mounts
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
           <a href="#" className="flex items-center gap-2">
