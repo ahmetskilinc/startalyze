@@ -1,6 +1,10 @@
 "use client";
 
-import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { HTTPException } from "hono/http-exception";
 import { PropsWithChildren, useState } from "react";
 
@@ -18,5 +22,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
       }),
   );
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 };
