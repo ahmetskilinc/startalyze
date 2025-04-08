@@ -21,7 +21,6 @@ export const forgotPassSchema = z.object({
   email: z.string().email("Enter a valid email"),
 });
 
-
 export const mailerInputSchema = z.object({
   to: z.string().email(),
   subject: z.string().min(1),
