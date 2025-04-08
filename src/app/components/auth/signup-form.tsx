@@ -45,10 +45,14 @@ export function SignupForm({
       },
       {
         onRequest: () => setPending(true),
-        onSuccess: () => {
+        onSuccess: async () => {
           toast.success("Account created", {
             description:
               "Your account has been created. Check your email for a verification link.",
+          });
+          await authClient.sendVerificationEmail({
+            email: values.email,
+            callbackURL: "/",
           });
         },
         onError: (ctx) => {
