@@ -25,6 +25,10 @@ export const auth = betterAuth({
     window: 60,
     max: 5,
   },
+  emailAndPassword: {
+    enabled: true,
+    // requireEmailVerification: true,
+  },
   account: {
     accountLinking: {
       enabled: true,
