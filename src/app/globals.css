@@ -141,4 +141,7 @@
   .agent-response ul {
     @apply list-disc ml-4 space-y-2;
   }
+  .agent-response a {
+    @apply text-blue-600 hover:text-blue-500 underline;
+  }
 }

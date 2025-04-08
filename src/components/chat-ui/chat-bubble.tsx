@@ -2,6 +2,9 @@ import { geistSans } from "@/lib/fonts";
 import { CornerDownRight, Ghost } from "lucide-react";
 import { AnimatedShinyText } from "../ui/shiny-text";
 import Markdown from "markdown-to-jsx";
+import { Message } from "ai";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 export type AIResponseStatus = "ready" | "submitted" | "streaming" | "error";
 
@@ -31,16 +34,51 @@ export const UserMessage = ({ text }: { text: string }) => {
   );
 };
 
-export const AgentMessage = ({ content }: { content: string }) => {
+export const AgentMessage = ({ message }: { message: Message }) => {
   return (
     <div className="text-base leading-relaxed flex">
       <AgentAvatar />
-      <Markdown
-        className="agent-response text-[15px] [&>*:first-child]:mt-0 space-y-6"
-        style={geistSans.style}
-      >
-        {content}
-      </Markdown>
+      <div>
+        <Markdown
+          className="agent-response text-[15px] [&>*:first-child]:mt-0 space-y-6"
+          style={geistSans.style}
+        >
+          {message.content}
+        </Markdown>
+        {message.parts &&
+          message.parts.filter((part) => part.type === "source").length >=
+            1 && (
+            <div
+              className="mt-6 flex items-center leading-none space-x-3"
+              style={geistSans.style}
+            >
+              <p className="text-[12.5px] font-semibold text-gray-600">
+                Sources:
+              </p>
+              <div className="flex space-x-1.5">
+                {message.parts
+                  .filter((part) => part.type === "source")
+                  .map(({ source }, idx) => (
+                    <>
+                      {source.url && (
+                        <Button
+                          key={idx}
+                          asChild
+                          size="sm"
+                          variant="outline"
+                          className="text-[12.5px] h-fit w-fit px-2 py-1.5"
+                        >
+                          <Link target="_blank" href={source.url}>
+                            {source?.title}
+                          </Link>
+                        </Button>
+                      )}
+                    </>
+                  ))}
+              </div>
+            </div>
+          )}
+      </div>
     </div>
   );
 };

@@ -11,7 +11,8 @@ import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useChat } from "ai/react";
+import { Message, useChat } from "ai/react";
+import Link from "next/link";
 
 const FormSchema = z.object({
   prompt: z.string(),
@@ -64,19 +65,14 @@ const ChatPage = () => {
               return (
                 <div key={index}>
                   {msg.role === "user" && <UserMessage text={msg.content} />}
-                  {msg.role === "assistant" && (
-                    <AgentMessage content={msg.content} />
-                  )}
+                  {msg.role === "assistant" && <AgentMessage message={msg} />}
                 </div>
               );
             })}
 
             {status === "streaming" && (
               <AgentMessage
-                content={
-                  memoMessages.filter((m) => m.role === "assistant").at(-1)
-                    ?.content || ""
-                }
+                message={messages.filter((m) => m.role === "assistant").at(-1)!}
               />
             )}
 
