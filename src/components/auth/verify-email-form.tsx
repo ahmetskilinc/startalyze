@@ -8,10 +8,7 @@ import { toast } from "sonner";
 import { authClient } from "@/server/auth/client";
 import { Button } from "@/components/ui/button";
 
-export function VerifyEmailForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function VerifyEmailForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [pending, setPending] = useState(true);
   const router = useRouter();
 
@@ -36,10 +33,7 @@ export function VerifyEmailForm({
         router.push("/account");
       } catch (error) {
         toast.error("Verification failed", {
-          description:
-            error instanceof Error
-              ? error.message
-              : "Invalid verification token.",
+          description: error instanceof Error ? error.message : "Invalid verification token.",
         });
       } finally {
         setPending(false);
@@ -75,22 +69,16 @@ export function VerifyEmailForm({
                 try {
                   await authClient.sendVerificationEmail({
                     email: window.location.search
-                      ? new URLSearchParams(window.location.search).get(
-                          "email",
-                        ) || ""
+                      ? new URLSearchParams(window.location.search).get("email") || ""
                       : "",
                     callbackURL: "/account",
                   });
                   toast.success("Verification email sent", {
-                    description:
-                      "Please check your email for the verification link.",
+                    description: "Please check your email for the verification link.",
                   });
                 } catch (error) {
                   toast.error("Failed to send verification email", {
-                    description:
-                      error instanceof Error
-                        ? error.message
-                        : "Please try again later.",
+                    description: error instanceof Error ? error.message : "Please try again later.",
                   });
                 }
               }}

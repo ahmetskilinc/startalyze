@@ -22,10 +22,7 @@ import {
 } from "@/components/ui/form";
 import router from "next/router";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
 
@@ -60,9 +57,7 @@ export function LoginForm({
     setPendingGithub(false);
   };
 
-  const handleCredentialsSignIn = async (
-    values: z.infer<typeof signInSchema>,
-  ) => {
+  const handleCredentialsSignIn = async (values: z.infer<typeof signInSchema>) => {
     await authClient.signIn.email(
       {
         email: values.email,
@@ -136,31 +131,21 @@ export function LoginForm({
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="••••••••"
-                        />
+                        <Input {...field} type="password" placeholder="••••••••" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={pendingCredentials}
-              >
+              <Button type="submit" className="w-full" disabled={pendingCredentials}>
                 {pendingCredentials ? "Signing in..." : "Login"}
               </Button>
             </div>
           </form>
         </Form>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">
-            Or
-          </span>
+          <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Button variant="outline" className="w-full">
@@ -185,8 +170,8 @@ export function LoginForm({
       </div>
 
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{" "}
+        <a href="#">Privacy Policy</a>.
       </div>
     </div>
   );
