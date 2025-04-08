@@ -1,48 +1,29 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "@/lib/zod";
-import { toast } from "sonner";
-import { authClient } from "@/server/auth/client";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useState } from "react";
+import { signUpSchema } from "@/lib/zod";
+import * as F from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { GalleryVerticalEnd } from "lucide-react";
+import { authClient } from "@/server/auth/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export function SignupForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function SignupForm() {
   const [pending, setPending] = useState(false);
+
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     await authClient.signUp.email(
-      {
-        email: values.email,
-        password: values.password,
-        name: values.name,
-      },
+      { email: values.email, password: values.password, name: values.name },
       {
         onRequest: () => setPending(true),
         onSuccess: async () => {
@@ -67,7 +48,7 @@ export function SignupForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
           <a href="#" className="flex items-center gap-2">
@@ -90,66 +71,66 @@ export function SignupForm({
           </p>
         </div>
 
-        <Form {...form}>
+        <F.Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Name</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} placeholder="John Doe" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Email</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} placeholder="m@example.com" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Password</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} type="password" placeholder="••••••••" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Confirm Password</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} type="password" placeholder="••••••••" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
@@ -158,7 +139,7 @@ export function SignupForm({
               </Button>
             </div>
           </form>
-        </Form>
+        </F.Form>
 
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

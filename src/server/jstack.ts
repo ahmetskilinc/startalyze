@@ -1,6 +1,6 @@
 import { jstack } from "jstack";
-import { drizzle } from "drizzle-orm/postgres-js";
 import { env } from "hono/adapter";
+import { drizzle } from "drizzle-orm/postgres-js";
 
 interface Env {
   Bindings: { DATABASE_URL: string };
