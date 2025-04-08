@@ -1,38 +1,25 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import * as F from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 import { forgotPassSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { GalleryVerticalEnd } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export function ForgotPasswordForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function ForgotPasswordForm() {
   const form = useForm<z.infer<typeof forgotPassSchema>>({
     resolver: zodResolver(forgotPassSchema),
-    defaultValues: {
-      email: "",
-    },
+    defaultValues: { email: "" },
   });
 
   const onSubmit = async (values: z.infer<typeof forgotPassSchema>) => {};
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-3 text-center">
         <a href="#" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-sm">
@@ -55,26 +42,26 @@ export function ForgotPasswordForm({
         </p>
       </div>
 
-      <Form {...form}>
+      <F.Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <FormField
+          <F.FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
+              <F.FormItem>
+                <F.FormLabel>Email</F.FormLabel>
+                <F.FormControl>
                   <Input placeholder="Enter your email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                </F.FormControl>
+                <F.FormMessage />
+              </F.FormItem>
             )}
           />
           <Button type="submit" className="w-full">
             Send Reset Link
           </Button>
         </form>
-      </Form>
+      </F.Form>
     </div>
   );
 }

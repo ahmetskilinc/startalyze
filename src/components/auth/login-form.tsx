@@ -1,47 +1,31 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema } from "@/lib/zod";
-import { toast } from "sonner";
-import { authClient } from "@/server/auth/client";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import Link from "next/link";
+import { toast } from "sonner";
 import router from "next/router";
+import { useState } from "react";
+import { signInSchema } from "@/lib/zod";
+import * as F from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { GalleryVerticalEnd } from "lucide-react";
+import { authClient } from "@/server/auth/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm() {
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const handleSignInWithGithub = async () => {
     await authClient.signIn.social(
-      {
-        provider: "github",
-      },
+      { provider: "github" },
       {
         onRequest: () => {
           setPendingGithub(true);
@@ -62,10 +46,7 @@ export function LoginForm({
 
   const handleCredentialsSignIn = async (values: z.infer<typeof signInSchema>) => {
     await authClient.signIn.email(
-      {
-        email: values.email,
-        password: values.password,
-      },
+      { email: values.email, password: values.password },
       {
         onRequest: () => {
           setPendingCredentials(true);
@@ -85,7 +66,7 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
           <a href="#" className="flex items-center gap-2">
@@ -108,36 +89,36 @@ export function LoginForm({
           </p>
         </div>
 
-        <Form {...form}>
+        <F.Form {...form}>
           <form onSubmit={form.handleSubmit(handleCredentialsSignIn)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Email</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} placeholder="m@example.com" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
               <div className="grid gap-2">
-                <FormField
+                <F.FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
+                    <F.FormItem>
+                      <F.FormLabel>Password</F.FormLabel>
+                      <F.FormControl>
                         <Input {...field} type="password" placeholder="••••••••" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </F.FormControl>
+                      <F.FormMessage />
+                    </F.FormItem>
                   )}
                 />
               </div>
@@ -146,7 +127,7 @@ export function LoginForm({
               </Button>
             </div>
           </form>
-        </Form>
+        </F.Form>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
             Or
