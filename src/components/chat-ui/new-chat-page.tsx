@@ -1,11 +1,11 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { getChat } from "@/lib/actions/chat";
+import { createChat } from "@/lib/actions/chat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useChat } from "ai/react";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { HeaderTitle } from "../header-title";
@@ -15,38 +15,44 @@ const FormSchema = z.object({
   prompt: z.string(),
 });
 
-const ChatPage = () => {
-  const params = useParams();
-  const chatId = params.chatId as string;
-  const [title, setTitle] = useState("");
-
-  useEffect(() => {
-    const loadChat = async () => {
-      try {
-        const chat = await getChat(chatId);
-        setTitle(chat.title || `Chat ${chatId.slice(0, 8)}`);
-      } catch (error) {
-        console.error("Failed to load chat:", error);
-      }
-    };
-
-    if (chatId) {
-      loadChat();
-    }
-  }, [chatId]);
-
+const NewChatPage = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  const { messages, setInput, handleSubmit, status } = useChat({
-    id: chatId,
-    body: { chatId },
+  const {
+    messages,
+    setInput,
+    handleSubmit: handleAiSubmit,
+    status,
+  } = useChat({
     experimental_prepareRequestBody: ({ messages }) => {
       const last = messages[messages.length - 1];
       return { message: last };
     },
   });
+
+  const handleSubmit = async (
+    event?: { preventDefault?: () => void },
+    chatRequestOptions?: any,
+  ) => {
+    if (event?.preventDefault) {
+      event.preventDefault();
+    }
+
+    const content = form.getValues("prompt");
+    if (!content) return;
+
+    try {
+      const { chatId } = await createChat(content);
+      // Instead of using handleAiSubmit, we'll redirect immediately
+      // The chat page will handle the AI response
+      router.push(`/chat/${chatId}`);
+    } catch (error) {
+      console.error("Failed to create chat:", error);
+    }
+  };
 
   const watchedPrompt = form.watch("prompt");
   useEffect(() => {
@@ -57,7 +63,7 @@ const ChatPage = () => {
 
   return (
     <main className="flex flex-col h-[calc(100dvh-4rem)]">
-      <HeaderTitle breadcrumbs={[{ label: title }]} />
+      <HeaderTitle breadcrumbs={[{ label: "New Chat" }]} />
 
       <ChatMessages messages={memoMessages} status={status} />
 
@@ -66,4 +72,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default NewChatPage;

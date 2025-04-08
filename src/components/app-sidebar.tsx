@@ -8,21 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-// import { NavMain } from '@/components/nav-main';
+import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import * as React from "react";
-
-// const data = [
-//   {
-//     isActive: true,
-//     items: [
-//       {
-//         title: 'Chats',
-//         url: '/chats',
-//       },
-//     ],
-//   },
-// ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -38,7 +26,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>{/* <NavMain items={data} /> */}</SidebarContent>
+      <SidebarContent>
+        <NavMain />
+      </SidebarContent>
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
