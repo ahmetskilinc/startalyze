@@ -19,6 +19,7 @@ export function LoginForm() {
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
   const [pendingGoogle, setPendingGoogle] = useState(false);
+  const [pendingForgetPassword, setPendingForgetPassword] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -137,6 +138,14 @@ export function LoginForm() {
                     </F.FormItem>
                   )}
                 />
+              </div>
+              <div className="flex justify-end">
+                <Link
+                  href="/forgot-password"
+                  className="text-primary text-xs underline underline-offset-4 hover:text-primary/80 transition-colors cursor-pointer"
+                >
+                  Forgot password?
+                </Link>
               </div>
               <Button type="submit" className="w-full" disabled={pendingCredentials}>
                 {pendingCredentials ? "Signing in..." : "Login"}
