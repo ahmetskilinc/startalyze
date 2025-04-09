@@ -1,7 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { getChat, getChatMessages, saveMessage } from "@/lib/actions/chat";
+import { getChat, getChatMessages } from "@/lib/actions/chat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useChat } from "ai/react";
 import { useParams } from "next/navigation";
@@ -60,31 +60,14 @@ const ChatPage = () => {
     resolver: zodResolver(FormSchema),
   });
 
-  const { messages, setInput, handleSubmit, status, setMessages } = useChat({
+  const { messages, setInput, handleSubmit, status } = useChat({
     initialMessages: initialMessages,
     id: chatId,
     body: { chatId },
     experimental_prepareRequestBody: ({ messages }) => {
       const last = messages[messages.length - 1];
-      return { message: last };
-    },
-    onFinish: async (message) => {
-      try {
-        await saveMessage(chatId, message.content, "assistant");
-      } catch (error) {
-        console.error("Failed to save assistant message:", error);
-      }
-    },
-    onResponse: async (response) => {
-      const userMessage = form.getValues("prompt");
-      if (userMessage.trim()) {
-        try {
-          await saveMessage(chatId, userMessage, "user");
-        } catch (error) {
-          console.error("Failed to save user message:", error);
-        }
-      }
-    },
+      return { chatId, message: last };
+    }
   });
 
   const watchedPrompt = form.watch("prompt");
