@@ -23,7 +23,14 @@ export function SignupForm() {
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     await authClient.signUp.email(
-      { email: values.email, password: values.password, name: values.name },
+      {
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        firstName: values.name,
+        lastName: values.name,
+        onboardingCompleted: false,
+      },
       {
         onRequest: () => setPending(true),
         onSuccess: async () => {
