@@ -6,11 +6,12 @@ import { chat, message } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@/server/auth/index";
 import { headers } from "next/headers";
+import { Message as AIMessage } from "ai";
 
 export type Chat = typeof chat.$inferSelect;
 export type Message = typeof message.$inferSelect;
 
-export async function createChat(initialMessage: string) {
+export async function createChat({ userMessage, title }: { userMessage: AIMessage, title: string }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) {
     throw new Error("Not authenticated");
@@ -21,12 +22,13 @@ export async function createChat(initialMessage: string) {
   await db.insert(chat).values({
     id: chatId,
     userId: session.user.id,
+    title
   });
 
   await db.insert(message).values({
     id: nanoid(),
     chatId,
-    content: initialMessage,
+    content: userMessage.content,
     role: "user",
   });
 

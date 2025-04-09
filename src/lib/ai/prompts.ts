@@ -1,12 +1,13 @@
 export const GENERATE_TITLE_PROMPT = `
-- Generate a concise and impactful title for a startup idea.
-- The title should accurately reflect the core concept of the startup.
-- Aim for clarity, relevance, and professional tone.
-- Limit the title to a maximum of 10 words.
-- Do not mention specific technologies, platforms, or programming languages unless they are absolutely essential to the core concept and widely understood by a general audience.
-- Do not use symbols, punctuation, or special characters unless absolutely necessary for clarity.
-- Focus on the problem solved or the value offered.
-- Prioritize titles that are easily memorable and shareable.
+You are a branding expert.
+
+Given a startup idea and its description, write a concise, clear, and professional name or title for the startup.
+
+- The title must be relevant to the startup idea.
+- Do not include symbols, punctuation, or special characters.
+- Do not mention any technologies or programming languages.
+- Use no more than 10 words.
+- Respond with only the title and nothing else.
 `;
 
 export const VALIDATE_STARTUP_IDEA_PROMPT = `

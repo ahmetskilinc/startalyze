@@ -24,7 +24,7 @@ const ChatMessages = ({ messages, status }: Props) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1">
       <div className="max-w-[46rem] w-full mx-auto">
         <div className="flex flex-col space-y-8 pt-7 p-4">
           {messages.map((msg, index) => {

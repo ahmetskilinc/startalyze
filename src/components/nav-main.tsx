@@ -40,7 +40,7 @@ export function NavMain() {
             tooltip="New Chat"
             className="bg-blue-600 hover:bg-blue-700 text-neutral-50 hover:text-neutral-50"
           >
-            <Link href="/chat/new" className="flex items-center gap-2">
+            <Link href="/chat" className="flex items-center gap-2">
               <MessageSquarePlus className="h-4 w-4" />
               <span>New Chat</span>
             </Link>

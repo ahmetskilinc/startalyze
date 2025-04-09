@@ -1,7 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { getChat, getChatMessages, saveMessage } from "@/lib/actions/chat";
+import { getChat, getChatMessages } from "@/lib/actions/chat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useChat } from "ai/react";
 import { useParams } from "next/navigation";
@@ -25,6 +25,16 @@ const ChatPage = () => {
     { id: string; content: string; role: "user" | "assistant" }[]
   >([]);
 
+  const { messages, input, setInput, handleSubmit, status, reload } = useChat({
+    initialMessages: initialMessages,
+    id: chatId,
+    body: { chatId },
+    experimental_prepareRequestBody: ({ messages }) => {
+      const last = messages[messages.length - 1];
+      return { chatId, message: last };
+    }
+  });
+
   useEffect(() => {
     const loadChat = async () => {
       try {
@@ -41,6 +51,14 @@ const ChatPage = () => {
         }));
 
         setInitialMessages(formattedMessages);
+
+        // TODO: fix why multiple reloads are being triggered
+          if (formattedMessages.length === 1 && formattedMessages[0]?.role === "user") {
+            console.log("karu reloa")
+            setInput(formattedMessages[0].content)
+            console.log(input)
+            reload();
+          }
       } catch (error) {
         console.error("Failed to load chat:", error);
         if (error instanceof Error && error.message === "Chat not found") {
@@ -58,33 +76,6 @@ const ChatPage = () => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  });
-
-  const { messages, setInput, handleSubmit, status, setMessages } = useChat({
-    initialMessages: initialMessages,
-    id: chatId,
-    body: { chatId },
-    experimental_prepareRequestBody: ({ messages }) => {
-      const last = messages[messages.length - 1];
-      return { message: last };
-    },
-    onFinish: async (message) => {
-      try {
-        await saveMessage(chatId, message.content, "assistant");
-      } catch (error) {
-        console.error("Failed to save assistant message:", error);
-      }
-    },
-    onResponse: async (response) => {
-      const userMessage = form.getValues("prompt");
-      if (userMessage.trim()) {
-        try {
-          await saveMessage(chatId, userMessage, "user");
-        } catch (error) {
-          console.error("Failed to save user message:", error);
-        }
-      }
-    },
   });
 
   const watchedPrompt = form.watch("prompt");
@@ -113,7 +104,7 @@ const ChatPage = () => {
         <div className="flex flex-col items-center gap-4">
           <div className="text-xl font-semibold text-red-500">{error}</div>
           <Link
-            href="/chat/new"
+            href="/chat"
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             New Chat
