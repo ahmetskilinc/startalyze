@@ -1,7 +1,18 @@
-import { appendResponseMessages, createDataStreamResponse, Message, smoothStream, streamText } from "ai";
+import {
+  appendResponseMessages,
+  createDataStreamResponse,
+  Message,
+  smoothStream,
+  streamText,
+} from "ai";
 import { aiProvider } from "@/lib/ai/provider";
 import { VALIDATE_STARTUP_IDEA_PROMPT } from "@/lib/ai/prompts";
-import { createChat, getChat, getChatMessages, saveMessage } from "@/lib/actions/chat";
+import {
+  createChat,
+  getChat,
+  getChatMessages,
+  saveMessage,
+} from "@/lib/actions/chat";
 import { redirect } from "next/navigation";
 import { auth } from "@/server/auth";
 import { headers } from "next/headers";
@@ -13,21 +24,26 @@ export async function POST(req: Request) {
     return Response.json({ message: "Unauthorized Access" }, { status: 401 });
   }
 
-  const { message, chatId }: { message: Message, chatId: string } = await req.json();
+  const { message, chatId }: { message: Message; chatId: string } = await req.json();
 
   if (!chatId) {
-    const title = await generateTitleFromUserPromptAIAccess({ prompt: message.content })
+    const title = await generateTitleFromUserPromptAIAccess({
+      prompt: message.content,
+    });
     const savedChatId = await createChat({ userMessage: message, title });
-    return Response.json({ success: true, chatId: savedChatId.chatId }, { status: 200 });
+    return Response.json(
+      { success: true, chatId: savedChatId.chatId },
+      { status: 200 },
+    );
   }
 
   // fetching previous messages to get more context
   const chat = await getChat(chatId);
 
-  const previousMessages = await getChatMessages(chat.id)
+  const previousMessages = await getChatMessages(chat.id);
 
   if (!previousMessages) {
-    return redirect("/chat")
+    return redirect("/chat");
   }
 
   function getUserMessage() {
