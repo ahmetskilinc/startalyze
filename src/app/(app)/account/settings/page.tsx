@@ -29,7 +29,6 @@ export default async function AccountPage() {
           },
           {
             label: "Settings",
-            href: "/account/settings",
           },
         ]}
       />

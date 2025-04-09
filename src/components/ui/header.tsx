@@ -11,6 +11,7 @@ import { useBreadcrumb } from "@/providers/breadcrumb";
 import { SidebarTrigger } from "./sidebar";
 import { Separator } from "./separator";
 import React from "react";
+import Link from "next/link";
 
 const Header = () => {
   const { breadcrumbs } = useBreadcrumb();
@@ -31,12 +32,12 @@ const Header = () => {
           <BreadcrumbList>
             {breadcrumbs.map((breadcrumb, index) => (
               <React.Fragment key={index}>
-                {index === breadcrumbs.length - 1 ? (
+                {!breadcrumb.href ? (
                   <BreadcrumbItem>{breadcrumb.label}</BreadcrumbItem>
                 ) : (
                   <BreadcrumbItem>
-                    <BreadcrumbLink href={breadcrumb.href}>
-                      {breadcrumb.label}
+                    <BreadcrumbLink href={breadcrumb.href} asChild>
+                      <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                 )}

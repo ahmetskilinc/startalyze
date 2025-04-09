@@ -15,7 +15,6 @@ export default async function PageCustomizationPage() {
         breadcrumbs={[
           {
             label: "Account",
-            href: "/account",
           },
         ]}
       />
