@@ -27,13 +27,10 @@ export function LoginForm() {
 
   const handleSignInWithGithub = async () => {
     await authClient.signIn.social(
-      { provider: "github" },
+      { provider: "github", callbackURL: "/account" },
       {
         onRequest: () => {
           setPendingGithub(true);
-        },
-        onSuccess: async () => {
-          router.push("/account");
         },
         onError: (ctx) => {
           toast.error("Something went wrong", {
@@ -47,13 +44,10 @@ export function LoginForm() {
   };
   const handleSignInWithGoogle = async () => {
     await authClient.signIn.social(
-      { provider: "google" },
+      { provider: "google", callbackURL: "/account" },
       {
         onRequest: () => {
           setPendingGoogle(true);
-        },
-        onSuccess: async () => {
-          router.push("/account");
         },
         onError: (ctx) => {
           toast.error("Something went wrong", {
