@@ -10,8 +10,8 @@ export function HeaderTitle({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
     setBreadcrumbs([...breadcrumbs]);
 
     return () => {
-      setBreadcrumbs([])
-    }
+      setBreadcrumbs([]);
+    };
   }, [setBreadcrumbs, breadcrumbs]);
 
   return null;

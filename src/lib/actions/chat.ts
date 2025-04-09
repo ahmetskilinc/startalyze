@@ -11,7 +11,10 @@ import { Message as AIMessage } from "ai";
 export type Chat = typeof chat.$inferSelect;
 export type Message = typeof message.$inferSelect;
 
-export async function createChat({ userMessage, title }: { userMessage: AIMessage, title: string }) {
+export async function createChat({
+  userMessage,
+  title,
+}: { userMessage: AIMessage; title: string }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) {
     throw new Error("Not authenticated");
@@ -22,7 +25,7 @@ export async function createChat({ userMessage, title }: { userMessage: AIMessag
   await db.insert(chat).values({
     id: chatId,
     userId: session.user.id,
-    title
+    title,
   });
 
   await db.insert(message).values({
