@@ -46,15 +46,12 @@ export const AgentMessage = ({ message }: { message: Message }) => {
           {message.content}
         </Markdown>
         {message.parts &&
-          message.parts.filter((part) => part.type === "source").length >=
-            1 && (
+          message.parts.filter((part) => part.type === "source").length >= 1 && (
             <div
               className="mt-6 flex items-center leading-none space-x-3"
               style={geistSans.style}
             >
-              <p className="text-[12.5px] font-semibold text-gray-600">
-                Sources:
-              </p>
+              <p className="text-[12.5px] font-semibold text-gray-600">Sources:</p>
               <div className="flex space-x-1.5">
                 {message.parts
                   .filter((part) => part.type === "source")
