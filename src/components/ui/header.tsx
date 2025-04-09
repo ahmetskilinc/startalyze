@@ -37,7 +37,7 @@ const Header = () => {
                   </BreadcrumbItem>
                 )}
                 {index < breadcrumbs.length - 1 && (
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator className="block" />
                 )}
               </React.Fragment>
             ))}

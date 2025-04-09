@@ -9,6 +9,9 @@ export const user = createTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),
   image: text("image"),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  onboardingCompleted: boolean("onboarding_completed"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
