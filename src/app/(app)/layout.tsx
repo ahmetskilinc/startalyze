@@ -12,11 +12,6 @@ async function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user?.id) {
-    redirect("/login");
-  }
-
   return (
     <SidebarProvider>
       <AppSidebar />

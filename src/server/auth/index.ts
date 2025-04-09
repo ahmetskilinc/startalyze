@@ -29,6 +29,19 @@ export const auth = betterAuth({
     enabled: true,
     // requireEmailVerification: true,
   },
+  user: {
+    additionalFields: {
+      firstName: {
+        type: "string",
+      },
+      lastName: {
+        type: "string",
+      },
+      onboardingCompleted: {
+        type: "boolean",
+      },
+    },
+  },
   account: {
     accountLinking: {
       enabled: true,
