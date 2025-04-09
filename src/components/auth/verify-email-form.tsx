@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GalleryVerticalEnd } from "lucide-react";
 import { authClient } from "@/server/auth/client";
+import Link from "next/link";
 
 export function VerifyEmailForm() {
   const [pending, setPending] = useState(true);
@@ -47,12 +48,12 @@ export function VerifyEmailForm() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
-          <a href="#" className="flex items-center gap-2">
+          <Link href="#" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-sm">
               <GalleryVerticalEnd className="size-5" />
             </div>
             <span className="sr-only">Startalyse</span>
-          </a>
+          </Link>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Verifying your email
           </h1>

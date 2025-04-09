@@ -3,9 +3,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppSidebar } from "@/components/app-sidebar";
 import React from "react";
 import Header from "@/components/ui/header";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { auth } from "@/server/auth";
 
 async function ProtectedLayout({
   children,
