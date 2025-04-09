@@ -188,9 +188,22 @@ export function LoginForm() {
         </div>
       </div>
 
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
-        and <Link href="#">Privacy Policy</Link>.
+      <div className="text-balance text-center text-xs text-muted-foreground">
+        By clicking continue, you agree to our{" "}
+        <Link
+          href="/terms"
+          className="hover:text-primary underline-offset-4 underline"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/privacy-policy"
+          className="hover:text-primary underline-offset-4 underline"
+        >
+          Privacy Policy
+        </Link>
+        .
       </div>
     </div>
   );
