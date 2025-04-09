@@ -19,6 +19,7 @@ export function LoginForm() {
   const [pendingCredentials, setPendingCredentials] = useState(false);
   const [pendingGithub, setPendingGithub] = useState(false);
   const [pendingGoogle, setPendingGoogle] = useState(false);
+  const [pendingForgetPassword, setPendingForgetPassword] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -138,6 +139,14 @@ export function LoginForm() {
                   )}
                 />
               </div>
+              <div className="flex justify-end">
+                <Link
+                  href="/forgot-password"
+                  className="text-primary text-xs underline underline-offset-4 hover:text-primary/80 transition-colors cursor-pointer"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <Button type="submit" className="w-full" disabled={pendingCredentials}>
                 {pendingCredentials ? "Signing in..." : "Login"}
               </Button>
@@ -179,9 +188,22 @@ export function LoginForm() {
         </div>
       </div>
 
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
-        and <Link href="#">Privacy Policy</Link>.
+      <div className="text-balance text-center text-xs text-muted-foreground">
+        By clicking continue, you agree to our{" "}
+        <Link
+          href="/terms"
+          className="hover:text-primary underline-offset-4 underline"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/privacy-policy"
+          className="hover:text-primary underline-offset-4 underline"
+        >
+          Privacy Policy
+        </Link>
+        .
       </div>
     </div>
   );
