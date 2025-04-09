@@ -63,7 +63,7 @@ export function LoginForm() {
       },
     );
 
-    setPendingGithub(false);
+    setPendingGoogle(false);
   };
 
   const handleCredentialsSignIn = async (values: z.infer<typeof signInSchema>) => {
