@@ -1,9 +1,4 @@
-import {
-  createDataStreamResponse,
-  Message,
-  smoothStream,
-  streamText,
-} from "ai";
+import { createDataStreamResponse, Message, smoothStream, streamText } from "ai";
 import { aiProvider } from "@/lib/ai/provider";
 import { VALIDATE_STARTUP_IDEA_PROMPT } from "@/lib/ai/prompts";
 

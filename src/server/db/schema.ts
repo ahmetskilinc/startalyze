@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { text, timestamp, boolean, pgTableCreator } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `startalyze_${name}`);
@@ -54,3 +55,38 @@ export const verification = createTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 });
+
+export const chat = createTable("chat", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  title: text("title"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const chatRelations = relations(chat, ({ many, one }) => ({
+  messages: many(message),
+  user: one(user, {
+    fields: [chat.userId],
+    references: [user.id],
+  }),
+}));
+
+export const message = createTable("message", {
+  id: text("id").primaryKey(),
+  chatId: text("chat_id")
+    .notNull()
+    .references(() => chat.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  role: text("role", { enum: ["user", "assistant"] }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const messageRelations = relations(message, ({ one }) => ({
+  chat: one(chat, {
+    fields: [message.chatId],
+    references: [chat.id],
+  }),
+}));
