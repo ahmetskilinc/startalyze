@@ -1,16 +1,16 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { getChat, getChatMessages } from "@/lib/actions/chat";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useChat } from "ai/react";
+import { useChat as useAIChat } from "ai/react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { HeaderTitle } from "../header-title";
 import ChatMessages from "./chat-messages";
 import Link from "next/link";
+import { useChat, useChatMessages } from "@/hooks/use-chats";
 
 const FormSchema = z.object({
   prompt: z.string(),
@@ -19,60 +19,48 @@ const FormSchema = z.object({
 const ChatPage = () => {
   const params = useParams();
   const chatId = params.chatId as string;
-  const [title, setTitle] = useState("");
+  const { data: chat, error: chatError } = useChat(chatId);
+  const { data: chatMessages, error: messagesError } = useChatMessages(chatId);
   const [error, setError] = useState<string | null>(null);
-  const [initialMessages, setInitialMessages] = useState<
-    { id: string; content: string; role: "user" | "assistant" }[]
-  >([]);
+  const title = chat?.title || `Chat ${chatId.slice(0, 8)}`;
 
-  const { messages, input, setInput, handleSubmit, status, reload } = useChat({
-    initialMessages: initialMessages,
+  const initialMessages = useMemo(() => {
+    if (!chatMessages) return [];
+    return chatMessages.map((msg) => ({
+      id: msg.id,
+      content: msg.content,
+      role: msg.role as "user" | "assistant",
+    }));
+  }, [chatMessages]);
+
+  const { messages, input, setInput, handleSubmit, status, reload } = useAIChat({
+    initialMessages,
     id: chatId,
     body: { chatId },
     experimental_prepareRequestBody: ({ messages }) => {
       const last = messages[messages.length - 1];
       return { chatId, message: last };
-    }
+    },
   });
 
   useEffect(() => {
-    const loadChat = async () => {
-      try {
-        const [chat, messages] = await Promise.all([
-          getChat(chatId),
-          getChatMessages(chatId),
-        ]);
-
-        setTitle(chat.title || `Chat ${chatId.slice(0, 8)}`);
-        const formattedMessages = messages.map((msg) => ({
-          id: msg.id,
-          content: msg.content,
-          role: msg.role as "user" | "assistant",
-        }));
-
-        setInitialMessages(formattedMessages);
-
-        // TODO: fix why multiple reloads are being triggered
-          if (formattedMessages.length === 1 && formattedMessages[0]?.role === "user") {
-            console.log("karu reloa")
-            setInput(formattedMessages[0].content)
-            console.log(input)
-            reload();
-          }
-      } catch (error) {
-        console.error("Failed to load chat:", error);
-        if (error instanceof Error && error.message === "Chat not found") {
-          setError("This chat doesn't exist or you don't have access to it.");
-        } else {
-          setError("Failed to load chat. Please try again later.");
-        }
+    if (chatError || messagesError) {
+      const error = chatError || messagesError;
+      console.error("Failed to load chat:", error);
+      if (error instanceof Error && error.message === "Chat not found") {
+        setError("This chat doesn't exist or you don't have access to it.");
+      } else {
+        setError("Failed to load chat. Please try again later.");
       }
-    };
-
-    if (chatId) {
-      loadChat();
     }
-  }, [chatId]);
+  }, [chatError, messagesError]);
+
+  useEffect(() => {
+    if (initialMessages.length === 1 && initialMessages[0]?.role === "user") {
+      setInput(initialMessages[0].content);
+      reload();
+    }
+  }, [initialMessages, setInput, reload]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
