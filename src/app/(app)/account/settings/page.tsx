@@ -24,8 +24,8 @@ export default async function AccountPage() {
         ]}
       />
       <div className="flex flex-col">
-        <div className="container mx-auto max-w-7xl px-4 py-8">
-          <p>Settings Page</p>
+        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 p-4 md:gap-8">
+          <p>SETTINGS PAGE</p>
         </div>
       </div>
     </div>
