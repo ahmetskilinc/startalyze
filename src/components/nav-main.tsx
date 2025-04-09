@@ -6,30 +6,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { getUserChats } from "@/lib/actions/chat";
 import { MessageSquarePlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { type Chat } from "@/lib/actions/chat";
+import { useChats } from "@/hooks/use-chats";
 
 export function NavMain() {
   const pathname = usePathname();
-  const [chats, setChats] = useState<Chat[]>([]);
-
-  useEffect(() => {
-    const loadChats = async () => {
-      try {
-        const userChats = await getUserChats();
-        setChats(userChats);
-      } catch (error) {
-        console.error("Failed to load chats:", error);
-      }
-    };
-
-    loadChats();
-  }, []);
+  const { data: chats = [] } = useChats();
 
   return (
     <SidebarGroup>
