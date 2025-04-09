@@ -27,10 +27,12 @@ import { z } from "zod";
 const onboardingSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  version: z.enum(["free", "pro"]),
 });
 
 const OnboardingPage = () => {
   const [userOnboarded, setUserOnboarded] = useState<boolean>(false);
+  const [showProPurchase, setShowProPurchase] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,10 +44,16 @@ const OnboardingPage = () => {
   }, []);
 
   const updateUser = async (values: z.infer<typeof onboardingSchema>) => {
+    if (values.version === "pro" && !showProPurchase) {
+      setShowProPurchase(true);
+      return;
+    }
+
     console.log({
       firstName: values.firstName,
       lastName: values.lastName,
       name: `${values.firstName} ${values.lastName}`,
+      version: values.version,
     });
 
     const { error: userError } = await authClient.updateUser({
@@ -76,11 +84,12 @@ const OnboardingPage = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
+      version: "free",
     },
   });
 
   if (userOnboarded) {
-    redirect("/me/my-links");
+    redirect("/chat");
   }
 
   return (
@@ -99,50 +108,83 @@ const OnboardingPage = () => {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(updateUser)} className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Personal Information</h3>
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                  <div className="grid gap-4">
-                    <div className="flex flex-col gap-4 md:flex-row">
-                      <FormField
-                        control={form.control}
-                        name="firstName"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>First Name</FormLabel>
-                            <FormControl>
-                              <Input {...field} placeholder="John" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="lastName"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>Last Name</FormLabel>
-                            <FormControl>
-                              <Input {...field} placeholder="Doe" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="version"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Choose Your Plan</FormLabel>
+                      <div className="grid grid-cols-2 gap-4">
+                        <Button
+                          type="button"
+                          variant={field.value === "free" ? "default" : "outline"}
+                          className="w-full"
+                          onClick={() => field.onChange("free")}
+                        >
+                          Free Plan
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={field.value === "pro" ? "default" : "outline"}
+                          className="w-full"
+                          onClick={() => field.onChange("pro")}
+                        >
+                          Pro Plan
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {showProPurchase && (
+                  <div className="space-y-4">
+                    <div className="rounded-lg bg-muted p-4">
+                      <h3 className="font-semibold">Pro Plan Features</h3>
+                      <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
+                        <li>Advanced analytics</li>
+                        <li>Unlimited links</li>
+                        <li>Custom domains</li>
+                        <li>Priority support</li>
+                      </ul>
+                      <div className="mt-4">
+                        <p className="text-lg font-bold">$9.99/month</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
-                <div className="pt-4">
-                  <Button type="submit" className="w-full">
-                    Complete Setup
-                  </Button>
-                  <p className="text-muted-foreground mt-2 text-center text-sm">
-                    You can always update these preferences later in your account
-                    settings.
-                  </p>
-                </div>
+                <Button type="submit" className="w-full">
+                  {showProPurchase ? "Purchase Pro Plan" : "Continue"}
+                </Button>
               </form>
             </Form>
           </CardContent>

@@ -19,6 +19,7 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
+  HandCoins,
   LogOut,
   Settings,
   User,
@@ -29,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/server/auth/client";
+import { Badge } from "./ui/badge";
 
 export function NavUser() {
   const router = useRouter();
@@ -83,7 +85,12 @@ export function NavUser() {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium flex items-center">
+                  {user.name}
+                  <Badge className="bg-blue-500 text-white ml-1 text-[10px]">
+                    free
+                  </Badge>
+                </span>
                 <span className="text-muted-foreground truncate text-xs">
                   {user.email}
                 </span>
@@ -122,6 +129,10 @@ export function NavUser() {
               <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
                 <Settings className="mr-2 size-4" />
                 <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
+                <CreditCard className="mr-2 size-4" />
+                <span>Plan</span>
               </DropdownMenuItem>
               {/* <DropdownMenuItem onClick={() => handleNavigate('/billing')}>
                 <CreditCard className="mr-2 size-4" />

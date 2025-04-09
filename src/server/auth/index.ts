@@ -6,13 +6,49 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { openAPI } from "better-auth/plugins";
 import { headers } from "next/headers";
+import { polar } from "@polar-sh/better-auth";
+import { Polar } from "@polar-sh/sdk";
+
+const client = new Polar({
+  accessToken: env.POLAR_ACCESS_TOKEN,
+  server: "sandbox",
+});
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
   trustedOrigins: [env.BETTER_AUTH_URL],
-  plugins: [openAPI(), nextCookies()],
+  plugins: [
+    openAPI(),
+    nextCookies(),
+    polar({
+      client,
+      createCustomerOnSignUp: true,
+      enableCustomerPortal: true,
+      checkout: {
+        enabled: true,
+        products: [
+          {
+            productId: env.POLAR_FREE_PRODUCT_ID,
+            slug: "free",
+          },
+          {
+            productId: env.POLAR_PRO_PRODUCT_ID,
+            slug: "pro",
+          },
+        ],
+        successUrl: "/success?checkout_id={CHECKOUT_ID}",
+      },
+      webhooks: {
+        secret: env.POLAR_WEBHOOK_SECRET,
+        onPayload: (payload) => {
+          console.log(payload);
+          return Promise.resolve();
+        },
+      },
+    }),
+  ],
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
@@ -39,6 +75,9 @@ export const auth = betterAuth({
       },
       onboardingCompleted: {
         type: "boolean",
+      },
+      plan: {
+        type: "string",
       },
     },
   },
