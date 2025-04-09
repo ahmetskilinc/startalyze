@@ -3,9 +3,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppSidebar } from "@/components/app-sidebar";
 import React from "react";
 import Header from "@/components/ui/header";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { auth } from "@/server/auth";
 
 async function ProtectedLayout({
   children,
@@ -17,7 +14,7 @@ async function ProtectedLayout({
       <AppSidebar />
       <SidebarInset>
         <Header />
-        <div className="h-[calc(100vh-(4rem))]">
+        <div className="h-full">
           <ScrollArea className="h-full w-full">{children}</ScrollArea>
         </div>
       </SidebarInset>

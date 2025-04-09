@@ -8,6 +8,10 @@ export function HeaderTitle({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
 
   useEffect(() => {
     setBreadcrumbs([...breadcrumbs]);
+
+    return () => {
+      setBreadcrumbs([])
+    }
   }, [setBreadcrumbs, breadcrumbs]);
 
   return null;
