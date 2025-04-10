@@ -12,6 +12,7 @@ export const user = createTable("user", {
   firstName: text("first_name"),
   lastName: text("last_name"),
   onboardingCompleted: boolean("onboarding_completed"),
+  plan: text("plan").notNull().default("free"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });

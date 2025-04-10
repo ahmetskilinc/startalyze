@@ -8,14 +8,21 @@ export const env = createEnv({
     EMAIL_FROM_NAME: z.string(),
     EMAIL_FROM_ADDRESS: z.string(),
     MAILER_API_KEY: z.string().optional(),
-    NODE_ENV: z.enum(["development", "test", "production"]),
     GITHUB_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    POLAR_ACCESS_TOKEN: z.string(),
+    POLAR_WEBHOOK_SECRET: z.string(),
   },
   client: {
     NEXT_PUBLIC_BETTER_AUTH_URL: z.string().url(),
+    NEXT_PUBLIC_APP_URL: z.string().url(),
+  },
+  shared: {
+    NODE_ENV: z.enum(["development", "test", "production"]),
+    NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: z.string(),
+    NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -29,5 +36,10 @@ export const env = createEnv({
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    POLAR_ACCESS_TOKEN: process.env.POLAR_ACCESS_TOKEN,
+    POLAR_WEBHOOK_SECRET: process.env.POLAR_WEBHOOK_SECRET,
+    NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
+    NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 });

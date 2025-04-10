@@ -6,7 +6,16 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { openAPI } from "better-auth/plugins";
 import { headers } from "next/headers";
+import { polar } from "@polar-sh/better-auth";
+import { Polar } from "@polar-sh/sdk";
 import { Resend } from "resend";
+import { user } from "../db/schema";
+import { eq } from "drizzle-orm";
+
+export const polarClient = new Polar({
+  accessToken: env.POLAR_ACCESS_TOKEN,
+  server: "sandbox",
+});
 
 const resend = env.MAILER_API_KEY
   ? new Resend(env.MAILER_API_KEY)
@@ -17,7 +26,59 @@ export const auth = betterAuth({
     provider: "pg",
   }),
   trustedOrigins: [env.BETTER_AUTH_URL],
-  plugins: [openAPI(), nextCookies()],
+  plugins: [
+    openAPI(),
+    nextCookies(),
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      enableCustomerPortal: true,
+      checkout: {
+        enabled: true,
+        successUrl: "/success?checkout_id={CHECKOUT_ID}",
+        products: [
+          {
+            productId: env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
+            slug: "free",
+          },
+          {
+            productId: env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
+            slug: "pro",
+          },
+        ],
+      },
+      webhooks: {
+        secret: env.POLAR_WEBHOOK_SECRET,
+        onSubscriptionActive: async (payload) => {
+          console.log(payload)
+          const sub = payload.data;
+          await db
+            .update(user)
+            .set({
+              plan: "pro",
+              updatedAt: new Date(),
+            })
+            .where(eq(user.email, sub.user.email));
+
+          console.log(`User upgraded to PRO`, sub.user.email);
+        },
+        onSubscriptionRevoked: async (payload) => {
+           console.log(payload, 'revoked')
+          const sub = payload.data;
+          await db
+            .update(user)
+            .set({
+              plan: "free",
+              updatedAt: new Date(),
+            })
+            .where(eq(user.email, sub.user.email));
+
+          console.log(`✅ User plan reverted to FREE`, sub.id);
+        },
+
+      },
+    }),
+  ],
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
@@ -63,6 +124,9 @@ export const auth = betterAuth({
       },
       onboardingCompleted: {
         type: "boolean",
+      },
+      plan: {
+        type: "string",
       },
     },
   },
