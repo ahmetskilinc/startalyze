@@ -9,8 +9,10 @@ import { headers } from "next/headers";
 import { polar } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
 import { Resend } from "resend";
+import { user } from "../db/schema";
+import { eq } from "drizzle-orm";
 
-const client = new Polar({
+export const polarClient = new Polar({
   accessToken: env.POLAR_ACCESS_TOKEN,
   server: "sandbox",
 });
@@ -28,29 +30,52 @@ export const auth = betterAuth({
     openAPI(),
     nextCookies(),
     polar({
-      client,
+      client: polarClient,
       createCustomerOnSignUp: true,
       enableCustomerPortal: true,
       checkout: {
         enabled: true,
+        successUrl: "/success?checkout_id={CHECKOUT_ID}",
         products: [
           {
-            productId: env.POLAR_FREE_PRODUCT_ID,
+            productId: env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
             slug: "free",
           },
           {
-            productId: env.POLAR_PRO_PRODUCT_ID,
+            productId: env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
             slug: "pro",
           },
         ],
-        successUrl: "/success?checkout_id={CHECKOUT_ID}",
       },
       webhooks: {
         secret: env.POLAR_WEBHOOK_SECRET,
-        onPayload: (payload) => {
-          console.log(payload);
-          return Promise.resolve();
+        onSubscriptionActive: async (payload) => {
+          console.log(payload)
+          const sub = payload.data;
+          await db
+            .update(user)
+            .set({
+              plan: "pro",
+              updatedAt: new Date(),
+            })
+            .where(eq(user.email, sub.user.email));
+
+          console.log(`User upgraded to PRO`, sub.user.email);
         },
+        onSubscriptionRevoked: async (payload) => {
+           console.log(payload, 'revoked')
+          const sub = payload.data;
+          await db
+            .update(user)
+            .set({
+              plan: "free",
+              updatedAt: new Date(),
+            })
+            .where(eq(user.email, sub.user.email));
+
+          console.log(`✅ User plan reverted to FREE`, sub.id);
+        },
+
       },
     }),
   ],

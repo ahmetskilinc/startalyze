@@ -94,7 +94,7 @@ export function NavUser() {
                 <span className="truncate font-medium flex items-center">
                   {user.name}
                   <Badge className="bg-blue-500 text-white ml-1 text-[10px]">
-                    free
+                   {user.plan}
                   </Badge>
                 </span>
                 <span className="text-muted-foreground truncate text-xs">
