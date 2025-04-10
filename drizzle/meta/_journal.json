@@ -15,6 +15,13 @@
       "when": 1744147892739,
       "tag": "0001_bright_luke_cage",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744238512657,
+      "tag": "0002_freezing_iceman",
+      "breakpoints": true
     }
   ]
 }

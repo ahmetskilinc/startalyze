@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { env } from "@/lib/env";
 
 const onboardingSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -49,13 +50,6 @@ const OnboardingPage = () => {
       return;
     }
 
-    console.log({
-      firstName: values.firstName,
-      lastName: values.lastName,
-      name: `${values.firstName} ${values.lastName}`,
-      version: values.version,
-    });
-
     const { error: userError } = await authClient.updateUser({
       firstName: values.firstName,
       lastName: values.lastName,
@@ -65,6 +59,12 @@ const OnboardingPage = () => {
     if (userError) {
       console.error("Error updating user:", userError);
       return;
+    }
+
+    if (values.version === "pro" && showProPurchase) {
+      redirect(
+        "/api/auth/checkout?productId=" + env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
+      );
     }
 
     const { error: userOnboardedError } = await authClient.updateUser({
