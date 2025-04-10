@@ -21,7 +21,10 @@ import {
   CreditCard,
   HandCoins,
   LogOut,
+  MonitorCog,
+  Moon,
   Settings,
+  Sun,
   User,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,11 +34,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/server/auth/client";
 import { Badge } from "./ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTheme } from "next-themes";
 
 export function NavUser() {
   const router = useRouter();
   const { isMobile } = useSidebar();
   const { data: session } = authClient.useSession();
+  const { theme, setTheme } = useTheme();
   const user = session?.user;
 
   const handleNavigate = (path: string) => {
@@ -143,6 +149,36 @@ export function NavUser() {
                 <span>Notifications</span>
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
+            <span className="mt-2 block w-full">
+              <Tabs defaultValue={theme} className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="dark" onClick={() => setTheme("dark")}>
+                    <Moon
+                      size={16}
+                      strokeWidth={2}
+                      className="opacity-60"
+                      aria-hidden="true"
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="light" onClick={() => setTheme("light")}>
+                    <Sun
+                      size={16}
+                      strokeWidth={2}
+                      className="opacity-60"
+                      aria-hidden="true"
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="system" onClick={() => setTheme("system")}>
+                    <MonitorCog
+                      size={16}
+                      strokeWidth={2}
+                      className="opacity-60"
+                      aria-hidden="true"
+                    />
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </span>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 size-4" />

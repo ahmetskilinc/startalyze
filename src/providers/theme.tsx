@@ -6,7 +6,12 @@ import * as React from "react";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
-    <NextThemesProvider {...props} defaultTheme="system">
+    <NextThemesProvider
+      {...props}
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+    >
       {children}
     </NextThemesProvider>
   );
