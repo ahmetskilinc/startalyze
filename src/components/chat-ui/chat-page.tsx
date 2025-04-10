@@ -1,8 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { useChat as useAIChat } from "ai/react";
-import { useParams } from "next/navigation";
+import { Message, useChat as useAIChat } from "ai/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,24 +15,18 @@ const FormSchema = z.object({
   prompt: z.string(),
 });
 
-const ChatPage = () => {
-  const params = useParams();
-  const chatId = params.chatId as string;
+const ChatPage = ({
+  chatId,
+  initialMessages,
+}: { chatId: string; initialMessages: Message[] }) => {
   const { data: chat, error: chatError } = useChat(chatId);
-  const { data: chatMessages, error: messagesError } = useChatMessages(chatId);
+
+  // TODO: handle caching on server side :)
+  const { error: messagesError } = useChatMessages(chatId);
   const [error, setError] = useState<string | null>(null);
   const title = chat?.title || `Chat ${chatId.slice(0, 8)}`;
 
-  const initialMessages = useMemo(() => {
-    if (!chatMessages) return [];
-    return chatMessages.map((msg) => ({
-      id: msg.id,
-      content: msg.content,
-      role: msg.role as "user" | "assistant",
-    }));
-  }, [chatMessages]);
-
-  const { messages, input, setInput, handleSubmit, status, reload } = useAIChat({
+  const { messages, setInput, handleSubmit, status, reload } = useAIChat({
     initialMessages,
     id: chatId,
     body: { chatId },
@@ -56,11 +49,16 @@ const ChatPage = () => {
   }, [chatError, messagesError]);
 
   useEffect(() => {
-    if (initialMessages.length === 1 && initialMessages[0]?.role === "user") {
+    if (
+      initialMessages.length === 1 &&
+      initialMessages[0]?.role === "user" &&
+      status !== "streaming" &&
+      status !== "submitted"
+    ) {
       setInput(initialMessages[0].content);
       reload();
     }
-  }, [initialMessages, setInput, reload]);
+  }, [initialMessages]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -70,19 +68,6 @@ const ChatPage = () => {
   useEffect(() => {
     setInput(watchedPrompt);
   }, [watchedPrompt, setInput]);
-
-  useEffect(() => {
-    if (
-      initialMessages.length === 1 &&
-      initialMessages[0]?.role === "user" &&
-      initialMessages[0]?.content
-    ) {
-      const content = initialMessages[0].content;
-      setTimeout(() => {
-        handleSubmit(undefined, { data: { prompt: content } });
-      }, 100);
-    }
-  }, [initialMessages, handleSubmit]);
 
   const memoMessages = useMemo(() => messages, [messages]);
 
