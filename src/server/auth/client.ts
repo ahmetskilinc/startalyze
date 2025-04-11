@@ -5,9 +5,10 @@ import {
   inferAdditionalFields,
 } from "better-auth/client/plugins";
 import { auth } from "@/server/auth";
+import { domain } from "@/lib/constants";
 
 export const authClient = createAuthClient({
-  baseURL: env.NEXT_PUBLIC_BETTER_AUTH_URL,
+  baseURL: domain,
   plugins: [
     customSessionClient<typeof auth>(),
     inferAdditionalFields<typeof auth>(),

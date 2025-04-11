@@ -30,6 +30,7 @@ export function SignupForm() {
         firstName: values.name,
         lastName: values.name,
         onboardingCompleted: false,
+        plan: "free",
       },
       {
         onRequest: () => setPending(true),

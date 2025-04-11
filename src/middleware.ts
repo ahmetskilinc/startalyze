@@ -1,4 +1,4 @@
-import { env } from "@/lib/env";
+import { domain } from "@/lib/constants";
 import type { Session } from "@/server/auth";
 import { betterFetch } from "@better-fetch/fetch";
 import { NextResponse, type NextRequest } from "next/server";
@@ -15,7 +15,7 @@ export default async function authMiddleware(request: NextRequest) {
   const isOpenRoute = openRoutes.includes(pathName);
 
   const { data: session } = await betterFetch<Session>("/api/auth/get-session", {
-    baseURL: env.BETTER_AUTH_URL,
+    baseURL: domain,
     headers: {
       cookie: request.headers.get("cookie") ?? "",
     },

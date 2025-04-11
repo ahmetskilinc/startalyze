@@ -63,6 +63,7 @@ export const chat = createTable("chat", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   title: text("title"),
+  deleted: boolean("deleted").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

@@ -11,6 +11,7 @@ import { Polar } from "@polar-sh/sdk";
 import { Resend } from "resend";
 import { user } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { domain } from "@/lib/constants";
 
 export const polarClient = new Polar({
   accessToken: env.POLAR_ACCESS_TOKEN,
@@ -25,7 +26,7 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
-  trustedOrigins: [env.BETTER_AUTH_URL],
+  trustedOrigins: [domain],
   plugins: [
     openAPI(),
     nextCookies(),
@@ -50,7 +51,7 @@ export const auth = betterAuth({
       webhooks: {
         secret: env.POLAR_WEBHOOK_SECRET,
         onSubscriptionActive: async (payload) => {
-          console.log(payload)
+          console.log(payload);
           const sub = payload.data;
           await db
             .update(user)
@@ -63,7 +64,7 @@ export const auth = betterAuth({
           console.log(`User upgraded to PRO`, sub.user.email);
         },
         onSubscriptionRevoked: async (payload) => {
-           console.log(payload, 'revoked')
+          console.log(payload, "revoked");
           const sub = payload.data;
           await db
             .update(user)
@@ -75,7 +76,6 @@ export const auth = betterAuth({
 
           console.log(`✅ User plan reverted to FREE`, sub.id);
         },
-
       },
     }),
   ],

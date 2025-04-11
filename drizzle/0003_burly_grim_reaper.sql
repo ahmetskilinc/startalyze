@@ -1,0 +1,1 @@
+ALTER TABLE "startalyze_chat" ADD COLUMN "deleted" boolean DEFAULT false NOT NULL;

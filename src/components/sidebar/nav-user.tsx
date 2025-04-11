@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/server/auth/client";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "next-themes";
 

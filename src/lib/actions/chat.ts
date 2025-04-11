@@ -45,7 +45,7 @@ export async function getChat(chatId: string) {
   }
 
   const result = await db.query.chat.findFirst({
-    where: eq(chat.id, chatId),
+    where: (chat, { and, eq }) => and(eq(chat.id, chatId), eq(chat.deleted, false)),
   });
 
   if (!result) {
@@ -88,6 +88,29 @@ export async function getChatMessages(chatId: string) {
   return messages;
 }
 
+export async function deleteChat(chatId: string) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) {
+    throw new Error("Not authenticated");
+  }
+
+  const chatResult = await db.query.chat.findFirst({
+    where: eq(chat.id, chatId),
+  });
+
+  if (!chatResult) {
+    throw new Error("Chat not found");
+  }
+
+  if (chatResult.userId !== session.user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.update(chat).set({ deleted: true }).where(eq(chat.id, chatId));
+
+  return { success: true };
+}
+
 export async function getUserChats() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) {
@@ -95,7 +118,8 @@ export async function getUserChats() {
   }
 
   const chats = await db.query.chat.findMany({
-    where: eq(chat.userId, session.user.id),
+    where: (chat, { and, eq, isNull }: { and: any; eq: any; isNull: any }) =>
+      and(eq(chat.userId, session.user.id), eq(chat.deleted, false)),
     orderBy: (chat: any, { desc }: { desc: any }) => [desc(chat.createdAt)],
   });
 
