@@ -17,6 +17,7 @@ export const env = createEnv({
   client: {},
   shared: {
     NODE_ENV: z.enum(["development", "test", "production"]),
+    NEXT_PUBLIC_DEVELOPMENT_URL: z.string().optional(),
     NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: z.string(),
     NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: z.string(),
   },
@@ -34,5 +35,6 @@ export const env = createEnv({
     POLAR_WEBHOOK_SECRET: process.env.POLAR_WEBHOOK_SECRET,
     NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
     NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
+    NEXT_PUBLIC_DEVELOPMENT_URL: process.env.NEXT_PUBLIC_DEVELOPMENT_URL,
   },
 });

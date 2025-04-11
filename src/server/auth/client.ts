@@ -1,4 +1,3 @@
-import { env } from "@/lib/env";
 import { createAuthClient } from "better-auth/react";
 import {
   customSessionClient,
