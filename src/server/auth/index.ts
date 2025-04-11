@@ -26,7 +26,7 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
-  trustedOrigins: [domain],
+  trustedOrigins: [domain!],
   plugins: [
     openAPI(),
     nextCookies(),
