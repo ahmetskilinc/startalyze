@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const authRoutes = ["/login", "/signup"];
 const passwordRoutes = ["/reset-password", "verify-email", "/forgot-password"];
-const openRoutes = ["/terms", "/privacy-policy"];
+const openRoutes = ["/refund-policy", "/privacy-policy", "/terms-and-conditions"];
 
 export default async function authMiddleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
