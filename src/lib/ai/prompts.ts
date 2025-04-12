@@ -59,46 +59,141 @@ Analyze the following startup idea based on publicly available information from 
 
 **Output Format:**
 
-Return the analysis in Markdown format, with clear headings and subheadings. Include links to all supporting resources.
+Return the analysis in a structured JSON format that can be easily parsed for UI components. The response should be wrapped in a code block with the 'json' language identifier.
 
-**Example Markdown Output Structure:**
+**Example Output Structure:**
 
-\`\`\`markdown
-# Startup Idea Validation Report: [Startup Idea Title]
-
-## 1. Market Analysis
-
-* **Market Size and Growth:** [Analysis with links]
-* **Target Audience:** [Analysis with links]
-* **Competitive Landscape:** [Analysis with links]
-* **Market Trends:** [Analysis with links]
-
-## 2. Feasibility Assessment
-
-* **Technical Feasibility:** [Analysis with links]
-* **Operational Feasibility:** [Analysis with links]
-
-## 3. Innovation and Differentiation
-
-* **Uniqueness and Value Proposition:** [Analysis with links]
-* **Competitive Advantages:** [Analysis with links]
-
-## 4. Business Model Evaluation
-
-* **Revenue Generation:** [Analysis with links]
-* **Cost Structure and Profitability:** [Analysis with links]
-* **Customer Acquisition:** [Analysis with links]
-
-## 5. Risk Assessment
-
-* **Potential Risks:** [Analysis with links]
-* **Mitigation Strategies:** [Analysis with links]
-
-## 6. Overall Validation
-
-* **Strengths:** [Summary]
-* **Weaknesses:** [Summary]
-* **Recommendations:** [Recommendations]
-* **Conclusion:** [Conclusion]
+\`\`\`json
+{
+  "title": "Startup Idea Validation Report",
+  "ideaName": "[Startup Idea Title]",
+  "sections": [
+    {
+      "id": "market-analysis",
+      "title": "Market Analysis",
+      "type": "accordion",
+      "items": [
+        {
+          "title": "Market Size and Growth",
+          "content": "[Analysis text]",
+          "metrics": [
+            {
+              "label": "Market Size",
+              "value": "$X Billion",
+              "trend": "up"
+            },
+            {
+              "label": "CAGR",
+              "value": "X%",
+              "trend": "up"
+            }
+          ],
+          "sources": [
+            {
+              "text": "Source Title",
+              "url": "https://example.com"
+            }
+          ]
+        },
+        {
+          "title": "Target Audience",
+          "content": "[Analysis text]",
+          "segments": [
+            {
+              "name": "Segment 1",
+              "percentage": 40,
+              "description": "Description of segment"
+            }
+          ]
+        },
+        {
+          "title": "Competitive Landscape",
+          "content": "[Analysis text]",
+          "competitors": [
+            {
+              "name": "Competitor 1",
+              "strengths": ["Strength 1", "Strength 2"],
+              "weaknesses": ["Weakness 1", "Weakness 2"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feasibility",
+      "title": "Feasibility Assessment",
+      "type": "scorecard",
+      "items": [
+        {
+          "title": "Technical Feasibility",
+          "score": 8.5,
+          "maxScore": 10,
+          "factors": [
+            {
+              "name": "Technology Readiness",
+              "score": 9,
+              "description": "Description"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "innovation",
+      "title": "Innovation and Differentiation",
+      "type": "table",
+      "items": [
+        {
+          "aspect": "Unique Value Proposition",
+          "strength": "High",
+          "details": "[Analysis]",
+          "evidence": ["Point 1", "Point 2"]
+        }
+      ]
+    },
+    {
+      "id": "business-model",
+      "title": "Business Model Evaluation",
+      "type": "chart",
+      "items": [
+        {
+          "title": "Revenue Streams",
+          "data": [
+            {
+              "stream": "Stream 1",
+              "percentage": 60,
+              "potential": "High"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "risks",
+      "title": "Risk Assessment",
+      "type": "matrix",
+      "items": [
+        {
+          "risk": "Risk 1",
+          "impact": "High",
+          "probability": "Medium",
+          "mitigation": "[Strategy]"
+        }
+      ]
+    },
+    {
+      "id": "validation",
+      "title": "Overall Validation",
+      "type": "summary",
+      "items": {
+        "score": 8.2,
+        "verdict": "Viable",
+        "strengths": ["Strength 1", "Strength 2"],
+        "weaknesses": ["Weakness 1", "Weakness 2"],
+        "recommendations": ["Recommendation 1", "Recommendation 2"]
+      }
+    }
+  ]
+}
 \`\`\`
 `;

@@ -3,6 +3,7 @@ import { CornerDownRight, Ghost } from "lucide-react";
 import { AnimatedShinyText } from "../ui/shiny-text";
 import Markdown from "markdown-to-jsx";
 import { Message } from "ai";
+import { ValidationReport } from "./validation-report";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -35,16 +36,36 @@ export const UserMessage = ({ text }: { text: string }) => {
 };
 
 export const AgentMessage = ({ message }: { message: Message }) => {
+  // Try to parse the message content as JSON if it's a validation report
+  let validationData = null;
+  if (message.content.includes("```json")) {
+    try {
+      const parts = message.content.split("```json");
+      if (parts[1]) {
+        const jsonStr = parts[1].split("```")[0];
+        if (jsonStr) {
+          validationData = JSON.parse(jsonStr.trim());
+        }
+      }
+    } catch (error) {
+      console.error("Failed to parse validation report JSON:", error);
+    }
+  }
+
   return (
     <div className="text-base leading-relaxed flex">
       <AgentAvatar />
-      <div>
-        <Markdown
-          className="agent-response text-[15px] [&>*:first-child]:mt-0 space-y-6"
-          style={geistSans.style}
-        >
-          {message.content}
-        </Markdown>
+      <div className="flex-1 min-w-0">
+        {validationData ? (
+          <ValidationReport data={validationData} />
+        ) : (
+          <Markdown
+            className="agent-response text-[15px] [&>*:first-child]:mt-0 space-y-6"
+            style={geistSans.style}
+          >
+            {message.content}
+          </Markdown>
+        )}
         {message.parts &&
           message.parts.filter((part) => part.type === "source").length >= 1 && (
             <div
