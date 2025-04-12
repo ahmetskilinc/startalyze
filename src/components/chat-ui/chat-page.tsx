@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HeaderTitle } from "../header-title";
+import { HeaderTitle } from "../ui/header-title";
 import ChatMessages from "./chat-messages";
 import Link from "next/link";
 import { useChat, useChatMessages } from "@/hooks/use-chats";
