@@ -82,7 +82,7 @@ export default async function Home() {
 
       <div className="flex justify-center">
         <Link href="/login" className="text-center">
-          <Button> Temporary Sign in</Button>
+          <Button>Sign in</Button>
         </Link>
       </div>
     </main>
