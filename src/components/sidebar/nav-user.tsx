@@ -149,7 +149,7 @@ export function NavUser() {
                 <span>Notifications</span>
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
-            <span className="mt-2 block w-full">
+            {/* <span className="mt-2 block w-full">
               <Tabs defaultValue={theme} className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="dark" onClick={() => setTheme("dark")}>
@@ -178,7 +178,7 @@ export function NavUser() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </span>
+            </span> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 size-4" />
