@@ -6,7 +6,7 @@ export default function page() {
       {`
 # **Return & Refund Policy**
 
-**Effective Date:** [latest-date-when-we-publish]
+**Effective Date:** 12/04/2025
 
 Thank you for choosing our service. We believe in providing transparency about our policies, so here’s everything you need to know about refunds.
 
@@ -24,7 +24,7 @@ We do not offer refunds for purchased credits or subscriptions. Here’s why:
 
 ### **Service Assurance**
 
-We are committed to delivering a smooth and reliable experience. If you encounter a **technical issue** that prevents access to paid features, please contact our support team at [Insert Support Email]. Our team will investigate and assist promptly.
+We are committed to delivering a smooth and reliable experience. If you encounter a **technical issue** that prevents access to paid features, please contact our support team at info@startalyze.com. Our team will investigate and assist promptly.
 
 ---
 
@@ -32,7 +32,7 @@ We are committed to delivering a smooth and reliable experience. If you encounte
 
 If you have any questions about this policy, feel free to reach out:
 
-📧 **Email:** [Insert Support Email]
+📧 **Email:** info@startalyze.com
 
 
             `}

@@ -1,4 +1,6 @@
+import { domain } from "@/lib/constants";
 import LegalMarkdown from "../legal-markdown";
+import { env } from "@/lib/env";
 
 export default function page() {
   return (
@@ -6,7 +8,7 @@ export default function page() {
       {`
 # **Terms and Conditions**
 
-**Last updated on [Insert Date]**
+**Last updated on 12/04/2025**
 
 Please read these terms and conditions carefully before using our service.
 
@@ -28,11 +30,6 @@ When creating an account, you must provide accurate and complete information. Fa
 
 You are responsible for safeguarding your password and for all activities under your account. You agree not to disclose your password to any third party and must notify us of any unauthorized use.
 
-Usernames must not:
-- Impersonate someone else without permission,
-- Infringe on trademarks,
-- Be offensive or obscene.
-
 ---
 
 ### Intellectual Property Infringement
@@ -51,7 +48,7 @@ To file a DMCA notice, provide the following:
 5. A good faith belief statement.
 6. A statement under penalty of perjury regarding accuracy and authority.
 
-**DMCA Contact:** [Insert Email]
+**DMCA Contact:** dmca@startalyze.com
 
 ---
 
@@ -109,7 +106,7 @@ Some jurisdictions may not allow exclusions, so these limitations may not apply 
 
 ### Governing Law
 
-These Terms are governed by the laws of [Insert Country], excluding conflict of law rules. Your local laws may also apply depending on your jurisdiction.
+These Terms are governed by the laws of [], excluding conflict of law rules. Your local laws may also apply depending on your jurisdiction.
 
 ---
 
@@ -131,8 +128,8 @@ Your continued use of the service after changes constitutes acceptance of the re
 
 For any questions regarding these Terms:
 
-- **Website:** [Insert Website URL]  
-- **Email:** [Insert Support Email]
+- **Website:** ${domain}
+- **Email:** info@startalyze.com
 
             `}
     </LegalMarkdown>

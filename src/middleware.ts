@@ -22,14 +22,21 @@ export default async function authMiddleware(request: NextRequest) {
   });
 
   if (!session || !session.user) {
-    if (isAuthRoute || isPasswordRoute || isOpenRoute) {
+    if (isOpenRoute) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (isAuthRoute || isPasswordRoute) {
       return NextResponse.next();
     }
 
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (isAuthRoute || isPasswordRoute || isOpenRoute) {
+  if (isOpenRoute) {
+    return NextResponse.redirect(new URL("/account", request.url));
+  }
+
+  if (isAuthRoute || isPasswordRoute) {
     return NextResponse.redirect(new URL("/account", request.url));
   }
 
