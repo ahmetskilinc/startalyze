@@ -7,9 +7,7 @@ import Link from "next/link";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { Button } from "@/components/ui/button";
 
-
 export default async function Home() {
-
   return (
     <main>
       <SiteBanner />
@@ -26,7 +24,7 @@ export default async function Home() {
                   <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] ">
                     <span
                       className={cn(
-                        "absolute inset-0 block h-full w-full animate-gradient rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#7044f5]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]"
+                        "absolute inset-0 block h-full w-full animate-gradient rounded-[inherit] bg-gradient-to-r from-[#ffaa40]/50 via-[#7044f5]/50 to-[#ffaa40]/50 bg-[length:300%_100%] p-[1px]",
                       )}
                       style={{
                         WebkitMask:
@@ -52,7 +50,7 @@ export default async function Home() {
                       "text-black",
                       "relative mx-0 max-w-[43.5rem] pt-5 md:mx-auto md:px-4 md:py-2",
                       "text-balance text-left font-semibold tracking-tighter md:text-center",
-                      "text-4xl sm:text-6xl md:text-7xl lg:text-7xl"
+                      "text-4xl sm:text-6xl md:text-7xl lg:text-7xl",
                     )}
                   >
                     <span className="whitespace-nowrap">
@@ -81,13 +79,12 @@ export default async function Home() {
           </div>
         </div>
       </section>
-   
-   <div className="flex justify-center">
-       <Link href="/login" className="text-center">
-       <Button > Temporary Sign in</Button>
-      </Link>
-   </div>
 
+      <div className="flex justify-center">
+        <Link href="/login" className="text-center">
+          <Button> Temporary Sign in</Button>
+        </Link>
+      </div>
     </main>
   );
 }
