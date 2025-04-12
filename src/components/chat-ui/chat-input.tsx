@@ -69,7 +69,7 @@ const ChatInput = ({
                         form.watch("prompt") === "" ||
                         form.watch("prompt") === undefined
                       }
-                      className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-blue-200 bg-blue-600 text-white hover:bg-blue-700"
+                      className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-indigo-200 bg-indigo-600 text-white hover:bg-indigo-700"
                       style={spaceGrotesk.style}
                     >
                       <ArrowUp />
