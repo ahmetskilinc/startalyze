@@ -3,7 +3,7 @@
 import { useChat } from "ai/react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { HeaderTitle } from "../header-title";
+import { HeaderTitle } from "../ui/header-title";
 import ChatMessages from "./chat-messages";
 import { ArrowUp } from "lucide-react";
 import { geistSans, spaceGrotesk } from "@/lib/fonts";

@@ -1,4 +1,4 @@
-import { HeaderTitle } from "@/components/header-title";
+import { HeaderTitle } from "@/components/ui/header-title";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/server/auth";

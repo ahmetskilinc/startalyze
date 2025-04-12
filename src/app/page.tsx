@@ -12,14 +12,12 @@ export default async function Home() {
     <main>
       <SiteBanner />
       <section id="hero" className="relative overflow-hidden">
-        {/* DotPattern only inside hero */}
         <DotPattern className="absolute inset-0 z-0 opacity-40" />
-
         <div className="relative z-10 h-full py-5 md:py-14">
           <div className="flex flex-col">
             <div className="mt-10 grid grid-cols-1 md:mt-10">
               <div className="flex flex-col items-start gap-6 px-7 pb-8 text-center md:items-center md:px-10">
-                {/* Intro Button */}
+                {/* Top Notifier */}
                 <MotionWrapper delay={0.3}>
                   <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] ">
                     <span
@@ -72,7 +70,7 @@ export default async function Home() {
                 </MotionWrapper>
 
                 <div className="mx-0 flex w-full max-w-full flex-col gap-4 py-1 sm:max-w-lg sm:flex-row md:mx-auto">
-                  {/* CTA buttons can be added here */}
+                  {/* CTA buttons TODO*/}
                 </div>
               </div>
             </div>
