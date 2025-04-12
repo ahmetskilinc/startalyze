@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { text, timestamp, boolean, pgTableCreator } from "drizzle-orm/pg-core";
+import { text, timestamp, boolean, pgTableCreator, integer } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `startalyze_${name}`);
 
@@ -92,3 +92,10 @@ export const messageRelations = relations(message, ({ one }) => ({
     references: [chat.id],
   }),
 }));
+
+export const waitlistEmails = createTable("waitlist_emails", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  email: text("email").notNull().unique(),
+  approved: boolean("approved").notNull().default(false),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull()
+});

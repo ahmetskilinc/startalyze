@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { GalleryVerticalEnd } from "lucide-react";
 import { authClient } from "@/server/auth/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isUserAllowedAction } from "./action";
 
 export function SignupForm() {
   const [pending, setPending] = useState(false);
@@ -22,6 +23,13 @@ export function SignupForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
+    const isUserAllowed = await isUserAllowedAction({ email: values.email });
+
+    if (!isUserAllowed) {
+      toast("You are not allowed brooo");
+      return;
+    }
+
     await authClient.signUp.email(
       {
         email: values.email,

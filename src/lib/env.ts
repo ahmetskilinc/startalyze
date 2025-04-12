@@ -11,6 +11,7 @@ export const env = createEnv({
     GITHUB_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    ARCJET_KEY: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
   },
@@ -36,5 +37,6 @@ export const env = createEnv({
     NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
     NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
     NEXT_PUBLIC_DEVELOPMENT_URL: process.env.NEXT_PUBLIC_DEVELOPMENT_URL,
+    ARCJET_KEY: process.env.ARCJET_KEY,
   },
 });

@@ -9,8 +9,8 @@ import { headers } from "next/headers";
 import { polar } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
 import { Resend } from "resend";
-import { user } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { user, waitlistEmails } from "../db/schema";
+import { and, eq } from "drizzle-orm";
 import { domain } from "@/lib/constants";
 
 export const polarClient = new Polar({

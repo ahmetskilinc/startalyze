@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { GalleryVerticalEnd } from "lucide-react";
 import { authClient } from "@/server/auth/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isUserAllowedAction } from "./action";
 
 export function LoginForm() {
   const router = useRouter();
@@ -62,6 +63,13 @@ export function LoginForm() {
   };
 
   const handleCredentialsSignIn = async (values: z.infer<typeof signInSchema>) => {
+    const isUserAllowed = await isUserAllowedAction({ email: values.email });
+
+    if (!isUserAllowed) {
+      toast("You are not allowed brooo");
+      return;
+    }
+
     await authClient.signIn.email(
       { email: values.email, password: values.password },
       {
