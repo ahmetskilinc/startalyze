@@ -87,10 +87,6 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
-  rateLimit: {
-    window: 60,
-    max: 5,
-  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
