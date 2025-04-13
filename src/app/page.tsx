@@ -7,16 +7,18 @@ import { DotPattern } from "@/components/ui/dot-pattern";
 import { Separator } from "@/components/ui/separator";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { ShineBorder } from "@/components/ui/shine-border";
+import { Card, CardContent } from "@/components/ui/card";
 
 const navLinks = [
   {
-    text: "Home",
-    href: "",
-  },
-  { text: "About", href: "#about" },
-  {
     text: "Features",
     href: "#features",
+  },
+  { text: "Pricing", href: "#pricing" },
+  {
+    text: "About",
+    href: "#about",
   },
 ];
 
@@ -60,7 +62,7 @@ export default async function Home() {
                 <div className="w-full max-w-full sm:max-w-lg py-1 flex flex-col gap-4 sm:flex-row"></div>
 
                 <MotionWrapper delay={0.7}>
-                  <div className="mt-8 w-full container mx-auto px-4 sm:px-6">
+                  <div className="md:mt-2 mt-0  w-full container mx-auto px-4 sm:px-6">
                     <HeroVideoDialogDemoTopInBottomOut />
                   </div>
                 </MotionWrapper>
@@ -115,22 +117,29 @@ function AnnouncementPill() {
 
 function HeroVideoDialogDemoTopInBottomOut() {
   return (
-    <div className="relative w-full">
-      <HeroVideoDialog
-        className="block dark:hidden w-full"
-        animationStyle="top-in-bottom-out"
-        videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
-        thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
-        thumbnailAlt="Hero Video"
+    <Card className="relative max-w-7xl overflow-hidden rounded-xl py-1">
+      <ShineBorder
+        borderWidth={1.5}
+        shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]}
       />
-      <HeroVideoDialog
-        className="hidden dark:block w-full"
-        animationStyle="top-in-bottom-out"
-        videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
-        thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
-        thumbnailAlt="Hero Video"
-      />
-    </div>
+      <CardContent className="px-1">
+        <HeroVideoDialog
+          className="block dark:hidden w-full"
+          animationStyle="top-in-bottom-out"
+          videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
+          thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
+          thumbnailAlt="Hero Video"
+        />
+
+        <HeroVideoDialog
+          className="hidden dark:block w-full"
+          animationStyle="top-in-bottom-out"
+          videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
+          thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
+          thumbnailAlt="Hero Video"
+        />
+      </CardContent>
+    </Card>
   );
 }
 
