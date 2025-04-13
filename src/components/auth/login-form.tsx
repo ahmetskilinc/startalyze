@@ -125,11 +125,10 @@ export function SigninForm() {
           </Button>
         </form>
 
-        <div className="relative mt-6 mb-4 text-center text-xs uppercase text-muted-foreground">
-          <span className="bg-background px-2">or continue with</span>
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-muted-foreground/30" />
-          </div>
+        <div className="flex items-center gap-4 mt-6 mb-4 text-xs uppercase text-muted-foreground">
+          <div className="flex-1 border-t border-muted-foreground/30" />
+          <span className="px-2 shrink-0">or continue with</span>
+          <div className="flex-1 border-t border-muted-foreground/30" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
