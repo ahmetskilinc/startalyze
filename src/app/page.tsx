@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ChartNoAxesColumn, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
 import MotionWrapper from "@/components/motion";
 import Link from "next/link";
@@ -7,6 +7,18 @@ import { DotPattern } from "@/components/ui/dot-pattern";
 import { Separator } from "@/components/ui/separator";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+
+const navLinks = [
+  {
+    text: "Home",
+    href: "",
+  },
+  { text: "About", href: "#about" },
+  {
+    text: "Features",
+    href: "#features",
+  },
+];
 
 export default async function Home() {
   return (
@@ -66,7 +78,7 @@ function SiteBanner() {
     <div className="group relative top-0 bg-indigo-600 py-3 text-white transition-all duration-300 md:py-0">
       <div className="flex flex-col items-center justify-center gap-4 px-4 text-center md:h-12 md:flex-row">
         <Link
-          href="/login"
+          href="/signin"
           target="_blank"
           className="inline-flex text-xs leading-normal md:text-sm"
         >
@@ -136,21 +148,21 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden gap-4 sm:flex">
-            <Link href="/" className="text-sm font-medium">
-              Home
-            </Link>
-            <Link href="/about" className="text-sm font-medium">
-              About
-            </Link>
-            <Link href="/features" className="text-sm font-medium">
-              Features
-            </Link>
+            {navLinks?.map((item, idx) => {
+              return (
+                <Link
+                  key={idx}
+                  href={item.href}
+                  className="text-sm font-medium text-foreground/60 hover:text-foreground/80"
+                >
+                  {item.text}
+                </Link>
+              );
+            })}
           </nav>
 
-          <Link href="/signup" target="_blank">
-            <ShimmerButton className="py-1 text-sm px-4 bg-indigo-600">
-              Sign Up
-            </ShimmerButton>
+          <Link href="/signin" target="_blank">
+            <ShimmerButton className="py-1 text-sm px-4">Sign in</ShimmerButton>
           </Link>
         </div>
       </MotionWrapper>

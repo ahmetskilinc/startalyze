@@ -15,11 +15,11 @@ export interface ShimmerButtonProps extends ComponentPropsWithoutRef<"button"> {
 export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
   (
     {
-      shimmerColor = "#ffffff",
-      shimmerSize = "0.05em",
+      shimmerColor = "#A07CFE",
+      shimmerSize = "0.25em",
       shimmerDuration = "3s",
       borderRadius = "100px",
-      background = "rgb(0, 0, 0)",
+      background = "#4F46E5",
       className,
       children,
       ...props

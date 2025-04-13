@@ -51,7 +51,7 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await authClient.signOut();
-      router.push("/login");
+      router.push("/signin");
       toast.success("Logged out successfully");
     } catch (error) {
       console.error(error);

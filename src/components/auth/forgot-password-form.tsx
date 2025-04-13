@@ -77,7 +77,7 @@ export function ForgotPasswordForm() {
             Please check your inbox and follow the instructions.
           </p>
           <Link
-            href="/login"
+            href="/signin"
             className="mt-4 w-full max-w-[200px] inline-flex justify-center rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Return to login
@@ -103,7 +103,7 @@ export function ForgotPasswordForm() {
           Already have an account?
           <br />
           <Link
-            href="/login"
+            href="/signin"
             className="font-medium text-primary underline underline-offset-4 hover:text-primary/80 transition-colors"
           >
             Back to login
