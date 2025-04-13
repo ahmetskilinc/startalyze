@@ -51,7 +51,7 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await authClient.signOut();
-      router.push("/login");
+      router.push("/signin");
       toast.success("Logged out successfully");
     } catch (error) {
       console.error(error);
@@ -93,8 +93,8 @@ export function NavUser() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium flex items-center">
                   {user.name}
-                  <Badge className="bg-blue-500 text-white ml-1 text-[10px]">
-                   {user.plan}
+                  <Badge className="bg-indigo-500 text-white ml-1 text-[10px]">
+                    {user.plan}
                   </Badge>
                 </span>
                 <span className="text-muted-foreground truncate text-xs">
@@ -149,7 +149,7 @@ export function NavUser() {
                 <span>Notifications</span>
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
-            <span className="mt-2 block w-full">
+            {/* <span className="mt-2 block w-full">
               <Tabs defaultValue={theme} className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="dark" onClick={() => setTheme("dark")}>
@@ -178,7 +178,7 @@ export function NavUser() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </span>
+            </span> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 size-4" />

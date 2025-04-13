@@ -10,7 +10,7 @@ export type AIResponseStatus = "ready" | "submitted" | "streaming" | "error";
 
 function AgentAvatar() {
   return (
-    <div className="aspect-square h-6 min-w-6 rounded-full grid leading-none place-items-center select-none mr-3 shadow-lg shadow-blue-600/10 bg-blue-500">
+    <div className="aspect-square h-6 min-w-6 rounded-full grid leading-none place-items-center select-none mr-3 shadow-lg shadow-blue-600/10 bg-indigo-500">
       <Ghost size={13.5} className="text-white" />
     </div>
   );

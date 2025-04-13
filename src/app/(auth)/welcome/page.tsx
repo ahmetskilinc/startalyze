@@ -98,7 +98,7 @@ const OnboardingPage = () => {
         <Card className="rounded-none sm:rounded-lg">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold tracking-tight">
-              Welcome to Startalyzer
+              Welcome to Startalyze
             </CardTitle>
             <CardDescription>
               Let&apos;s set up your account with some basic information to get you
