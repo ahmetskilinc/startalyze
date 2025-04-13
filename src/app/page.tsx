@@ -134,7 +134,7 @@ function HeroVideoDialogDemoTopInBottomOut() {
   );
 }
 
-export function SiteHeader() {
+function SiteHeader() {
   return (
     <header
       className={cn(
