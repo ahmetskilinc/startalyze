@@ -100,7 +100,7 @@ export function NavMain() {
           <SidebarMenuButton
             asChild
             tooltip="New Chat"
-            className="bg-blue-600 hover:bg-blue-700 text-neutral-50 hover:text-neutral-50"
+            className="bg-indigo-600 hover:bg-indigo-700 text-neutral-50 hover:text-neutral-50"
           >
             <Link href="/chat" className="flex items-center gap-2">
               <MessageSquarePlus className="h-4 w-4" />

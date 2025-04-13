@@ -3,7 +3,7 @@ import type { Session } from "@/server/auth";
 import { betterFetch } from "@better-fetch/fetch";
 import { NextResponse, type NextRequest } from "next/server";
 
-const authRoutes = ["/login", "/signup"];
+const authRoutes = ["/signin", "/signup"];
 const passwordRoutes = ["/reset-password", "verify-email", "/forgot-password"];
 const openRoutes = ["/refund-policy", "/privacy-policy", "/terms-and-conditions"];
 
@@ -29,7 +29,7 @@ export default async function authMiddleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 
   if (isOpenRoute) {

@@ -3,7 +3,7 @@
 import { useChat } from "ai/react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { HeaderTitle } from "../header-title";
+import { HeaderTitle } from "../ui/header-title";
 import ChatMessages from "./chat-messages";
 import { ArrowUp } from "lucide-react";
 import { geistSans, spaceGrotesk } from "@/lib/fonts";
@@ -58,7 +58,7 @@ const NewChatPage = () => {
                       disabled={
                         input === "" || input === undefined || status === "submitted"
                       }
-                      className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-blue-200 bg-blue-600 text-white hover:bg-blue-700"
+                      className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-blue-200 bg-indigo-600 text-white hover:bg-indigo-700"
                       style={spaceGrotesk.style}
                     >
                       <ArrowUp />

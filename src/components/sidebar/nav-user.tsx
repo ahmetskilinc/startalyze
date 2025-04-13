@@ -51,7 +51,7 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await authClient.signOut();
-      router.push("/login");
+      router.push("/signin");
       toast.success("Logged out successfully");
     } catch (error) {
       console.error(error);
@@ -93,8 +93,8 @@ export function NavUser() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium flex items-center">
                   {user.name}
-                  <Badge className="bg-blue-500 text-white ml-1 text-[10px]">
-                   {user.plan}
+                  <Badge className="bg-indigo-500 text-white ml-1 text-[10px]">
+                    {user.plan}
                   </Badge>
                 </span>
                 <span className="text-muted-foreground truncate text-xs">
