@@ -48,7 +48,7 @@ export function ForgotPasswordForm() {
               description: ctx.error.message ?? "Something went wrong.",
             });
           },
-        }
+        },
       );
       setIsSuccess(true);
     } finally {
@@ -108,7 +108,10 @@ export function ForgotPasswordForm() {
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleForgetPassword)} className="grid gap-4">
+          <form
+            onSubmit={form.handleSubmit(handleForgetPassword)}
+            className="grid gap-4"
+          >
             <FormField
               control={form.control}
               name="email"
