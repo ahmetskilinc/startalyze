@@ -18,6 +18,7 @@ import { ShineBorder } from "../ui/shine-border";
 import { authClient } from "@/server/auth/client";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import Link from "next/link";
 
 export function SigninForm() {
   const router = useRouter();
@@ -125,6 +126,18 @@ export function SigninForm() {
           </Button>
         </form>
 
+        <div className="mt-4 text-sm text-muted-foreground flex justify-between">
+          <Link
+            href="/forgot-password"
+            className="text-indigo-500 hover:text-indigo-600"
+          >
+            Forgot password?
+          </Link>
+          <Link href="/signup" className="text-indigo-500 hover:text-indigo-600">
+            Sign up
+          </Link>
+        </div>
+
         <div className="flex items-center gap-4 mt-6 mb-4 text-xs uppercase text-muted-foreground">
           <div className="flex-1 border-t border-muted-foreground/30" />
           <span className="px-2 shrink-0">or continue with</span>
@@ -150,6 +163,21 @@ export function SigninForm() {
             <FaGithub className="text-xl" />
             {socialLoading === "github" ? "Redirecting..." : "GitHub"}
           </Button>
+        </div>
+
+        <div className="mt-4 text-xs text-muted-foreground text-center">
+          By signing in, you agree to our{" "}
+          <Link href="/terms" className="text-indigo-500 hover:text-indigo-600">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/privacy-policy"
+            className="text-indigo-500 hover:text-indigo-600"
+          >
+            Privacy Policy
+          </Link>
+          .
         </div>
       </CardContent>
 

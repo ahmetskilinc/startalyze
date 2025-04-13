@@ -1,24 +1,41 @@
 "use client";
 
 import { z } from "zod";
-import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { signUpSchema } from "@/lib/zod";
-import * as F from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authClient } from "@/server/auth/client";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { GalleryVerticalEnd } from "lucide-react";
-import { authClient } from "@/server/auth/client";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ShineBorder } from "@/components/ui/shine-border";
+import * as F from "@/components/ui/form";
+import Link from "next/link";
 
 export function SignupForm() {
   const [pending, setPending] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(
+    null,
+  );
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
@@ -36,8 +53,7 @@ export function SignupForm() {
         onRequest: () => setPending(true),
         onSuccess: async () => {
           toast.success("Account created", {
-            description:
-              "Your account has been created. Check your email for a verification link.",
+            description: "Check your email for a verification link.",
           });
           await authClient.sendVerificationEmail({
             email: values.email,
@@ -45,8 +61,8 @@ export function SignupForm() {
           });
         },
         onError: (ctx) => {
-          toast.error("Something went wrong", {
-            description: ctx.error.message,
+          toast.error("Signup failed", {
+            description: ctx.error?.message ?? "Something went wrong",
           });
         },
       },
@@ -55,133 +71,158 @@ export function SignupForm() {
     setPending(false);
   };
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <Link href="#" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-sm">
-              <GalleryVerticalEnd className="size-5" />
-            </div>
-            <span className="sr-only">Startalyse</span>
-          </Link>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Create your account
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link
-              href="/signin"
-              className="font-medium text-primary underline underline-offset-4 hover:text-primary/80 transition-colors"
-            >
-              Log in
-            </Link>
-          </p>
-        </div>
+  const handleSocialSignup = async (provider: "google" | "github") => {
+    try {
+      setSocialLoading(provider);
+      await authClient.signIn.social(
+        { provider, callbackURL: "/account" },
+        {
+          onError: (ctx) => {
+            toast.error("Social signup failed", {
+              description:
+                ctx.error?.message ?? `Unable to sign up with ${provider}`,
+            });
+          },
+        },
+      );
+    } catch {
+      toast.error("Something went wrong", {
+        description: "Try again later.",
+      });
+    } finally {
+      setSocialLoading(null);
+    }
+  };
 
+  return (
+    <Card className="relative overflow-hidden max-w-[400px] w-full shadow-xl mx-auto">
+      <ShineBorder shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]} />
+
+      <CardHeader>
+        <CardTitle className="text-xl">Sign up</CardTitle>
+        <CardDescription>Create your account to get started</CardDescription>
+      </CardHeader>
+
+      <CardContent>
         <F.Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <F.FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <F.FormItem>
-                      <F.FormLabel>Name</F.FormLabel>
-                      <F.FormControl>
-                        <Input {...field} placeholder="John Doe" />
-                      </F.FormControl>
-                      <F.FormMessage />
-                    </F.FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-2">
-                <F.FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <F.FormItem>
-                      <F.FormLabel>Email</F.FormLabel>
-                      <F.FormControl>
-                        <Input {...field} placeholder="m@example.com" />
-                      </F.FormControl>
-                      <F.FormMessage />
-                    </F.FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-2">
-                <F.FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <F.FormItem>
-                      <F.FormLabel>Password</F.FormLabel>
-                      <F.FormControl>
-                        <Input {...field} type="password" placeholder="••••••••" />
-                      </F.FormControl>
-                      <F.FormMessage />
-                    </F.FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-2">
-                <F.FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <F.FormItem>
-                      <F.FormLabel>Confirm Password</F.FormLabel>
-                      <F.FormControl>
-                        <Input {...field} type="password" placeholder="••••••••" />
-                      </F.FormControl>
-                      <F.FormMessage />
-                    </F.FormItem>
-                  )}
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={pending}>
-                {pending ? "Signing up..." : "Sign Up"}
-              </Button>
-            </div>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <F.FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <F.FormItem>
+                  <F.FormLabel>Name</F.FormLabel>
+                  <F.FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </F.FormControl>
+                  <F.FormMessage />
+                </F.FormItem>
+              )}
+            />
+            <F.FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <F.FormItem>
+                  <F.FormLabel>Email</F.FormLabel>
+                  <F.FormControl>
+                    <Input placeholder="you@example.com" {...field} />
+                  </F.FormControl>
+                  <F.FormMessage />
+                </F.FormItem>
+              )}
+            />
+            <F.FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <F.FormItem>
+                  <F.FormLabel>Password</F.FormLabel>
+                  <F.FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </F.FormControl>
+                  <F.FormMessage />
+                </F.FormItem>
+              )}
+            />
+            {/* <F.FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <F.FormItem>
+                  <F.FormLabel>Confirm Password</F.FormLabel>
+                  <F.FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </F.FormControl>
+                  <F.FormMessage />
+                </F.FormItem>
+              )}
+            /> */}
+            <Button
+              type="submit"
+              className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              disabled={pending}
+            >
+              {pending ? "Creating Account..." : "Create Account"}
+            </Button>
           </form>
         </F.Form>
 
-        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">
-            Or
+        <div className="flex items-center gap-4 mt-6 mb-4 text-xs uppercase text-muted-foreground">
+          <div className="flex-1 border-t border-muted-foreground/30" />
+          <span className="px-2 shrink-0">or continue with</span>
+          <div className="flex-1 border-t border-muted-foreground/30" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Button
+            variant="outline"
+            className="flex items-center cursor-pointer justify-center gap-2"
+            onClick={() => handleSocialSignup("google")}
+            disabled={socialLoading === "google"}
+          >
+            <FcGoogle className="text-xl" />
+            {socialLoading === "google" ? "Redirecting..." : "Google"}
+          </Button>
+          <Button
+            variant="outline"
+            className="flex items-center cursor-pointer justify-center gap-2"
+            onClick={() => handleSocialSignup("github")}
+            disabled={socialLoading === "github"}
+          >
+            <FaGithub className="text-xl" />
+            {socialLoading === "github" ? "Redirecting..." : "GitHub"}
+          </Button>
+        </div>
+
+        <div className="mt-4 text-center">
+          <span className="text-sm">
+            Already have an account?{" "}
+            <Link href="/signin" className="text-indigo-500 hover:underline">
+              Sign in
+            </Link>
           </span>
         </div>
+      </CardContent>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Button variant="outline" className="w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path
-                d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-                fill="currentColor"
-              />
-            </svg>
-            Continue with Apple
-          </Button>
-
-          <Button variant="outline" className="w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path
-                d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                fill="currentColor"
-              />
-            </svg>
-            Continue with Google
-          </Button>
+      <CardFooter className="text-xs text-muted-foreground flex flex-col justify-between items-center">
+        <div className="text-center">
+          <span className="text-xs">
+            By signing up, you agree to our{" "}
+            <Link href="/terms" className="text-indigo-500 hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy-policy" className="text-indigo-500 hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </span>
         </div>
-      </div>
-
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
-        and <Link href="#">Privacy Policy</Link>.
-      </div>
-    </div>
+        <div className="mt-2">
+          © {new Date().getFullYear()} Startalyze. All rights reserved.
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
