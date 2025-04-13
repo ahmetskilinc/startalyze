@@ -13,7 +13,10 @@ import { NavUser } from "@/components/sidebar/nav-user";
 import * as React from "react";
 import { GetProPlanCard } from "@/components/sidebar/get-pro-plan-card";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  proPlan,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { proPlan: boolean }) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -31,7 +34,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <GetProPlanCard />
+        {!proPlan && <GetProPlanCard />}
         <NavUser />
       </SidebarFooter>
     </Sidebar>
