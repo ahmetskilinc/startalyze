@@ -176,9 +176,9 @@ export function ValidationReport({ data }: ValidationReportProps) {
 
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
-      <div className="flex items-baseline gap-2">
+      <div className="">
         <h2 className="text-2xl font-bold">{data.title}</h2>
-        <span className="text-gray-600">- {data.ideaName}</span>
+        <span className="text-gray-600">{data.ideaName}</span>
       </div>
 
       <Accordion type="single" collapsible className="w-full">
