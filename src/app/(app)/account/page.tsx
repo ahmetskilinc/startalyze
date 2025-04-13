@@ -6,7 +6,7 @@ import { auth } from "@/server/auth";
 export default async function PageCustomizationPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   return (
