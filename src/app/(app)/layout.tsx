@@ -1,5 +1,4 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import React from "react";
 import Header from "@/components/ui/header";
@@ -37,9 +36,7 @@ async function ProtectedLayout({
       <AppSidebar proPlan={proPlan} />
       <SidebarInset>
         <Header />
-        <div className="h-full">
-          <ScrollArea className="h-full w-full">{children}</ScrollArea>
-        </div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );

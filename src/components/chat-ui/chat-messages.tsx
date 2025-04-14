@@ -6,6 +6,7 @@ import {
 } from "@/components/chat-ui/chat-bubble";
 import { Message } from "ai/react";
 import { useEffect, useRef } from "react";
+import { ScrollArea } from "../ui/scroll-area";
 
 type Props = {
   messages: Message[];
@@ -24,41 +25,43 @@ const ChatMessages = ({ messages, status }: Props) => {
   }, [messages]);
 
   return (
-    <div className="flex-1">
-      <div className="max-w-[46rem] w-full mx-auto">
-        <div className="flex flex-col space-y-8 pt-7 p-4">
-          {messages.map((msg, index) => {
-            const lastAssistantMsg = messages
-              .filter((m) => m.role === "assistant")
-              .at(-1);
+    <ScrollArea className="h-[calc(100dvh-(201px+64px))]">
+      <div className="flex-1">
+        <div className="max-w-[46rem] w-full mx-auto">
+          <div className="flex flex-col space-y-8 pt-7 p-4">
+            {messages.map((msg, index) => {
+              const lastAssistantMsg = messages
+                .filter((m) => m.role === "assistant")
+                .at(-1);
 
-            if (
-              status === "streaming" &&
-              msg.role === "assistant" &&
-              msg.id === lastAssistantMsg?.id
-            ) {
-              return null;
-            }
+              if (
+                status === "streaming" &&
+                msg.role === "assistant" &&
+                msg.id === lastAssistantMsg?.id
+              ) {
+                return null;
+              }
 
-            return (
-              <div key={index}>
-                {msg.role === "user" && <UserMessage text={msg.content} />}
-                {msg.role === "assistant" && <AgentMessage message={msg} />}
-              </div>
-            );
-          })}
+              return (
+                <div key={index}>
+                  {msg.role === "user" && <UserMessage text={msg.content} />}
+                  {msg.role === "assistant" && <AgentMessage message={msg} />}
+                </div>
+              );
+            })}
 
-          {status === "streaming" && (
-            <AgentMessage
-              message={messages.filter((m) => m.role === "assistant").at(-1)!}
-            />
-          )}
+            {status === "streaming" && (
+              <AgentMessage
+                message={messages.filter((m) => m.role === "assistant").at(-1)!}
+              />
+            )}
 
-          <AgentThinking status={status} />
-          <div ref={messagesEndRef} />
+            <AgentThinking status={status} />
+            <div ref={messagesEndRef} />
+          </div>
         </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 };
 
