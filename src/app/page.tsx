@@ -96,31 +96,31 @@ export default async function Home() {
         <section id="faq"></section>
       </main>
 
-          <div className ="border-t py-6">
-          <div className="container mx-auto px-6 flex justify-between items-center">
-            {/* Left Section: Logo */}
-            <div className="flex items-center">
-              <span className="text-xl font-bold">Startalyze</span>
-            </div>
-
-            {/* Center Section: Copyright */}
-            <div className="text-center">
-              <p className="text-sm">
-                &copy; {new Date().getFullYear()} Startalyze. All Rights Reserved.
-              </p>
-            </div>
-
-            {/* Right Section: Links */}
-            <footer className="flex space-x-6">
-              <Link href="/privacy-policy" className="text-sm hover:underline">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-sm hover:underline">
-                Terms & Conditions
-              </Link>
-            </footer>
+      <div className="border-t py-6">
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          {/* Left Section: Logo */}
+          <div className="flex items-center">
+            <span className="text-xl font-bold">Startalyze</span>
           </div>
+
+          {/* Center Section: Copyright */}
+          <div className="text-center">
+            <p className="text-sm">
+              &copy; {new Date().getFullYear()} Startalyze. All Rights Reserved.
+            </p>
+          </div>
+
+          {/* Right Section: Links */}
+          <footer className="flex space-x-6">
+            <Link href="/privacy-policy" className="text-sm hover:underline">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-sm hover:underline">
+              Terms & Conditions
+            </Link>
+          </footer>
         </div>
+      </div>
     </>
   );
 }
