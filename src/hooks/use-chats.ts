@@ -1,11 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  getChat,
-  getChatMessages,
-  getUserChats,
-  type Chat,
-  type Message,
-} from "@/lib/actions/chat";
+import { getChat, getChatMessages, getUserChats } from "@/lib/actions/chat";
 
 export const useChats = () => {
   return useQuery({

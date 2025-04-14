@@ -6,16 +6,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import * as React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { MessageSquarePlus, Trash, Pencil } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useChats } from "@/hooks/use-chats";
+import { useChats, useChat, useChatMessages } from "@/hooks/use-chats";
 import { deleteChat, type Chat } from "@/lib/actions/chat";
 
 export function NavMain() {
   const pathname = usePathname();
-  const { data: chats = [] } = useChats();
+  const { data: chats = [], refetch: refetchChats } = useChats();
+  const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
+  const { refetch: refetchChat } = useChat(chatToDelete?.id ?? "");
+  const { refetch: refetchMessages } = useChatMessages(chatToDelete?.id ?? "");
 
   const now = new Date();
   const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -63,24 +77,21 @@ export function NavMain() {
                 <span className="truncate">
                   {chat.title || `Chat ${chat.id.slice(0, 8)}`}
                 </span>
-                <div className="absolute right-0 flex gap-2 transform translate-x-8 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100 transition-all duration-200">
-                  <button
+                <div className="absolute right-0 flex gap-2 pr-1 transform translate-x-8 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100 transition-all duration-200">
+                  {/* <button
                     onClick={(e) => {
-                      e.preventDefault(); /* Add edit handler */
+                      e.preventDefault();
                     }}
                     className="hover:text-blue-600"
                   >
                     <Pencil className="h-4 w-4" />
-                  </button>
+                  </button> */}
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      deleteChat(chat.id);
-                      if (pathname === `/chat/${chat.id}`) {
-                        redirect(`/chat`);
-                      }
+                      setChatToDelete(chat);
                     }}
-                    className="hover:text-red-600"
+                    className="hover:text-red-600 cursor-pointer hover:bg-red-100 transition-colors p-1 rounded-md"
                   >
                     <Trash className="h-4 w-4" />
                   </button>
@@ -94,25 +105,66 @@ export function NavMain() {
   };
 
   return (
-    <SidebarGroup>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            asChild
-            tooltip="New Chat"
-            className="bg-indigo-600 hover:bg-indigo-700 text-neutral-50 hover:text-neutral-50"
-          >
-            <Link href="/chat" className="flex items-center gap-2">
-              <MessageSquarePlus className="h-4 w-4" />
-              <span>New Chat</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+    <>
+      <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className={cn(
+                pathname === "/chat" ? "bg-accent text-accent-foreground" : "",
+              )}
+            >
+              <Link href="/chat" className="flex items-center gap-2">
+                <MessageSquarePlus className="h-4 w-4" />
+                <span>New Chat</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          {renderChatGroup(groupedChats.lastDay, "Last 24 Hours")}
+          {renderChatGroup(groupedChats.lastWeek, "Last 7 Days")}
+          {renderChatGroup(groupedChats.previous, "Previous")}
+        </SidebarMenu>
+      </SidebarGroup>
 
-        {renderChatGroup(groupedChats.lastDay, "Last day")}
-        {renderChatGroup(groupedChats.lastWeek, "Last 7 days")}
-        {renderChatGroup(groupedChats.previous, "Previous")}
-      </SidebarMenu>
-    </SidebarGroup>
+      <Dialog
+        open={chatToDelete !== null}
+        onOpenChange={() => setChatToDelete(null)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Chat</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this chat? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setChatToDelete(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                if (chatToDelete) {
+                  await deleteChat(chatToDelete.id);
+                  await Promise.all([
+                    refetchChats(),
+                    refetchChat(),
+                    refetchMessages(),
+                  ]);
+                  setChatToDelete(null);
+                  if (pathname === `/chat/${chatToDelete.id}`) {
+                    redirect(`/chat`);
+                  }
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

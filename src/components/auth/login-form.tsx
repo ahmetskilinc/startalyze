@@ -19,6 +19,7 @@ import { authClient } from "@/server/auth/client";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import { UI_CUSTOM } from "@/lib/constants";
 
 export function SigninForm() {
   const router = useRouter();
@@ -81,8 +82,7 @@ export function SigninForm() {
 
   return (
     <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
-      <ShineBorder shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]} />
-
+      <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Sign in</CardTitle>
         <CardDescription>
