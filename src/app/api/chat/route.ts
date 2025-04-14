@@ -42,6 +42,10 @@ export async function POST(req: Request) {
 
   const previousMessages = await getChatMessages(chat.id);
 
+  if (chat.deleted) {
+    return Response.json({ message: "Chat not found" }, { status: 404 });
+  }
+
   if (!previousMessages) {
     return redirect("/chat");
   }
@@ -66,34 +70,36 @@ export async function POST(req: Request) {
     console.log("Duplicate message detected, skipping DB save.");
   }
 
-  return createDataStreamResponse({
-    execute: (dataStream) => {
-      const result = streamText({
-        model: aiProvider.languageModel("core-work"),
-        system: VALIDATE_STARTUP_IDEA_PROMPT,
-        messages: [
-          {
-            role: "user",
-            content: userMessage,
-          },
-        ],
-        experimental_transform: smoothStream({ chunking: "word" }),
-        onFinish: async ({ response }) => {
-          const newMessage = appendResponseMessages({
-            messages: previousMessages,
-            responseMessages: response.messages,
-          }).at(-1)!;
-          await saveMessage(chatId, newMessage.content, "assistant");
+  try {
+    const response = await aiProvider.languageModel("core-work").doGenerate({
+      inputFormat: "messages",
+      mode: { type: "regular" },
+      prompt: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: VALIDATE_STARTUP_IDEA_PROMPT + "\n\n" + userMessage,
+            },
+          ],
         },
-      });
-      result.consumeStream();
-      result.mergeIntoDataStream(dataStream, {
-        sendReasoning: true,
-      });
-    },
-    onError: (error) => {
-      console.log(error);
-      return "Oops, an error occured!";
-    },
-  });
+      ],
+    });
+
+    if (!response.text) {
+      console.log("No response text received");
+      return Response.json({ error: "An error occurred" }, { status: 500 });
+    }
+
+    await saveMessage(chatId, response.text, "assistant");
+
+    return Response.json({
+      content: response.text,
+      id: chatId,
+    });
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error: "An error occurred" }, { status: 500 });
+  }
 }

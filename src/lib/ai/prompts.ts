@@ -51,8 +51,14 @@ Analyze the following startup idea based on publicly available information from 
     * Assess the impact of market uncertainties and regulatory changes.
     * Research potential legal and ethical considerations.
     * Provide links to related risk assessment resources.
+    *
+6.  **Tech Stack:**
+    * Suggest a list of technologies and tools that could be used to build the startup.
+    * Provide a brief description of each technology and its potential use in the startup.
+    * Suggest different technolgies and their benefits and drawbacks.
+    * Suggest a tech stack that is a combination of the best technologies.
 
-6.  **Overall Validation:**
+7.  **Overall Validation:**
     * Provide a concise summary of the strengths and weaknesses of the startup idea.
     * Offer recommendations for improvement and further research.
     * Provide a conclusion regarding the overall viability of the idea.
@@ -182,6 +188,14 @@ Return the analysis in a structured JSON format that can be easily parsed for UI
       ]
     },
     {
+      "id": "tech-stack",
+      "title": "Suggested tech stack",
+      "type": "tech-stack",
+      "items": {
+        "tech-stack": [{"name": "Tech 1", "version": "1.0.0", "description": "Description", "link": "https://example.com", "reason": "Reason", "strengths": ["Strength 1", "Strength 2"], "weaknesses": ["Weakness 1", "Weakness 2"]}, {"name": "Tech 2", "version": "1.0.0", "description": "Description", "link": "https://example.com", "reason": "Reason", "strengths": ["Strength 1", "Strength 2"], "weaknesses": ["Weakness 1", "Weakness 2"]}],
+      }
+    },
+    {
       "id": "validation",
       "title": "Overall Validation",
       "type": "summary",
@@ -192,7 +206,7 @@ Return the analysis in a structured JSON format that can be easily parsed for UI
         "weaknesses": ["Weakness 1", "Weakness 2"],
         "recommendations": ["Recommendation 1", "Recommendation 2"]
       }
-    }
+    },
   ]
 }
 \`\`\`

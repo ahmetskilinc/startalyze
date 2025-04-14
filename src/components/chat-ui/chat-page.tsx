@@ -10,6 +10,7 @@ import { HeaderTitle } from "../ui/header-title";
 import ChatMessages from "./chat-messages";
 import Link from "next/link";
 import { useChat, useChatMessages } from "@/hooks/use-chats";
+import { redirect } from "next/navigation";
 
 const FormSchema = z.object({
   prompt: z.string(),
@@ -20,6 +21,10 @@ const ChatPage = ({
   initialMessages,
 }: { chatId: string; initialMessages: Message[] }) => {
   const { data: chat, error: chatError } = useChat(chatId);
+
+  if (chat?.deleted) {
+    return redirect("/chat");
+  }
 
   // TODO: handle caching on server side :)
   const { error: messagesError } = useChatMessages(chatId);

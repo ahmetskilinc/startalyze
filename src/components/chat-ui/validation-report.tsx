@@ -174,6 +174,29 @@ export function ValidationReport({ data }: ValidationReportProps) {
     </Card>
   );
 
+  const renderTechStack = (items: any) => (
+    <Card className="mt-4">
+      <CardContent>
+        <div className="space-y-4">
+          {items["tech-stack"].map((tech: any, i: number) => (
+            <div key={i} className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">{tech.name}</span>
+                <span className="text-sm">{tech.version}</span>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {tech.description}
+              </p>
+              <a href={tech.link} target="_blank" rel="noopener noreferrer">
+                {tech.link}
+              </a>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
       <div className="">
@@ -201,6 +224,7 @@ export function ValidationReport({ data }: ValidationReportProps) {
               {section.type === "table" && renderTable(section.items)}
               {section.type === "matrix" && renderMatrix(section.items)}
               {section.type === "summary" && renderSummary(section.items)}
+              {section.type === "tech-stack" && renderTechStack(section.items)}
             </AccordionContent>
           </AccordionItem>
         ))}
