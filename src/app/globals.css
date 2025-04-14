@@ -131,6 +131,10 @@
   }
 }
 
+html {
+  scroll-padding-top: 4rem;
+}
+
 :root {
   --radius: 0.5rem;
   --background: oklch(1 0 0);

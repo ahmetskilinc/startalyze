@@ -49,22 +49,17 @@ export const features = [
   },
 ];
 export const navLinks = [
-  {
-    text: "Features",
-    href: "#features",
-  },
-  { text: "Pricing", href: "#pricing" },
-  {
-    text: "About",
-    href: "#about",
-  },
+  { text: "Home", href: "hero" },
+  { text: "Features", href: "features" },
+  { text: "Try It", href: "cta" },
+  { text: "FAQ", href: "faq" },
 ];
 
 export const UI_CUSTOM = {
   shine_color: ["#5b0fff", "#3c57ef", "#3b76ff", "#3b24c1", "#d2e2ff"],
   shimmer_btn: {
     shimmerColor: "#fcfaff",
-    shimmerSize: "0.25em",
+    shimmerSize: "0.15em",
     shimmerDuration: "3s",
     borderRadius: "100px",
     background: "#4f39f6",
