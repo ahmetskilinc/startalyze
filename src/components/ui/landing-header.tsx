@@ -41,13 +41,19 @@ export function LandingHeader({ session }: { session?: Session }) {
 
           {session ? (
             <Link href="/chat">
-              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+              <ShimmerButton
+                {...UI_CUSTOM.shimmer_btn}
+                className="py-1 text-sm px-4"
+              >
                 Chat now
               </ShimmerButton>
             </Link>
           ) : (
             <Link href="/signin">
-              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+              <ShimmerButton
+                {...UI_CUSTOM.shimmer_btn}
+                className="py-1 text-sm px-4"
+              >
                 Sign in
               </ShimmerButton>
             </Link>
