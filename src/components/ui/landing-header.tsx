@@ -4,8 +4,9 @@ import MotionWrapper from "../motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ShimmerButton } from "./shimmer-button";
+import { Session } from "better-auth";
 
-export function LandingHeader() {
+export function LandingHeader({ session }: { session?: Session }) {
   const scrollHandler = (section: string) => {
     if (!section) return;
     const element = document.getElementById(section);
@@ -38,11 +39,19 @@ export function LandingHeader() {
             })}
           </nav>
 
-          <Link href="/signin" target="_blank">
-            <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
-              Sign in
-            </ShimmerButton>
-          </Link>
+          {session ? (
+            <Link href="/chat">
+              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+                Chat now
+              </ShimmerButton>
+            </Link>
+          ) : (
+            <Link href="/signin">
+              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+                Sign in
+              </ShimmerButton>
+            </Link>
+          )}
         </div>
       </MotionWrapper>
     </header>

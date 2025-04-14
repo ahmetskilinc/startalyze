@@ -20,12 +20,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { auth } from "@/server/auth";
+import { headers } from "next/headers";
 
 export default async function Home() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
   return (
     <>
       <SiteBanner />
-      <LandingHeader />
+      <LandingHeader session={session?.session} />
       <main className="space-y-12 pb-16">
         {/* Hero Section */}
         <section id="hero" className="relative overflow-hidden">
