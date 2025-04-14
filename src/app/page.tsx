@@ -11,6 +11,7 @@ import { ShineBorder } from "@/components/ui/shine-border";
 import { Card, CardContent } from "@/components/ui/card";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { navLinks, features, UI_CUSTOM } from "@/lib/constants";
+import { Globe } from "@/components/ui/globe";
 
 export default async function Home() {
   return (
@@ -66,6 +67,27 @@ export default async function Home() {
       </section>
       <section id="features">
         <HoverEffect className="container mx-auto px-4" items={features} />
+      </section>
+
+      <section className="py-12" id="cta">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="relative flex flex-col lg:flex-row items-center justify-center overflow-hidden rounded-lg border bg-background px-6 sm:px-10 md:px-20 lg:px-40 pt-8 pb-32 sm:pb-40 md:pb-60">
+            <Link
+              href="/signup"
+              target="_blank"
+              className="self-end mb-4 lg:absolute lg:top-8 lg:right-8 bg-black text-white py-2 px-4 sm:px-5 md:px-6 rounded-lg text-sm sm:text-base transition-all z-10"
+            >
+              Unlock Trends
+            </Link>
+
+            <span className="pointer-events-none whitespace-nowrap bg-gradient-to-b from-indigo-500 to-indigo-700/80 bg-clip-text text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-tight text-transparent dark:from-indigo-200 dark:to-indigo-800/10">
+              Explore Market Trends
+            </span>
+
+            <Globe className="top-28 mt-5" />
+            <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(75,0,130,0.2),rgba(255,255,255,0))]" />
+          </div>
+        </div>
       </section>
     </main>
   );
