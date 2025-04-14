@@ -13,6 +13,13 @@ import { features, UI_CUSTOM } from "@/lib/constants";
 import { Globe } from "@/components/ui/globe";
 import { LandingHeader } from "@/components/ui/landing-header";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { TweetCard } from "@/components/ui/tweet-card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default async function Home() {
   return (
@@ -68,12 +75,12 @@ export default async function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features">
+        <section id="features" className="md:py-6">
           <HoverEffect className="container mx-auto px-4" items={features} />
         </section>
 
         {/* CTA Section */}
-        <section className="py-" id="cta">
+        <section className="md:py-6" id="cta">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="relative flex flex-col lg:flex-row items-center justify-center overflow-hidden rounded-lg border bg-background px-6 sm:px-10 md:px-20 lg:px-40 pt-8 pb-32 sm:pb-40 md:pb-60">
               <Link href={"/signup"} target="_blank">
@@ -93,24 +100,106 @@ export default async function Home() {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq"></section>
+        <section id="faq" className="py-6">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col lg:flex-row items-center lg:space-x-8 space-y-6 lg:space-y-0">
+              <div className="w-full lg:w-3/4">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>What does Startalyze do?</AccordionTrigger>
+                    <AccordionContent>
+                      We allow you to paste in your startup idea. We provide similar
+                      products, market data, and offer a comprehensive SWOT analysis,
+                      user personas, and a go-to-market plan to guide you.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>
+                      How does the validator analyze the market?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      The validator scrapes publicly available data, including
+                      competitor products and market trends, to generate insights
+                      about the potential of your startup idea in the current market.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>
+                      Is the SWOT analysis customizable?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Yes, the SWOT analysis is automatically generated based on the
+                      market data and your idea. However, you can adjust it manually
+                      to better fit your specific goals and vision.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger>
+                      Can I validate multiple ideas at once?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Currently, Startalyze focuses on one idea at a time to provide
+                      a deep, detailed analysis. However, multi-idea support is on
+                      our roadmap.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger>
+                      Do I need to sign up to use Startalyze?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Yes, signup is required to access the validator and save your
+                      analysis results. It helps us provide a personalized experience
+                      and store your data securely.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="item-6">
+                    <AccordionTrigger>
+                      How accurate is the analysis provided by Startalyze?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      While we use up-to-date data and proven frameworks like SWOT
+                      and persona modeling, the accuracy depends on the specificity
+                      of your input and the availability of market data. It’s meant
+                      to guide, not guarantee outcomes.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-7">
+                    <AccordionTrigger>
+                      Can I export or share the analysis reports?
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Yes, once your analysis is complete, you can export it as a PDF
+                      or share a private link with collaborators or investors for
+                      easy access and review.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+              <div className="w-full lg:w-2/4">
+                <TweetCard id="1909009715880681801" />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
+      {/*Footer */}
       <div className="border-t py-6">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          {/* Left Section: Logo */}
           <div className="flex items-center">
             <span className="text-xl font-bold">Startalyze</span>
           </div>
-
-          {/* Center Section: Copyright */}
           <div className="text-center">
             <p className="text-sm">
               &copy; {new Date().getFullYear()} Startalyze. All Rights Reserved.
             </p>
           </div>
-
-          {/* Right Section: Links */}
           <footer className="flex space-x-6">
             <Link href="/privacy-policy" className="text-sm hover:underline">
               Privacy Policy
