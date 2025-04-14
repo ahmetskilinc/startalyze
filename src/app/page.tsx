@@ -55,7 +55,7 @@ export default async function Home() {
                 <div className="w-full max-w-full sm:max-w-lg py-1 flex flex-col gap-4 sm:flex-row"></div>
 
                 <MotionWrapper delay={0.7}>
-                  <div className="md:mt-2 mt-0 w-full container mx-auto px-6">
+                  <div className="md:mt-2 mt-0 w-full container mx-auto px-6 z-10">
                     <HeroVideoDialogDemoTopInBottomOut />
                   </div>
                 </MotionWrapper>
@@ -118,7 +118,7 @@ function HeroVideoDialogDemoTopInBottomOut() {
 
       <CardContent className="px-1">
         <HeroVideoDialog
-          className="block dark:hidden w-full"
+          className="block dark:hidden w-full z-50"
           animationStyle="top-in-bottom-out"
           videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
           thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
