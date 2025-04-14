@@ -12,12 +12,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { navLinks, features, UI_CUSTOM } from "@/lib/constants";
 import { Globe } from "@/components/ui/globe";
+import { type Session } from "better-auth";
+import { auth } from "@/server/auth";
+import { headers } from "next/headers";
 
 export default async function Home() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
   return (
     <main>
       <SiteBanner />
-      <SiteHeader />
+      <SiteHeader session={session?.session} />
       <section id="hero" className="relative overflow-hidden">
         <DotPattern className="absolute inset-0 z-0 opacity-40" />
         <div className="relative z-10 h-full py-5 md:py-6">
@@ -159,7 +164,7 @@ function HeroVideoDialogDemoTopInBottomOut() {
   );
 }
 
-function SiteHeader() {
+function SiteHeader({ session }: { session?: Session }) {
   return (
     <header
       className={cn(
@@ -186,11 +191,25 @@ function SiteHeader() {
             })}
           </nav>
 
-          <Link href="/signin" target="_blank">
-            <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
-              Sign in
-            </ShimmerButton>
-          </Link>
+          {session ? (
+            <Link href="/chat">
+              <ShimmerButton
+                {...UI_CUSTOM.shimmer_btn}
+                className="py-1 text-sm px-4"
+              >
+                Chat now
+              </ShimmerButton>
+            </Link>
+          ) : (
+            <Link href="/signin">
+              <ShimmerButton
+                {...UI_CUSTOM.shimmer_btn}
+                className="py-1 text-sm px-4"
+              >
+                Sign in
+              </ShimmerButton>
+            </Link>
+          )}
         </div>
       </MotionWrapper>
     </header>
