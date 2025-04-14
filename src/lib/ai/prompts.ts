@@ -192,7 +192,126 @@ Return the analysis in a structured JSON format that can be easily parsed for UI
       "title": "Suggested tech stack",
       "type": "tech-stack",
       "items": {
-        "tech-stack": [{"name": "Tech 1", "version": "1.0.0", "description": "Description", "link": "https://example.com", "reason": "Reason", "strengths": ["Strength 1", "Strength 2"], "weaknesses": ["Weakness 1", "Weakness 2"]}, {"name": "Tech 2", "version": "1.0.0", "description": "Description", "link": "https://example.com", "reason": "Reason", "strengths": ["Strength 1", "Strength 2"], "weaknesses": ["Weakness 1", "Weakness 2"]}],
+        "frontend": [
+          {
+            "name": "Next.js",
+            "version": "14.0.0",
+            "description": "React framework for production-grade applications",
+            "link": "https://nextjs.org",
+            "reason": "Excellent developer experience, built-in routing, and server-side rendering",
+            "strengths": ["Server-side rendering", "Great performance", "Rich ecosystem"],
+            "weaknesses": ["Learning curve", "Opinionated structure"]
+          },
+          {
+            "name": "TailwindCSS",
+            "version": "3.4.0",
+            "description": "Utility-first CSS framework",
+            "link": "https://tailwindcss.com",
+            "reason": "Rapid UI development with minimal CSS",
+            "strengths": ["Highly customizable", "No unused CSS"],
+            "weaknesses": ["HTML can become verbose", "Initial learning curve"]
+          }
+        ],
+        "backend": [
+          {
+            "name": "Node.js",
+            "version": "20.0.0",
+            "description": "JavaScript runtime built on Chrome's V8 engine",
+            "link": "https://nodejs.org",
+            "reason": "Large ecosystem and same language as frontend",
+            "strengths": ["Non-blocking I/O", "Huge package ecosystem"],
+            "weaknesses": ["CPU-intensive tasks", "Callback complexity"]
+          },
+          {
+            "name": "Go",
+            "version": "1.22",
+            "description": "Statically typed, compiled language",
+            "link": "https://go.dev",
+            "reason": "High performance and excellent concurrency",
+            "strengths": ["Fast execution", "Built-in concurrency"],
+            "weaknesses": ["Verbose error handling", "Limited generics"]
+          }
+        ],
+        "database": [
+          {
+            "name": "PostgreSQL",
+            "version": "16",
+            "description": "Advanced open-source relational database",
+            "link": "https://www.postgresql.org",
+            "reason": "Robust, reliable, and feature-rich",
+            "strengths": ["ACID compliance", "Advanced features"],
+            "weaknesses": ["Complex setup", "Resource intensive"]
+          },
+          {
+            "name": "MongoDB",
+            "version": "7.0",
+            "description": "Document-oriented NoSQL database",
+            "link": "https://www.mongodb.com",
+            "reason": "Flexible schema and horizontal scaling",
+            "strengths": ["Schema flexibility", "Horizontal scaling"],
+            "weaknesses": ["No joins", "Higher storage requirements"]
+          }
+        ],
+        "authentication": [
+          {
+            "name": "Auth.js",
+            "version": "5.0.0",
+            "description": "Authentication for web applications",
+            "link": "https://authjs.dev",
+            "reason": "Easy to implement, supports multiple providers",
+            "strengths": ["Multiple providers", "Easy integration"],
+            "weaknesses": ["Limited customization", "Documentation gaps"]
+          },
+          {
+            "name": "Keycloak",
+            "version": "23.0.0",
+            "description": "Open source Identity and Access Management",
+            "link": "https://www.keycloak.org",
+            "reason": "Enterprise-grade security features",
+            "strengths": ["Enterprise features", "Self-hosted"],
+            "weaknesses": ["Complex setup", "Resource heavy"]
+          }
+        ],
+        "middleware": [
+          {
+            "name": "Redis",
+            "version": "7.2",
+            "description": "In-memory data structure store",
+            "link": "https://redis.io",
+            "reason": "Fast caching and pub/sub capabilities",
+            "strengths": ["High performance", "Versatile use cases"],
+            "weaknesses": ["Memory limited", "Complex cluster setup"]
+          },
+          {
+            "name": "RabbitMQ",
+            "version": "3.12",
+            "description": "Message broker and queue manager",
+            "link": "https://www.rabbitmq.com",
+            "reason": "Reliable message queuing and routing",
+            "strengths": ["Message persistence", "Routing flexibility"],
+            "weaknesses": ["Learning curve", "Resource intensive"]
+          }
+        ],
+        "deployment": [
+          {
+            "name": "Docker",
+            "version": "25.0",
+            "description": "Container platform",
+            "link": "https://www.docker.com",
+            "reason": "Consistent environments and easy scaling",
+            "strengths": ["Isolation", "Reproducibility"],
+            "weaknesses": ["Image size", "Performance overhead"]
+          },
+          {
+            "name": "Kubernetes",
+            "version": "1.29",
+            "description": "Container orchestration platform",
+            "link": "https://kubernetes.io",
+            "reason": "Advanced container orchestration and scaling",
+            "strengths": ["Auto-scaling", "Self-healing"],
+            "weaknesses": ["Complexity", "Resource overhead"]
+          }
+        ]
       }
     },
     {

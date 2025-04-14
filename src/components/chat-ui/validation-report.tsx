@@ -174,28 +174,148 @@ export function ValidationReport({ data }: ValidationReportProps) {
     </Card>
   );
 
-  const renderTechStack = (items: any) => (
-    <Card className="mt-4">
-      <CardContent>
-        <div className="space-y-4">
-          {items["tech-stack"].map((tech: any, i: number) => (
-            <div key={i} className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">{tech.name}</span>
-                <span className="text-sm">{tech.version}</span>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {tech.description}
-              </p>
-              <a href={tech.link} target="_blank" rel="noopener noreferrer">
-                {tech.link}
-              </a>
+  interface TechItem {
+    name: string;
+    version: string;
+    description: string;
+    link: string;
+    reason?: string;
+    strengths?: string[];
+    weaknesses?: string[];
+  }
+
+  type TechStackItems =
+    | {
+        [key: string]: TechItem[];
+      }
+    | {
+        "tech-stack": TechItem[];
+      };
+
+  const renderTechStack = (items: TechStackItems) => {
+    // If the items still use the old "tech-stack" format, handle it
+    if ("tech-stack" in items && items["tech-stack"]) {
+      return (
+        <Card className="mt-4">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {items["tech-stack"].map((tech: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{tech.name}</span>
+                      <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                        v{tech.version}
+                      </span>
+                    </div>
+                    <a
+                      href={tech.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Documentation →
+                    </a>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    {tech.description}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
+          </CardContent>
+        </Card>
+      );
+    }
+
+    // Handle the new categorized format
+    return (
+      <div className="space-y-6">
+        {Object.entries(items).map(
+          ([category, techs]) =>
+            // Only render if techs is an array and not empty
+            Array.isArray(techs) &&
+            techs.length > 0 && (
+              <Card key={category} className="overflow-hidden">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold capitalize mb-4">
+                    {category}
+                  </h3>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {Array.isArray(techs) &&
+                      techs.map((tech: any, i: number) => (
+                        <div
+                          key={i}
+                          className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">{tech.name}</span>
+                              <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                                v{tech.version}
+                              </span>
+                            </div>
+                            <a
+                              href={tech.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-primary hover:underline"
+                            >
+                              Documentation →
+                            </a>
+                          </div>
+
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {tech.description}
+                          </p>
+
+                          <div className="text-sm">
+                            <p className="font-medium mb-1">Why use it:</p>
+                            <p className="text-muted-foreground mb-3">
+                              {tech.reason}
+                            </p>
+
+                            <div className="space-y-2">
+                              <div>
+                                <p className="font-medium text-green-600 dark:text-green-400 mb-1">
+                                  Strengths:
+                                </p>
+                                <ul className="list-disc list-inside text-muted-foreground">
+                                  {tech.strengths.map(
+                                    (strength: string, j: number) => (
+                                      <li key={j}>{strength}</li>
+                                    ),
+                                  )}
+                                </ul>
+                              </div>
+
+                              <div>
+                                <p className="font-medium text-red-600 dark:text-red-400 mb-1">
+                                  Considerations:
+                                </p>
+                                <ul className="list-disc list-inside text-muted-foreground">
+                                  {tech.weaknesses.map(
+                                    (weakness: string, j: number) => (
+                                      <li key={j}>{weakness}</li>
+                                    ),
+                                  )}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ),
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
@@ -224,7 +344,8 @@ export function ValidationReport({ data }: ValidationReportProps) {
               {section.type === "table" && renderTable(section.items)}
               {section.type === "matrix" && renderMatrix(section.items)}
               {section.type === "summary" && renderSummary(section.items)}
-              {section.type === "tech-stack" && renderTechStack(section.items)}
+              {section.type === "tech-stack" &&
+                renderTechStack(section.items as unknown as TechStackItems)}
             </AccordionContent>
           </AccordionItem>
         ))}
