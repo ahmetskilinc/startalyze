@@ -9,18 +9,8 @@ import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { Card, CardContent } from "@/components/ui/card";
-
-const navLinks = [
-  {
-    text: "Features",
-    href: "#features",
-  },
-  { text: "Pricing", href: "#pricing" },
-  {
-    text: "About",
-    href: "#about",
-  },
-];
+import { HoverEffect } from "@/components/ui/card-hover-effect";
+import { navLinks, features, UI_CUSTOM } from "@/lib/constants";
 
 export default async function Home() {
   return (
@@ -39,11 +29,14 @@ export default async function Home() {
                     className={cn(
                       "text-black",
                       "relative max-w-4xl px-4 py-2 text-balance font-semibold tracking-tight",
-                      "text-4xl sm:text-6xl md:text-7xl",
+                      "text-3xl sm:text-6xl md:text-7xl",
                     )}
                   >
                     <span className="whitespace-nowrap">
-                      <AuroraText>Validate</AuroraText> before you create.
+                      <AuroraText colors={UI_CUSTOM.aurora_text.color}>
+                        Validate
+                      </AuroraText>{" "}
+                      before you create.
                     </span>
                     <br />
                     Launch with confidence.
@@ -62,7 +55,7 @@ export default async function Home() {
                 <div className="w-full max-w-full sm:max-w-lg py-1 flex flex-col gap-4 sm:flex-row"></div>
 
                 <MotionWrapper delay={0.7}>
-                  <div className="md:mt-2 mt-0  w-full container mx-auto px-4 sm:px-6">
+                  <div className="md:mt-2 mt-0 w-full container mx-auto px-6">
                     <HeroVideoDialogDemoTopInBottomOut />
                   </div>
                 </MotionWrapper>
@@ -70,6 +63,9 @@ export default async function Home() {
             </div>
           </div>
         </div>
+      </section>
+      <section id="features">
+        <HoverEffect className="container mx-auto px-4" items={features} />
       </section>
     </main>
   );
@@ -118,10 +114,8 @@ function AnnouncementPill() {
 function HeroVideoDialogDemoTopInBottomOut() {
   return (
     <Card className="relative max-w-7xl overflow-hidden rounded-xl py-1">
-      <ShineBorder
-        borderWidth={1.5}
-        shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]}
-      />
+      <ShineBorder shineColor={UI_CUSTOM.shine_color} borderWidth={1.5} />
+
       <CardContent className="px-1">
         <HeroVideoDialog
           className="block dark:hidden w-full"
@@ -151,9 +145,9 @@ function SiteHeader() {
       )}
     >
       <MotionWrapper delay={0.2}>
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <Link href="/" className="flex items-center">
-            <span className="ml-2 text-xl font-bold">Startalyze</span>
+            <span className="text-xl font-bold">Startalyze</span>
           </Link>
 
           <nav className="hidden gap-4 sm:flex">
@@ -171,7 +165,9 @@ function SiteHeader() {
           </nav>
 
           <Link href="/signin" target="_blank">
-            <ShimmerButton className="py-1 text-sm px-4">Sign in</ShimmerButton>
+            <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+              Sign in
+            </ShimmerButton>
           </Link>
         </div>
       </MotionWrapper>

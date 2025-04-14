@@ -43,6 +43,7 @@
     "clsx": "^2.1.1",
     "cobe": "^0.6.3",
     "drizzle-orm": "^0.41.0",
+    "framer-motion": "^12.6.5",
     "hono": "^4.7.6",
     "jstack": "1.1.1",
     "lucide-react": "^0.487.0",

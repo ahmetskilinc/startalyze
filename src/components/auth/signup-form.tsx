@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { ShineBorder } from "@/components/ui/shine-border";
 import * as F from "@/components/ui/form";
 import Link from "next/link";
+import { UI_CUSTOM } from "@/lib/constants";
 
 export function SignupForm() {
   const [pending, setPending] = useState(false);
@@ -96,8 +97,7 @@ export function SignupForm() {
 
   return (
     <Card className="relative overflow-hidden max-w-[400px] w-full shadow-xl mx-auto">
-      <ShineBorder shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]} />
-
+      <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Sign up</CardTitle>
         <CardDescription>Create your account to get started</CardDescription>
