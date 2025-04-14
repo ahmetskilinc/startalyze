@@ -27,6 +27,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ShineBorder } from "../ui/shine-border";
+import { UI_CUSTOM } from "@/lib/constants";
 
 export function ForgotPasswordForm() {
   const [pendingForgetPassword, setPendingForgetPassword] = useState(false);
@@ -59,7 +60,7 @@ export function ForgotPasswordForm() {
   if (isSuccess) {
     return (
       <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
-        <ShineBorder shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]} />
+        <ShineBorder shineColor={UI_CUSTOM.shine_color} />
         <CardContent className="pt-6 pb-10 flex flex-col items-center text-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
             <svg
@@ -97,8 +98,7 @@ export function ForgotPasswordForm() {
 
   return (
     <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
-      <ShineBorder shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]} />
-
+      <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Forgot Password</CardTitle>
         <CardDescription>

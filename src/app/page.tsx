@@ -9,18 +9,9 @@ import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { Card, CardContent } from "@/components/ui/card";
-
-const navLinks = [
-  {
-    text: "Features",
-    href: "#features",
-  },
-  { text: "Pricing", href: "#pricing" },
-  {
-    text: "About",
-    href: "#about",
-  },
-];
+import { HoverEffect } from "@/components/ui/card-hover-effect";
+import { navLinks, features, UI_CUSTOM } from "@/lib/constants";
+import { Globe } from "@/components/ui/globe";
 
 export default async function Home() {
   return (
@@ -39,11 +30,14 @@ export default async function Home() {
                     className={cn(
                       "text-black",
                       "relative max-w-4xl px-4 py-2 text-balance font-semibold tracking-tight",
-                      "text-4xl sm:text-6xl md:text-7xl",
+                      "text-3xl sm:text-6xl md:text-7xl",
                     )}
                   >
                     <span className="whitespace-nowrap">
-                      <AuroraText>Validate</AuroraText> before you create.
+                      <AuroraText colors={UI_CUSTOM.aurora_text.color}>
+                        Validate
+                      </AuroraText>{" "}
+                      before you create.
                     </span>
                     <br />
                     Launch with confidence.
@@ -62,12 +56,36 @@ export default async function Home() {
                 <div className="w-full max-w-full sm:max-w-lg py-1 flex flex-col gap-4 sm:flex-row"></div>
 
                 <MotionWrapper delay={0.7}>
-                  <div className="md:mt-2 mt-0  w-full container mx-auto px-4 sm:px-6">
+                  <div className="md:mt-2 mt-0 w-full container mx-auto px-6 z-10">
                     <HeroVideoDialogDemoTopInBottomOut />
                   </div>
                 </MotionWrapper>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section id="features">
+        <HoverEffect className="container mx-auto px-4" items={features} />
+      </section>
+
+      <section className="py-12" id="cta">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="relative flex flex-col lg:flex-row items-center justify-center overflow-hidden rounded-lg border bg-background px-6 sm:px-10 md:px-20 lg:px-40 pt-8 pb-32 sm:pb-40 md:pb-60">
+            <Link
+              href="/signup"
+              target="_blank"
+              className="self-end mb-4 lg:absolute lg:top-8 lg:right-8 bg-black text-white py-2 px-4 sm:px-5 md:px-6 rounded-lg text-sm sm:text-base transition-all z-10"
+            >
+              Unlock Trends
+            </Link>
+
+            <span className="pointer-events-none whitespace-nowrap bg-gradient-to-b from-indigo-500 to-indigo-700/80 bg-clip-text text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-tight text-transparent dark:from-indigo-200 dark:to-indigo-800/10">
+              Explore Market Trends
+            </span>
+
+            <Globe className="top-28 mt-5" />
+            <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(75,0,130,0.2),rgba(255,255,255,0))]" />
           </div>
         </div>
       </section>
@@ -118,13 +136,11 @@ function AnnouncementPill() {
 function HeroVideoDialogDemoTopInBottomOut() {
   return (
     <Card className="relative max-w-7xl overflow-hidden rounded-xl py-1">
-      <ShineBorder
-        borderWidth={1.5}
-        shineColor={["#5C6BC0", "#FFB74D", "#AB47BC"]}
-      />
+      <ShineBorder shineColor={UI_CUSTOM.shine_color} borderWidth={1.5} />
+
       <CardContent className="px-1">
         <HeroVideoDialog
-          className="block dark:hidden w-full"
+          className="block dark:hidden w-full z-50"
           animationStyle="top-in-bottom-out"
           videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
           thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
@@ -151,9 +167,9 @@ function SiteHeader() {
       )}
     >
       <MotionWrapper delay={0.2}>
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <Link href="/" className="flex items-center">
-            <span className="ml-2 text-xl font-bold">Startalyze</span>
+            <span className="text-xl font-bold">Startalyze</span>
           </Link>
 
           <nav className="hidden gap-4 sm:flex">
@@ -171,7 +187,9 @@ function SiteHeader() {
           </nav>
 
           <Link href="/signin" target="_blank">
-            <ShimmerButton className="py-1 text-sm px-4">Sign in</ShimmerButton>
+            <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="py-1 text-sm px-4">
+              Sign in
+            </ShimmerButton>
           </Link>
         </div>
       </MotionWrapper>
