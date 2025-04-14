@@ -83,7 +83,7 @@ export default async function Home() {
         <section className="md:py-6" id="cta">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="relative flex flex-col lg:flex-row items-center justify-center overflow-hidden rounded-lg border bg-background px-6 sm:px-10 md:px-20 lg:px-40 pt-8 pb-32 sm:pb-40 md:pb-60">
-              <Link href={"/signup"} target="_blank">
+              <Link href="/signup">
                 <ShimmerButton className="self-end mb-4 lg:absolute lg:top-8 lg:right-8 bg-black text-white py-2 px-4 sm:px-5 md:px-6 rounded-lg text-sm sm:text-base transition-all z-10">
                   Get Early Access
                 </ShimmerButton>
@@ -165,8 +165,8 @@ export default async function Home() {
                     <AccordionContent>
                       While we use up-to-date data and proven frameworks like SWOT
                       and persona modeling, the accuracy depends on the specificity
-                      of your input and the availability of market data. It’s meant
-                      to guide, not guarantee outcomes.
+                      of your input and the availability of market data. It&apos;s
+                      meant to guide, not guarantee outcomes.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-7">
