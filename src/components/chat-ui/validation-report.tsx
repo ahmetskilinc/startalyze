@@ -204,12 +204,9 @@ export function ValidationReport({ data }: ValidationReportProps) {
                   key={i}
                   className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
                 >
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{tech.name}</span>
-                      <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
-                        v{tech.version}
-                      </span>
                     </div>
                     <a
                       href={tech.link}
@@ -251,12 +248,9 @@ export function ValidationReport({ data }: ValidationReportProps) {
                           key={i}
                           className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
                         >
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="mb-2">
                             <div className="flex items-center gap-2">
                               <span className="font-semibold">{tech.name}</span>
-                              <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
-                                v{tech.version}
-                              </span>
                             </div>
                             <a
                               href={tech.link}
@@ -320,8 +314,8 @@ export function ValidationReport({ data }: ValidationReportProps) {
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
       <div className="">
-        <h2 className="text-2xl font-bold">{data.title}</h2>
-        <span className="text-gray-600">{data.ideaName}</span>
+        <span className="text-sm text-gray-600">{data.title}</span>
+        <h2 className="text-2xl font-bold">{data.ideaName}</h2>
       </div>
 
       <Accordion type="single" collapsible className="w-full">
