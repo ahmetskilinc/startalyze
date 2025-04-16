@@ -55,7 +55,7 @@ export function SigninForm() {
         { email: values.email, password: values.password },
         {
           onSuccess: () => {
-            router.push("/account");
+            router.push("/chat");
           },
           onError: (ctx) => {
             setPending(false);
@@ -76,7 +76,7 @@ export function SigninForm() {
     try {
       setSocialLoading(provider);
       await authClient.signIn.social(
-        { provider, callbackURL: "/account" },
+        { provider, callbackURL: "/chat" },
         {
           onError: (ctx) => {
             toast.error("Social login failed", {

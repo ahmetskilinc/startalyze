@@ -30,7 +30,7 @@ export default async function authMiddleware(request: NextRequest) {
   }
 
   if (isAuthRoute || isPasswordRoute || isOpenRoute) {
-    return NextResponse.redirect(new URL("/account", request.url));
+    return NextResponse.redirect(new URL("/chat", request.url));
   }
 
   return NextResponse.next();

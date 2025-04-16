@@ -136,10 +136,10 @@ export function NavUser() {
                 <Settings className="mr-2 size-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
+              {/* <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
                 <CreditCard className="mr-2 size-4" />
                 <span>Plan</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               {/* <DropdownMenuItem onClick={() => handleNavigate('/billing')}>
                 <CreditCard className="mr-2 size-4" />
                 <span>Billing</span>

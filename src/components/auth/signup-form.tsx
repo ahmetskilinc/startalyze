@@ -69,7 +69,7 @@ export function SignupForm() {
             });
             await authClient.sendVerificationEmail({
               email: values.email,
-              callbackURL: "/",
+              callbackURL: "/chat",
             });
           },
           onError: (ctx) => {
@@ -91,7 +91,7 @@ export function SignupForm() {
     try {
       setSocialLoading(provider);
       await authClient.signIn.social(
-        { provider, callbackURL: "/account" },
+        { provider, callbackURL: "/chat" },
         {
           onError: (ctx) => {
             toast.error("Social signup failed", {
