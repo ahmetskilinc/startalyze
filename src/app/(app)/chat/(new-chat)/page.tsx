@@ -1,5 +1,5 @@
-import NewChatPage from "@/components/chat-ui/new-chat-page";
+import ChatPage from "@/components/chat-ui/chat-page";
 
 export default function Page() {
-  return <NewChatPage />;
+  return <ChatPage />;
 }

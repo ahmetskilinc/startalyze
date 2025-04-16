@@ -1,7 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { Message, useChat as useAIChat } from "ai/react";
+import { Message, useChat as useAIChat } from "@ai-sdk/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,6 +10,7 @@ import { HeaderTitle } from "../ui/header-title";
 import ChatMessages from "./chat-messages";
 import Link from "next/link";
 import { useChat, useChatMessages } from "@/hooks/use-chats";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   prompt: z.string(),
@@ -17,14 +18,19 @@ const FormSchema = z.object({
 
 const ChatPage = ({
   chatId,
-  initialMessages,
-}: { chatId: string; initialMessages: Message[] }) => {
-  const { data: chat, error: chatError } = useChat(chatId);
-
-  // TODO: handle caching on server side :)
-  const { error: messagesError } = useChatMessages(chatId);
+  initialMessages = [],
+}: {
+  chatId?: string;
+  initialMessages?: Message[];
+}) => {
+  const router = useRouter();
+  const isNewChat = !chatId;
+  const { data: chat, error: chatError } = useChat(chatId ?? "");
+  const { error: messagesError } = useChatMessages(chatId ?? "");
   const [error, setError] = useState<string | null>(null);
-  const title = chat?.title || `Chat ${chatId.slice(0, 8)}`;
+  const title = isNewChat
+    ? "New Chat"
+    : chat?.title || `Chat ${chatId?.slice(0, 8)}`;
 
   const { messages, setInput, handleSubmit, status, reload } = useAIChat({
     initialMessages,
@@ -34,10 +40,16 @@ const ChatPage = ({
       const last = messages[messages.length - 1];
       return { chatId, message: last };
     },
+    async onResponse(response) {
+      if (isNewChat) {
+        const { chatId: newChatId } = await response.json();
+        router.push(`/chat/${newChatId}`);
+      }
+    },
   });
 
   useEffect(() => {
-    if (chatError || messagesError) {
+    if (!isNewChat && (chatError || messagesError)) {
       const error = chatError || messagesError;
       console.error("Failed to load chat:", error);
       if (error instanceof Error && error.message === "Chat not found") {
@@ -46,7 +58,7 @@ const ChatPage = ({
         setError("Failed to load chat. Please try again later.");
       }
     }
-  }, [chatError, messagesError]);
+  }, [chatError, messagesError, isNewChat]);
 
   useEffect(() => {
     if (
