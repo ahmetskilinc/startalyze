@@ -58,8 +58,8 @@ export function ValidationReport({ data }: ValidationReportProps) {
     </div>
   );
 
-  const renderScorecard = (item: any) => (
-    <Card className="mt-4">
+  const renderScorecard = (item: any, index: number) => (
+    <Card className="mt-4" key={index + item.title}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{item.title}</CardTitle>
@@ -197,7 +197,7 @@ export function ValidationReport({ data }: ValidationReportProps) {
                   </div>
                 ))}
               {section.type === "scorecard" &&
-                section.items.map((item, i) => renderScorecard(item))}
+                section.items.map((item, i) => renderScorecard(item, i))}
               {section.type === "table" && renderTable(section.items)}
               {section.type === "matrix" && renderMatrix(section.items)}
               {section.type === "summary" && renderSummary(section.items)}

@@ -8,7 +8,6 @@ import React from "react";
 const page = async ({ params }: { params: Promise<{ chatId: string }> }) => {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  // returning null, because the middleware handles the rest
   if (!session?.user?.id) return null;
 
   const { chatId } = await params;
@@ -17,7 +16,6 @@ const page = async ({ params }: { params: Promise<{ chatId: string }> }) => {
     return redirect("/chat");
   }
 
-  // TODO: yeah here, implement caching on server side :)
   const chats = await getChatMessages(chatId);
 
   return <ChatPage chatId={chatId} initialMessages={chats} />;
