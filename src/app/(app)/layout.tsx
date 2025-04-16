@@ -3,8 +3,6 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import React from "react";
 import Header from "@/components/ui/header";
 import { redirect } from "next/navigation";
-import { authClient } from "@/server/auth/client";
-import { domain } from "@/lib/constants";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { user } from "@/server/db/schema";
@@ -16,14 +14,19 @@ async function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const response = await fetch(`${domain}/api/auth/check-onboarded`);
-  // const data = await response.json();
+  const headersList = await headers();
+  const session = await auth.api.getSession({ headers: headersList });
 
-  // if (!data.isOnboarded) {
+  // const onboarded = (
+  //   await db.query.user.findFirst({
+  //     where: eq(user.id, session?.user?.id as string),
+  //   })
+  // )?.onboardingCompleted;
+
+  // if (!onboarded) {
   //   redirect("/welcome");
   // }
 
-  const session = await auth.api.getSession({ headers: await headers() });
   const proPlan =
     (
       await db.query.user.findFirst({

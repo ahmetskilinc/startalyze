@@ -56,7 +56,6 @@ const ChatInput = ({
               )}
             />
             <div className="p-2 flex justify-between items-center">
-              <div></div>
               <div className="flex space-x-1.5">
                 <Button
                   type="submit"
