@@ -20,7 +20,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ShineBorder } from "@/components/ui/shine-border";
-import * as F from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormControl,
+} from "@/components/ui/form";
 import Link from "next/link";
 import { UI_CUSTOM } from "@/lib/constants";
 
@@ -33,50 +40,58 @@ export function SignupForm() {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    await authClient.signUp.email(
-      {
-        email: values.email,
-        password: values.password,
-        name: values.name,
-        firstName: values.name,
-        lastName: values.name,
-        onboardingCompleted: false,
-        plan: "free",
-      },
-      {
-        onRequest: () => setPending(true),
-        onSuccess: async () => {
-          toast.success("Account created", {
-            description: "Check your email for a verification link.",
-          });
-          await authClient.sendVerificationEmail({
-            email: values.email,
-            callbackURL: "/",
-          });
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    try {
+      setPending(true);
+      await authClient.signUp.email(
+        {
+          email: values.email,
+          password: values.password,
+          name: "",
+          firstName: "",
+          lastName: "",
+          onboardingCompleted: false,
+          plan: "free",
         },
-        onError: (ctx) => {
-          toast.error("Signup failed", {
-            description: ctx.error?.message ?? "Something went wrong",
-          });
+        {
+          onSuccess: async () => {
+            toast.success("Account created", {
+              description: "Check your email for a verification link.",
+            });
+            await authClient.sendVerificationEmail({
+              email: values.email,
+              callbackURL: "/chat",
+            });
+          },
+          onError: (ctx) => {
+            setPending(false);
+            toast.error("Signup failed", {
+              description: ctx.error?.message ?? "Something went wrong",
+            });
+          },
         },
-      },
-    );
-
-    setPending(false);
+      );
+    } catch (error) {
+      toast.error("Something went wrong", {
+        description: "Please try again later.",
+      });
+    }
   };
 
   const handleSocialSignup = async (provider: "google" | "github") => {
     try {
       setSocialLoading(provider);
       await authClient.signIn.social(
-        { provider, callbackURL: "/account" },
+        { provider, callbackURL: "/chat" },
         {
           onError: (ctx) => {
             toast.error("Social signup failed", {
@@ -96,7 +111,7 @@ export function SignupForm() {
   };
 
   return (
-    <Card className="relative overflow-hidden max-w-[400px] w-full shadow-xl mx-auto">
+    <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl mx-auto">
       <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Sign up</CardTitle>
@@ -104,60 +119,47 @@ export function SignupForm() {
       </CardHeader>
 
       <CardContent>
-        <F.Form {...form}>
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-            <F.FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <F.FormItem>
-                  <F.FormLabel>Name</F.FormLabel>
-                  <F.FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </F.FormControl>
-                  <F.FormMessage />
-                </F.FormItem>
-              )}
-            />
-            <F.FormField
+            <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <F.FormItem>
-                  <F.FormLabel>Email</F.FormLabel>
-                  <F.FormControl>
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
                     <Input placeholder="you@example.com" {...field} />
-                  </F.FormControl>
-                  <F.FormMessage />
-                </F.FormItem>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
             />
-            <F.FormField
+            <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <F.FormItem>
-                  <F.FormLabel>Password</F.FormLabel>
-                  <F.FormControl>
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
-                  </F.FormControl>
-                  <F.FormMessage />
-                </F.FormItem>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
             />
-            {/* <F.FormField
+            <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <F.FormItem>
-                  <F.FormLabel>Confirm Password</F.FormLabel>
-                  <F.FormControl>
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
-                  </F.FormControl>
-                  <F.FormMessage />
-                </F.FormItem>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            /> */}
+            />
             <Button
               type="submit"
               className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -166,7 +168,7 @@ export function SignupForm() {
               {pending ? "Creating Account..." : "Create Account"}
             </Button>
           </form>
-        </F.Form>
+        </Form>
 
         <div className="flex items-center gap-4 mt-6 mb-4 text-xs uppercase text-muted-foreground">
           <div className="flex-1 border-t border-muted-foreground/30" />
@@ -198,8 +200,8 @@ export function SignupForm() {
         <div className="mt-4 text-center">
           <span className="text-sm">
             Already have an account?{" "}
-            <Link href="/signin" className="text-indigo-500 hover:underline">
-              Sign in
+            <Link href="/login" className="text-indigo-500 hover:underline">
+              Login
             </Link>
           </span>
         </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Sidebar,
   SidebarContent,
@@ -23,8 +21,8 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <span className="flex flex-row items-center gap-2 p-2">
-              <div className="grid flex-1 text-left text-lg leading-tight">
-                <span className="font- truncate">Startalyze</span>
+              <div className="flex items-center">
+                <span className="text-xl font-bold">Startalyze</span>
               </div>
             </span>
           </SidebarMenuItem>

@@ -13,36 +13,52 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ShineBorder } from "../ui/shine-border";
 import { authClient } from "@/server/auth/client";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { UI_CUSTOM } from "@/lib/constants";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInSchema } from "@/lib/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormControl,
+} from "@/components/ui/form";
+import { z } from "zod";
 
 export function SigninForm() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(
     null,
   );
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
+  const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     try {
       setPending(true);
       await authClient.signIn.email(
-        { email, password },
+        { email: values.email, password: values.password },
         {
           onSuccess: () => {
-            router.push("/account");
+            router.push("/chat");
           },
           onError: (ctx) => {
+            setPending(false);
             toast.error("Login failed", {
               description: ctx.error?.message ?? "Invalid credentials",
             });
@@ -53,8 +69,6 @@ export function SigninForm() {
       toast.error("Something went wrong", {
         description: "Please try again later.",
       });
-    } finally {
-      setPending(false);
     }
   };
 
@@ -62,7 +76,7 @@ export function SigninForm() {
     try {
       setSocialLoading(provider);
       await authClient.signIn.social(
-        { provider, callbackURL: "/account" },
+        { provider, callbackURL: "/chat" },
         {
           onError: (ctx) => {
             toast.error("Social login failed", {
@@ -81,60 +95,60 @@ export function SigninForm() {
   };
 
   return (
-    <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
+    <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl mx-auto">
       <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
-        <CardTitle className="text-xl">Sign in</CardTitle>
+        <CardTitle className="text-xl">Login</CardTitle>
         <CardDescription>
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleLogin} className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={pending}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="you@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={pending}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
+            <Button
+              type="submit"
+              className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              disabled={pending}
+            >
+              {pending ? "Logging in..." : "Login"}
+            </Button>
+          </form>
+        </Form>
 
-          <Button
-            type="submit"
-            className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            disabled={pending}
-          >
-            {pending ? "Signing In..." : "Sign In"}
-          </Button>
-        </form>
-
-        <div className="mt-4 text-sm text-muted-foreground flex justify-between">
+        <div className="mt-4 text-sm text-muted-foreground flex justify-end">
           <Link
             href="/forgot-password"
-            className="text-indigo-500 hover:text-indigo-600"
+            className="text-indigo-500 hover:text-indigo-600 hover:underline"
           >
             Forgot password?
-          </Link>
-          <Link href="/signup" className="text-indigo-500 hover:text-indigo-600">
-            Sign up
           </Link>
         </div>
 
@@ -165,24 +179,33 @@ export function SigninForm() {
           </Button>
         </div>
 
-        <div className="mt-4 text-xs text-muted-foreground text-center">
-          By signing in, you agree to our{" "}
-          <Link href="/terms" className="text-indigo-500 hover:text-indigo-600">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link
-            href="/privacy-policy"
-            className="text-indigo-500 hover:text-indigo-600"
-          >
-            Privacy Policy
-          </Link>
-          .
+        <div className="mt-4 text-center">
+          <span className="text-sm">
+            Don&apos; have an account?{" "}
+            <Link href="/signup" className="text-indigo-500 hover:underline">
+              Sign up
+            </Link>
+          </span>
         </div>
       </CardContent>
 
-      <CardFooter className="text-xs text-muted-foreground justify-center">
-        © {new Date().getFullYear()} Startalyze. All rights reserved.
+      <CardFooter className="text-xs text-muted-foreground flex flex-col justify-between items-center">
+        <div className="text-center">
+          <span className="text-xs">
+            By signing in, you agree to our{" "}
+            <Link href="/terms" className="text-indigo-500 hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy-policy" className="text-indigo-500 hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </span>
+        </div>
+        <div className="mt-2">
+          © {new Date().getFullYear()} Startalyze. All rights reserved.
+        </div>
       </CardFooter>
     </Card>
   );

@@ -55,20 +55,17 @@ const ChatInput = ({
                 </FormItem>
               )}
             />
-            <div className="p-2 flex justify-between items-center">
-              <div></div>
-              <div className="flex space-x-1.5">
-                <Button
-                  type="submit"
-                  disabled={
-                    form.watch("prompt") === "" || form.watch("prompt") === undefined
-                  }
-                  className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-indigo-200 bg-indigo-600 text-white hover:bg-indigo-700"
-                  style={spaceGrotesk.style}
-                >
-                  <ArrowUp />
-                </Button>
-              </div>
+            <div className="p-2 flex justify-end items-center">
+              <Button
+                type="submit"
+                disabled={
+                  form.watch("prompt") === "" || form.watch("prompt") === undefined
+                }
+                className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-indigo-200 bg-indigo-600 text-white hover:bg-indigo-700"
+                style={spaceGrotesk.style}
+              >
+                <ArrowUp />
+              </Button>
             </div>
           </form>
         </Form>
