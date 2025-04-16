@@ -42,12 +42,14 @@ export function SignupForm() {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    console.log(values);
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
     try {
       setPending(true);
       await authClient.signUp.email(
@@ -138,6 +140,19 @@ export function SignupForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
