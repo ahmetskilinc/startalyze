@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const authRoutes = ["/login", "/signup"];
 const passwordRoutes = ["/reset-password", "verify-email", "/forgot-password"];
-const openRoutes = ["/terms", "/privacy-policy"];
+const openRoutes = ["/refund-policy", "/privacy-policy", "/terms-and-conditions"];
 
 export default async function authMiddleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
@@ -22,14 +22,21 @@ export default async function authMiddleware(request: NextRequest) {
   });
 
   if (!session || !session.user) {
-    if (isAuthRoute || isPasswordRoute || isOpenRoute) {
+    if (isOpenRoute) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (isAuthRoute || isPasswordRoute) {
       return NextResponse.next();
     }
 
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (isAuthRoute || isPasswordRoute || isOpenRoute) {
+  if (isOpenRoute) {
+    return NextResponse.redirect(new URL("/account", request.url));
+  }
+
+  if (isAuthRoute || isPasswordRoute) {
     return NextResponse.redirect(new URL("/account", request.url));
   }
 
