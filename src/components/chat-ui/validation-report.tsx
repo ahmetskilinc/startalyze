@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import ReactMarkdown from "react-markdown";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
 interface ValidationReportProps {
@@ -100,7 +101,11 @@ export function ValidationReport({ data }: ValidationReportProps) {
                 {item.strength}
               </Badge>
             </TableCell>
-            <TableCell>{item.details}</TableCell>
+            <TableCell>
+              <div className="prose dark:prose-invert max-w-none">
+                <ReactMarkdown>{item.details}</ReactMarkdown>
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -148,25 +153,37 @@ export function ValidationReport({ data }: ValidationReportProps) {
           <div>
             <h4 className="font-medium mb-2">Strengths</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.strengths.map((strength: string, i: number) => (
-                <li key={i}>{strength}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.strengths.map((strength: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{strength}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
           <div>
             <h4 className="font-medium mb-2">Weaknesses</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.weaknesses.map((weakness: string, i: number) => (
-                <li key={i}>{weakness}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.weaknesses.map((weakness: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{weakness}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
           <div>
             <h4 className="font-medium mb-2">Recommendations</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.recommendations.map((rec: string, i: number) => (
-                <li key={i}>{rec}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.recommendations.map((rec: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{rec}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
         </div>
@@ -327,9 +344,9 @@ export function ValidationReport({ data }: ValidationReportProps) {
                 section.items.map((item, i) => (
                   <div key={i} className="mb-6">
                     <h3 className="text-lg font-medium mb-2">{item.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {item.content}
-                    </p>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <ReactMarkdown>{item.content}</ReactMarkdown>
+                    </div>
                     {item.metrics && renderMetrics(item.metrics)}
                   </div>
                 ))}
