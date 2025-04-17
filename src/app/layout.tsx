@@ -4,7 +4,10 @@ import { PropsWithChildren } from "react";
 import { Providers } from "@/providers";
 
 export const metadata: Metadata = {
-  title: "Startalyze",
+  title: {
+    template: "%s | Startalyze",
+    default: "Startalyze",
+  },
   description: "",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
