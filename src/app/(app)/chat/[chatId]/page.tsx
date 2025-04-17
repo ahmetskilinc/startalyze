@@ -1,9 +1,13 @@
 import ChatPage from "@/components/chat-ui/chat-page";
-import { getChatMessages } from "@/lib/actions/chat";
 import { auth } from "@/server/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Chat",
+};
 
 const page = async ({ params }: { params: Promise<{ chatId: string }> }) => {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -16,9 +20,7 @@ const page = async ({ params }: { params: Promise<{ chatId: string }> }) => {
     return redirect("/chat");
   }
 
-  const chats = await getChatMessages(chatId);
-
-  return <ChatPage chatId={chatId} initialMessages={chats} />;
+  return <ChatPage chatId={chatId} />;
 };
 
 export default page;

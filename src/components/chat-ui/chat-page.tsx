@@ -1,7 +1,7 @@
 "use client";
 
 import ChatInput from "@/components/chat-ui/chat-input";
-import { Message, useChat as useAIChat } from "@ai-sdk/react";
+import { useChat as useAIChat } from "@ai-sdk/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,10 +18,8 @@ const FormSchema = z.object({
 
 const ChatPage = ({
   chatId,
-  initialMessages = [],
 }: {
   chatId?: string;
-  initialMessages?: Message[];
 }) => {
   const router = useRouter();
   const isNewChat = !chatId;
@@ -31,6 +29,7 @@ const ChatPage = ({
   const title = isNewChat
     ? "New Chat"
     : chat?.title || `Chat ${chatId?.slice(0, 8)}`;
+  const initialMessages = useChatMessages(chatId ?? "").data;
 
   const { messages, setInput, handleSubmit, status, reload } = useAIChat({
     initialMessages,
@@ -62,7 +61,7 @@ const ChatPage = ({
 
   useEffect(() => {
     if (
-      initialMessages.length === 1 &&
+      initialMessages?.length === 1 &&
       initialMessages[0]?.role === "user" &&
       status !== "streaming" &&
       status !== "submitted"
