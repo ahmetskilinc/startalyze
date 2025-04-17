@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { experimental_createProviderRegistry as createProviderRegistry } from "ai";
+import { createProviderRegistry } from "ai";
 import { customProvider } from "ai";
 
 export const aiRegistery = createProviderRegistry({ google });

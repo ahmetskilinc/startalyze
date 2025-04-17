@@ -30,15 +30,11 @@ const ChatMessages = ({ messages, status }: Props) => {
         <div className="max-w-[46rem] w-full mx-auto">
           <div className="flex flex-col space-y-8 pt-7 p-4">
             {messages.map((msg, index) => {
-              const lastAssistantMsg = messages
-                .filter((m) => m.role === "assistant")
-                .at(-1);
-
-              if (
-                status === "streaming" &&
+              const isLastAssistantMsg =
                 msg.role === "assistant" &&
-                msg.id === lastAssistantMsg?.id
-              ) {
+                msg.id === messages.filter((m) => m.role === "assistant").at(-1)?.id;
+
+              if (status === "streaming" && isLastAssistantMsg) {
                 return null;
               }
 
@@ -49,12 +45,6 @@ const ChatMessages = ({ messages, status }: Props) => {
                 </div>
               );
             })}
-
-            {status === "streaming" && (
-              <AgentMessage
-                message={messages.filter((m) => m.role === "assistant").at(-1)!}
-              />
-            )}
 
             <AgentThinking status={status} />
             <div ref={messagesEndRef} />

@@ -16,8 +16,8 @@ export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar> & { proPlan: boolean }) {
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
+    <Sidebar {...props} className="!bg-accent border-none">
+      <SidebarHeader className="bg-transparent">
         <SidebarMenu>
           <SidebarMenuItem>
             <span className="flex flex-row items-center gap-2 p-2">

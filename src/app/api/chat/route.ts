@@ -70,36 +70,61 @@ export async function POST(req: Request) {
     console.log("Duplicate message detected, skipping DB save.");
   }
 
-  try {
-    const response = await aiProvider.languageModel("core-work").doGenerate({
-      inputFormat: "messages",
-      mode: { type: "regular" },
-      prompt: [
-        {
-          role: "user",
-          content: [
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
+  return createDataStreamResponse({
+    execute: async (dataStream) => {
+      try {
+        const result = streamText({
+          model: aiProvider.languageModel("core-work"),
+          system: VALIDATE_STARTUP_IDEA_PROMPT,
+          messages: [
             {
-              type: "text",
-              text: VALIDATE_STARTUP_IDEA_PROMPT + "\n\n" + userMessage,
+              role: "user",
+              content: userMessage,
             },
           ],
-        },
-      ],
-    });
+          experimental_transform: smoothStream({ chunking: "line" }),
+          temperature: 0.7,
+          onFinish: async ({ response }) => {
+            const newMessage = appendResponseMessages({
+              messages: previousMessages,
+              responseMessages: response.messages,
+            }).at(-1)!;
+            await saveMessage(chatId, newMessage.content, "assistant");
+            clearTimeout(timeoutId); // Clear the timeout when finished successfully
+          },
+        });
 
-    if (!response.text) {
-      console.log("No response text received");
-      return Response.json({ error: "An error occurred" }, { status: 500 });
-    }
+        result.consumeStream();
+        result.mergeIntoDataStream(dataStream, {
+          sendReasoning: true,
+        });
+      } catch (error: unknown) {
+        console.error("AI Stream Error:", error);
+        clearTimeout(timeoutId); // Clear the timeout on error
 
-    await saveMessage(chatId, response.text, "assistant");
-
-    return Response.json({
-      content: response.text,
-      id: chatId,
-    });
-  } catch (error) {
-    console.error(error);
-    return Response.json({ error: "An error occurred" }, { status: 500 });
-  }
+        if (error instanceof Error) {
+          if (error.message.includes("abort") || error.message.includes("timeout")) {
+            throw new Error("The request timed out. Please try again.");
+          }
+          if (error.message.includes("rate limit")) {
+            throw new Error(
+              "We're experiencing high demand. Please try again in a moment.",
+            );
+          }
+        }
+        throw new Error(
+          "An error occurred while processing your request. Please try again.",
+        );
+      }
+    },
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "An unexpected error occurred. Please try again.";
+    },
+  });
 }
