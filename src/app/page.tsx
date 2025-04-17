@@ -186,7 +186,7 @@ export default async function Home() {
                 </Accordion>
               </div>
               <div className="w-full lg:w-2/4">
-                <TweetCard id="1909009715880681801" />
+                <TweetCard id="1912868181539963371" />
               </div>
             </div>
           </div>
