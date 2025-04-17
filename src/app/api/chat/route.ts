@@ -66,34 +66,61 @@ export async function POST(req: Request) {
     console.log("Duplicate message detected, skipping DB save.");
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
   return createDataStreamResponse({
-    execute: (dataStream) => {
-      const result = streamText({
-        model: aiProvider.languageModel("core-work"),
-        system: VALIDATE_STARTUP_IDEA_PROMPT,
-        messages: [
-          {
-            role: "user",
-            content: userMessage,
+    execute: async (dataStream) => {
+      try {
+        const result = streamText({
+          model: aiProvider.languageModel("core-work"),
+          system: VALIDATE_STARTUP_IDEA_PROMPT,
+          messages: [
+            {
+              role: "user",
+              content: userMessage,
+            },
+          ],
+          experimental_transform: smoothStream({ chunking: "line" }),
+          temperature: 0.7,
+          onFinish: async ({ response }) => {
+            const newMessage = appendResponseMessages({
+              messages: previousMessages,
+              responseMessages: response.messages,
+            }).at(-1)!;
+            await saveMessage(chatId, newMessage.content, "assistant");
+            clearTimeout(timeoutId); // Clear the timeout when finished successfully
           },
-        ],
-        experimental_transform: smoothStream({ chunking: "word" }),
-        onFinish: async ({ response }) => {
-          const newMessage = appendResponseMessages({
-            messages: previousMessages,
-            responseMessages: response.messages,
-          }).at(-1)!;
-          await saveMessage(chatId, newMessage.content, "assistant");
-        },
-      });
-      result.consumeStream();
-      result.mergeIntoDataStream(dataStream, {
-        sendReasoning: true,
-      });
+        });
+
+        result.consumeStream();
+        result.mergeIntoDataStream(dataStream, {
+          sendReasoning: true,
+        });
+      } catch (error: unknown) {
+        console.error("AI Stream Error:", error);
+        clearTimeout(timeoutId); // Clear the timeout on error
+
+        if (error instanceof Error) {
+          if (error.message.includes("abort") || error.message.includes("timeout")) {
+            throw new Error("The request timed out. Please try again.");
+          }
+          if (error.message.includes("rate limit")) {
+            throw new Error(
+              "We're experiencing high demand. Please try again in a moment.",
+            );
+          }
+        }
+        throw new Error(
+          "An error occurred while processing your request. Please try again.",
+        );
+      }
     },
-    onError: (error) => {
-      console.log(error);
-      return "Oops, an error occured!";
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "An unexpected error occurred. Please try again.";
     },
   });
 }
