@@ -130,20 +130,8 @@ export function NavUser() {
                 <Settings className="mr-2 size-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
-              {/* <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
-                <CreditCard className="mr-2 size-4" />
-                <span>Plan</span>
-              </DropdownMenuItem> */}
-              {/* <DropdownMenuItem onClick={() => handleNavigate('/billing')}>
-                <CreditCard className="mr-2 size-4" />
-                <span>Billing</span>
-              </DropdownMenuItem> */}
-              {/* <DropdownMenuItem onClick={() => handleNavigate('/notifications')}>
-                <Bell className="mr-2 size-4" />
-                <span>Notifications</span>
-              </DropdownMenuItem> */}
             </DropdownMenuGroup>
-            {/* <span className="mt-2 block w-full">
+            <span className="mt-2 block w-full">
               <Tabs defaultValue={theme} className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="dark" onClick={() => setTheme("dark")}>
@@ -172,7 +160,7 @@ export function NavUser() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </span> */}
+            </span>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 size-4" />
