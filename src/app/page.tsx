@@ -249,18 +249,10 @@ function HeroVideoDialogDemoTopInBottomOut() {
 
       <CardContent className="px-1">
         <HeroVideoDialog
-          className="z-50 block w-full dark:hidden"
+          className="z-50 block w-full"
           animationStyle="top-in-bottom-out"
           videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
-          thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
-          thumbnailAlt="Hero Video"
-        />
-
-        <HeroVideoDialog
-          className="hidden w-full dark:block"
-          animationStyle="top-in-bottom-out"
-          videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
-          thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
+          thumbnailSrc="/assets/screenshot.png"
           thumbnailAlt="Hero Video"
         />
       </CardContent>

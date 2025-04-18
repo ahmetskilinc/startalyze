@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'Startalyze',
   },
   description: '',
-  icons: [{ rel: 'icon', url: '/favicon.ico' }],
+  icons: [{ rel: 'icon', url: '/assets/favicon.ico' }],
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
