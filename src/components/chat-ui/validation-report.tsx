@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import ReactMarkdown from "react-markdown";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
 interface ValidationReportProps {
@@ -100,7 +101,11 @@ export function ValidationReport({ data }: ValidationReportProps) {
                 {item.strength}
               </Badge>
             </TableCell>
-            <TableCell>{item.details}</TableCell>
+            <TableCell>
+              <div className="prose dark:prose-invert max-w-none">
+                <ReactMarkdown>{item.details}</ReactMarkdown>
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -148,25 +153,37 @@ export function ValidationReport({ data }: ValidationReportProps) {
           <div>
             <h4 className="font-medium mb-2">Strengths</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.strengths.map((strength: string, i: number) => (
-                <li key={i}>{strength}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.strengths.map((strength: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{strength}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
           <div>
             <h4 className="font-medium mb-2">Weaknesses</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.weaknesses.map((weakness: string, i: number) => (
-                <li key={i}>{weakness}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.weaknesses.map((weakness: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{weakness}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
           <div>
             <h4 className="font-medium mb-2">Recommendations</h4>
             <ul className="list-disc pl-5 space-y-1">
-              {items.recommendations.map((rec: string, i: number) => (
-                <li key={i}>{rec}</li>
-              ))}
+              <div className="prose dark:prose-invert max-w-none">
+                {items.recommendations.map((rec: string, i: number) => (
+                  <li key={i}>
+                    <ReactMarkdown>{rec}</ReactMarkdown>
+                  </li>
+                ))}
+              </div>
             </ul>
           </div>
         </div>
@@ -174,11 +191,148 @@ export function ValidationReport({ data }: ValidationReportProps) {
     </Card>
   );
 
+  interface TechItem {
+    name: string;
+    version: string;
+    description: string;
+    link: string;
+    reason?: string;
+    strengths?: string[];
+    weaknesses?: string[];
+  }
+
+  type TechStackItems =
+    | {
+        [key: string]: TechItem[];
+      }
+    | {
+        "tech-stack": TechItem[];
+      };
+
+  const renderTechStack = (items: TechStackItems) => {
+    // If the items still use the old "tech-stack" format, handle it
+    if ("tech-stack" in items && items["tech-stack"]) {
+      return (
+        <Card className="mt-4">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {items["tech-stack"].map((tech: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
+                >
+                  <div className="mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{tech.name}</span>
+                    </div>
+                    <a
+                      href={tech.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Documentation →
+                    </a>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    {tech.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    // Handle the new categorized format
+    return (
+      <div className="space-y-6">
+        {Object.entries(items).map(
+          ([category, techs]) =>
+            // Only render if techs is an array and not empty
+            Array.isArray(techs) &&
+            techs.length > 0 && (
+              <Card key={category} className="overflow-hidden">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold capitalize mb-4">
+                    {category}
+                  </h3>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {Array.isArray(techs) &&
+                      techs.map((tech: any, i: number) => (
+                        <div
+                          key={i}
+                          className="p-4 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
+                        >
+                          <div className="mb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">{tech.name}</span>
+                            </div>
+                            <a
+                              href={tech.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-primary hover:underline"
+                            >
+                              Documentation →
+                            </a>
+                          </div>
+
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {tech.description}
+                          </p>
+
+                          <div className="text-sm">
+                            <p className="font-medium mb-1">Why use it:</p>
+                            <p className="text-muted-foreground mb-3">
+                              {tech.reason}
+                            </p>
+
+                            <div className="space-y-2">
+                              <div>
+                                <p className="font-medium text-green-600 dark:text-green-400 mb-1">
+                                  Strengths:
+                                </p>
+                                <ul className="list-disc list-inside text-muted-foreground">
+                                  {tech.strengths.map(
+                                    (strength: string, j: number) => (
+                                      <li key={j}>{strength}</li>
+                                    ),
+                                  )}
+                                </ul>
+                              </div>
+
+                              <div>
+                                <p className="font-medium text-red-600 dark:text-red-400 mb-1">
+                                  Considerations:
+                                </p>
+                                <ul className="list-disc list-inside text-muted-foreground">
+                                  {tech.weaknesses.map(
+                                    (weakness: string, j: number) => (
+                                      <li key={j}>{weakness}</li>
+                                    ),
+                                  )}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ),
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
       <div className="">
-        <h2 className="text-2xl font-bold">{data.title}</h2>
-        <span className="text-gray-600">{data.ideaName}</span>
+        <span className="text-sm text-gray-600">{data.title}</span>
+        <h2 className="text-2xl font-bold">{data.ideaName}</h2>
       </div>
 
       <Accordion type="single" collapsible className="w-full">
@@ -190,9 +344,9 @@ export function ValidationReport({ data }: ValidationReportProps) {
                 section.items.map((item, i) => (
                   <div key={i} className="mb-6">
                     <h3 className="text-lg font-medium mb-2">{item.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {item.content}
-                    </p>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <ReactMarkdown>{item.content}</ReactMarkdown>
+                    </div>
                     {item.metrics && renderMetrics(item.metrics)}
                   </div>
                 ))}
@@ -201,6 +355,8 @@ export function ValidationReport({ data }: ValidationReportProps) {
               {section.type === "table" && renderTable(section.items)}
               {section.type === "matrix" && renderMatrix(section.items)}
               {section.type === "summary" && renderSummary(section.items)}
+              {section.type === "tech-stack" &&
+                renderTechStack(section.items as unknown as TechStackItems)}
             </AccordionContent>
           </AccordionItem>
         ))}

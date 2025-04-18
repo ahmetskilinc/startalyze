@@ -42,6 +42,10 @@ export async function POST(req: Request) {
 
   const previousMessages = await getChatMessages(chat.id);
 
+  if (chat.deleted) {
+    return Response.json({ message: "Chat not found" }, { status: 404 });
+  }
+
   if (!previousMessages) {
     return redirect("/chat");
   }
