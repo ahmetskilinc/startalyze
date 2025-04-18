@@ -1,14 +1,5 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { toast } from "sonner";
-import { useState } from "react";
-import { signUpSchema } from "@/lib/zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@/server/auth/client";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import {
   Card,
   CardHeader,
@@ -16,10 +7,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ShineBorder } from "@/components/ui/shine-border";
+} from '@/components/ui/card';
 import {
   Form,
   FormField,
@@ -27,27 +15,37 @@ import {
   FormLabel,
   FormMessage,
   FormControl,
-} from "@/components/ui/form";
-import Link from "next/link";
-import { UI_CUSTOM } from "@/lib/constants";
+} from '@/components/ui/form';
+import { ShineBorder } from '@/components/ui/shine-border';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@/server/auth/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { UI_CUSTOM } from '@/lib/constants';
+import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
+import { signUpSchema } from '@/lib/zod';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { z } from 'zod';
 
 export function SignupForm() {
   const [pending, setPending] = useState(false);
-  const [socialLoading, setSocialLoading] = useState<"google" | "github" | null>(
-    null,
-  );
+  const [socialLoading, setSocialLoading] = useState<'google' | 'github' | null>(null);
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     if (values.password !== values.confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error('Passwords do not match');
       return;
     }
     try {
@@ -56,54 +54,53 @@ export function SignupForm() {
         {
           email: values.email,
           password: values.password,
-          name: "",
-          firstName: "",
-          lastName: "",
+          name: '',
+          firstName: '',
+          lastName: '',
           onboardingCompleted: false,
-          plan: "free",
+          plan: 'free',
         },
         {
           onSuccess: async () => {
-            toast.success("Account created", {
-              description: "Check your email for a verification link.",
+            toast.success('Account created', {
+              description: 'Check your email for a verification link.',
             });
             await authClient.sendVerificationEmail({
               email: values.email,
-              callbackURL: "/chat",
+              callbackURL: '/chat',
             });
           },
           onError: (ctx) => {
             setPending(false);
-            toast.error("Signup failed", {
-              description: ctx.error?.message ?? "Something went wrong",
+            toast.error('Signup failed', {
+              description: ctx.error?.message ?? 'Something went wrong',
             });
           },
         },
       );
     } catch (error) {
-      toast.error("Something went wrong", {
-        description: "Please try again later.",
+      toast.error('Something went wrong', {
+        description: 'Please try again later.',
       });
     }
   };
 
-  const handleSocialSignup = async (provider: "google" | "github") => {
+  const handleSocialSignup = async (provider: 'google' | 'github') => {
     try {
       setSocialLoading(provider);
       await authClient.signIn.social(
-        { provider, callbackURL: "/chat" },
+        { provider, callbackURL: '/chat' },
         {
           onError: (ctx) => {
-            toast.error("Social signup failed", {
-              description:
-                ctx.error?.message ?? `Unable to sign up with ${provider}`,
+            toast.error('Social signup failed', {
+              description: ctx.error?.message ?? `Unable to sign up with ${provider}`,
             });
           },
         },
       );
     } catch {
-      toast.error("Something went wrong", {
-        description: "Try again later.",
+      toast.error('Something went wrong', {
+        description: 'Try again later.',
       });
     } finally {
       setSocialLoading(null);
@@ -111,7 +108,7 @@ export function SignupForm() {
   };
 
   return (
-    <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl mx-auto">
+    <Card className="relative mx-auto w-full max-w-[350px] overflow-hidden shadow-xl">
       <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Sign up</CardTitle>
@@ -162,44 +159,44 @@ export function SignupForm() {
             />
             <Button
               type="submit"
-              className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="mt-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
               disabled={pending}
             >
-              {pending ? "Creating Account..." : "Create Account"}
+              {pending ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
         </Form>
 
-        <div className="flex items-center gap-4 mt-6 mb-4 text-xs uppercase text-muted-foreground">
-          <div className="flex-1 border-t border-muted-foreground/30" />
-          <span className="px-2 shrink-0">or continue with</span>
-          <div className="flex-1 border-t border-muted-foreground/30" />
+        <div className="text-muted-foreground mt-6 mb-4 flex items-center gap-4 text-xs uppercase">
+          <div className="border-muted-foreground/30 flex-1 border-t" />
+          <span className="shrink-0 px-2">or continue with</span>
+          <div className="border-muted-foreground/30 flex-1 border-t" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Button
             variant="outline"
-            className="flex items-center cursor-pointer justify-center gap-2"
-            onClick={() => handleSocialSignup("google")}
-            disabled={socialLoading === "google"}
+            className="flex cursor-pointer items-center justify-center gap-2"
+            onClick={() => handleSocialSignup('google')}
+            disabled={socialLoading === 'google'}
           >
             <FcGoogle className="text-xl" />
-            {socialLoading === "google" ? "Redirecting..." : "Google"}
+            {socialLoading === 'google' ? 'Redirecting...' : 'Google'}
           </Button>
           <Button
             variant="outline"
-            className="flex items-center cursor-pointer justify-center gap-2"
-            onClick={() => handleSocialSignup("github")}
-            disabled={socialLoading === "github"}
+            className="flex cursor-pointer items-center justify-center gap-2"
+            onClick={() => handleSocialSignup('github')}
+            disabled={socialLoading === 'github'}
           >
             <FaGithub className="text-xl" />
-            {socialLoading === "github" ? "Redirecting..." : "GitHub"}
+            {socialLoading === 'github' ? 'Redirecting...' : 'GitHub'}
           </Button>
         </div>
 
         <div className="mt-4 text-center">
           <span className="text-sm">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link href="/login" className="text-indigo-500 hover:underline">
               Login
             </Link>
@@ -207,23 +204,21 @@ export function SignupForm() {
         </div>
       </CardContent>
 
-      <CardFooter className="text-xs text-muted-foreground flex flex-col justify-between items-center">
+      <CardFooter className="text-muted-foreground flex flex-col items-center justify-between text-xs">
         <div className="text-center">
           <span className="text-xs">
-            By signing up, you agree to our{" "}
+            By signing up, you agree to our{' '}
             <Link href="/terms" className="text-indigo-500 hover:underline">
               Terms of Service
-            </Link>{" "}
-            and{" "}
+            </Link>{' '}
+            and{' '}
             <Link href="/privacy-policy" className="text-indigo-500 hover:underline">
               Privacy Policy
             </Link>
             .
           </span>
         </div>
-        <div className="mt-2">
-          © {new Date().getFullYear()} Startalyze. All rights reserved.
-        </div>
+        <div className="mt-2">© {new Date().getFullYear()} Startalyze. All rights reserved.</div>
       </CardFooter>
     </Card>
   );

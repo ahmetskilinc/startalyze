@@ -1,21 +1,21 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { PropsWithChildren } from "react";
-import { Providers } from "@/providers";
+import { PropsWithChildren } from 'react';
+import { Providers } from '@/providers';
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Startalyze",
-    default: "Startalyze",
+    template: '%s | Startalyze',
+    default: 'Startalyze',
   },
-  description: "",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  description: '',
+  icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased bg-white">
+      <body className="bg-white antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>

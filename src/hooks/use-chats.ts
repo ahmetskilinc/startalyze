@@ -1,16 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { getChat, getChatMessages, getUserChats } from "@/lib/actions/chat";
+import { getChat, getChatMessages, getUserChats } from '@/lib/actions/chat';
+import { useQuery } from '@tanstack/react-query';
 
 export const useChats = () => {
   return useQuery({
-    queryKey: ["chats"],
+    queryKey: ['chats'],
     queryFn: getUserChats,
   });
 };
 
 export const useChat = (chatId: string) => {
   return useQuery({
-    queryKey: ["chat", chatId],
+    queryKey: ['chat', chatId],
     queryFn: () => getChat(chatId),
     enabled: !!chatId,
   });
@@ -18,7 +18,7 @@ export const useChat = (chatId: string) => {
 
 export const useChatMessages = (chatId: string) => {
   return useQuery({
-    queryKey: ["chat-messages", chatId],
+    queryKey: ['chat-messages', chatId],
     queryFn: () => getChatMessages(chatId),
     enabled: !!chatId,
   });

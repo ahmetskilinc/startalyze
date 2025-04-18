@@ -1,13 +1,13 @@
-import { Suspense } from "react";
 import {
   enrichTweet,
   type EnrichedTweet,
   type TweetProps,
   type TwitterComponents,
-} from "react-tweet";
-import { getTweet, type Tweet } from "react-tweet/api";
+} from 'react-tweet';
+import { getTweet, type Tweet } from 'react-tweet/api';
+import { Suspense } from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface TwitterIconProps {
   className?: string;
@@ -33,12 +33,7 @@ const Twitter = ({ className, ...props }: TwitterIconProps) => (
 );
 
 const Verified = ({ className, ...props }: TwitterIconProps) => (
-  <svg
-    aria-label="Verified Account"
-    viewBox="0 0 24 24"
-    className={className}
-    {...props}
-  >
+  <svg aria-label="Verified Account" viewBox="0 0 24 24" className={className} {...props}>
     <g fill="currentColor">
       <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z" />
     </g>
@@ -51,7 +46,7 @@ export const truncate = (str: string | null, length: number) => {
 };
 
 const Skeleton = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-  return <div className={cn("rounded-md bg-primary/10", className)} {...props} />;
+  return <div className={cn('bg-primary/10 rounded-md', className)} {...props} />;
 };
 
 export const TweetSkeleton = ({
@@ -63,7 +58,7 @@ export const TweetSkeleton = ({
 }) => (
   <div
     className={cn(
-      "flex size-full max-h-max min-w-72 flex-col gap-2 rounded-lg border p-4",
+      'flex size-full max-h-max min-w-72 flex-col gap-2 rounded-lg border p-4',
       className,
     )}
     {...props}
@@ -85,7 +80,7 @@ export const TweetNotFound = ({
 }) => (
   <div
     className={cn(
-      "flex size-full flex-col items-center justify-center gap-2 rounded-lg border p-4",
+      'flex size-full flex-col items-center justify-center gap-2 rounded-lg border p-4',
       className,
     )}
     {...props}
@@ -112,7 +107,7 @@ export const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
           href={tweet.user.url}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center whitespace-nowrap font-semibold"
+          className="flex items-center font-semibold whitespace-nowrap"
         >
           {truncate(tweet.user.name, 20)}
           {tweet.user.verified ||
@@ -140,13 +135,13 @@ export const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
 );
 
 export const TweetBody = ({ tweet }: { tweet: EnrichedTweet }) => (
-  <div className="break-words leading-normal tracking-tighter">
+  <div className="leading-normal tracking-tighter break-words">
     {tweet.entities.map((entity, idx) => {
       switch (entity.type) {
-        case "url":
-        case "symbol":
-        case "hashtag":
-        case "mention":
+        case 'url':
+        case 'symbol':
+        case 'hashtag':
+        case 'mention':
           return (
             <a
               key={idx}
@@ -158,7 +153,7 @@ export const TweetBody = ({ tweet }: { tweet: EnrichedTweet }) => (
               <span>{entity.text}</span>
             </a>
           );
-        case "text":
+        case 'text':
           return (
             <span
               key={idx}
@@ -196,7 +191,7 @@ export const TweetMedia = ({ tweet }: { tweet: EnrichedTweet }) => {
             <img
               key={photo.url}
               src={photo.url}
-              title={"Photo by " + tweet.user.name}
+              title={'Photo by ' + tweet.user.name}
               alt={tweet.text}
               className="h-64 w-5/6 shrink-0 snap-center snap-always rounded-xl border object-cover shadow-sm"
             />
@@ -235,7 +230,7 @@ export const MagicTweet = ({
   return (
     <div
       className={cn(
-        "relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-lg border p-4 backdrop-blur-md",
+        'relative flex size-full max-w-lg flex-col gap-2 overflow-hidden rounded-lg border p-4 backdrop-blur-md',
         className,
       )}
       {...props}

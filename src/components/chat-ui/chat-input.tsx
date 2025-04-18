@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { AutosizeTextarea } from "@/components/ui/resizable-textarea";
-import { geistSans, spaceGrotesk } from "@/lib/fonts";
-import { ChatRequestOptions } from "ai";
-import { ArrowUp } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
-import { AIResponseStatus } from "./chat-bubble";
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { AutosizeTextarea } from '@/components/ui/resizable-textarea';
+import { geistSans, spaceGrotesk } from '@/lib/fonts';
+import { AIResponseStatus } from './chat-bubble';
+import { Button } from '@/components/ui/button';
+import { UseFormReturn } from 'react-hook-form';
+import { ChatRequestOptions } from 'ai';
+import { ArrowUp } from 'lucide-react';
 
 const ChatInput = ({
   form,
@@ -25,15 +25,15 @@ const ChatInput = ({
   status: AIResponseStatus;
 }) => {
   return (
-    <div className="sticky bottom-0 bg-background border-t">
-      <div className="p-4 max-w-[46rem] mx-auto">
+    <div className="bg-background sticky bottom-0 border-t">
+      <div className="mx-auto max-w-[46rem] p-4">
         <Form {...form}>
           <form
             onSubmit={(event) => {
               handleSubmit(event);
-              form.setValue("prompt", "");
+              form.setValue('prompt', '');
             }}
-            className="rounded-2xl relative border bg-neutral-100 dark:bg-[#2f2f2f] placeholder:text-muted-foreground transition-all"
+            className="placeholder:text-muted-foreground relative rounded-2xl border bg-neutral-100 transition-all dark:bg-[#2f2f2f]"
           >
             <FormField
               control={form.control}
@@ -46,7 +46,7 @@ const ChatInput = ({
                       maxHeight={150}
                       autoFocus
                       style={geistSans.style}
-                      className="z-[10000] text-[15px] w-full placeholder:text-gray-500 dark:placeholder:text-gray-400 text-gray-800 dark:text-white !min-h-28 px-5 pt-5 focus:outline-none resize-none bg-transparent focus-visible:ring-0 shadow-none border-none"
+                      className="z-[10000] !min-h-28 w-full resize-none border-none bg-transparent px-5 pt-5 text-[15px] text-gray-800 shadow-none placeholder:text-gray-500 focus:outline-none focus-visible:ring-0 dark:text-white dark:placeholder:text-gray-400"
                       translate="no"
                       spellCheck={false}
                       {...field}
@@ -55,13 +55,11 @@ const ChatInput = ({
                 </FormItem>
               )}
             />
-            <div className="p-2 flex justify-end items-center">
+            <div className="flex items-center justify-end p-2">
               <Button
                 type="submit"
-                disabled={
-                  form.watch("prompt") === "" || form.watch("prompt") === undefined
-                }
-                className="aspect-square size-8 cursor-pointer dark:disabled:bg-white/15 rounded-full border-indigo-200 bg-indigo-600 text-white hover:bg-indigo-700"
+                disabled={form.watch('prompt') === '' || form.watch('prompt') === undefined}
+                className="aspect-square size-8 cursor-pointer rounded-full border-indigo-200 bg-indigo-600 text-white hover:bg-indigo-700 dark:disabled:bg-white/15"
                 style={spaceGrotesk.style}
               >
                 <ArrowUp />

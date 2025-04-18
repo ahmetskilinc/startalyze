@@ -1,12 +1,12 @@
-import { HeaderTitle } from "@/components/ui/header-title";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { auth } from "@/server/auth";
+import { HeaderTitle } from '@/components/ui/header-title';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
+import { auth } from '@/server/auth';
 
 export default async function PageCustomizationPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user?.id) {
-    redirect("/signin");
+    redirect('/signin');
   }
 
   return (
@@ -14,7 +14,7 @@ export default async function PageCustomizationPage() {
       <HeaderTitle
         breadcrumbs={[
           {
-            label: "Account",
+            label: 'Account',
           },
         ]}
       />

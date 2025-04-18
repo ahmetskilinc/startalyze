@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const signUpSchema = z
   .object({
@@ -7,8 +7,8 @@ export const signUpSchema = z
     confirmPassword: z.string().min(8),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });
 
 export const signInSchema = z.object({
@@ -17,12 +17,12 @@ export const signInSchema = z.object({
 });
 
 export const forgotPassSchema = z.object({
-  email: z.string().email("Enter a valid email"),
+  email: z.string().email('Enter a valid email'),
 });
 
 export const mailerInputSchema = z.object({
   to: z.string().email(),
   subject: z.string().min(1),
-  template: z.enum(["verification"]),
+  template: z.enum(['verification']),
   payload: z.record(z.string(), z.any()).optional(),
 });

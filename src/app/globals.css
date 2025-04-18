@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
@@ -44,23 +44,23 @@
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
   @keyframes aurora {
     0% {
-      backgroundPosition: 0% 50%;
+      backgroundposition: 0% 50%;
       transform: rotate(-5deg) scale(0.9);
     }
     25% {
-      backgroundPosition: 50% 100%;
+      backgroundposition: 50% 100%;
       transform: rotate(5deg) scale(1.1);
     }
     50% {
-      backgroundPosition: 100% 50%;
+      backgroundposition: 100% 50%;
       transform: rotate(-3deg) scale(0.95);
     }
     75% {
-      backgroundPosition: 50% 0%;
+      backgroundposition: 50% 0%;
       transform: rotate(3deg) scale(1.05);
     }
     100% {
-      backgroundPosition: 0% 50%;
+      backgroundposition: 0% 50%;
       transform: rotate(-5deg) scale(0.9);
     }
   }
@@ -79,7 +79,7 @@
   --animate-gradient: gradient 8s linear infinite;
   @keyframes gradient {
     to {
-      backgroundPosition: var(--bg-size, 300%) 0;
+      backgroundposition: var(--bg-size, 300%) 0;
     }
   }
   --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
@@ -217,12 +217,12 @@ html {
     @apply text-gray-700 dark:text-gray-300;
   }
   .agent-response strong {
-    @apply text-gray-800 dark:text-gray-100 font-semibold;
+    @apply font-semibold text-gray-800 dark:text-gray-100;
   }
   .agent-response ul {
-    @apply list-disc ml-4 space-y-2;
+    @apply ml-4 list-disc space-y-2;
   }
   .agent-response a {
-    @apply text-blue-600 hover:text-blue-500 underline;
+    @apply text-blue-600 underline hover:text-blue-500;
   }
 }

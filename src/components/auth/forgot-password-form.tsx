@@ -1,23 +1,5 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { forgotPassSchema } from "@/lib/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { authClient } from "@/server/auth/client";
-import { toast } from "sonner";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Card,
   CardContent,
@@ -25,9 +7,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { ShineBorder } from "../ui/shine-border";
-import { UI_CUSTOM } from "@/lib/constants";
+} from '@/components/ui/card';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@/server/auth/client';
+import { ShineBorder } from '../ui/shine-border';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { forgotPassSchema } from '@/lib/zod';
+import { UI_CUSTOM } from '@/lib/constants';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import Link from 'next/link';
+import { z } from 'zod';
 
 export function ForgotPasswordForm() {
   const [pendingForgetPassword, setPendingForgetPassword] = useState(false);
@@ -35,18 +35,18 @@ export function ForgotPasswordForm() {
 
   const form = useForm<z.infer<typeof forgotPassSchema>>({
     resolver: zodResolver(forgotPassSchema),
-    defaultValues: { email: "" },
+    defaultValues: { email: '' },
   });
 
   const handleForgetPassword = async (values: z.infer<typeof forgotPassSchema>) => {
     try {
       await authClient.forgetPassword(
-        { email: values.email, redirectTo: "/reset-password" },
+        { email: values.email, redirectTo: '/reset-password' },
         {
           onRequest: () => setPendingForgetPassword(true),
           onError: (ctx) => {
-            toast.error((ctx.error?.code as string) ?? "Something went wrong", {
-              description: ctx.error.message ?? "Something went wrong.",
+            toast.error((ctx.error?.code as string) ?? 'Something went wrong', {
+              description: ctx.error.message ?? 'Something went wrong.',
             });
           },
         },
@@ -59,9 +59,9 @@ export function ForgotPasswordForm() {
 
   if (isSuccess) {
     return (
-      <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
+      <Card className="relative w-full max-w-[350px] overflow-hidden shadow-xl">
         <ShineBorder shineColor={UI_CUSTOM.shine_color} />
-        <CardContent className="pt-6 pb-10 flex flex-col items-center text-center gap-4">
+        <CardContent className="flex flex-col items-center gap-4 pt-6 pb-10 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
             <svg
               className="h-6 w-6 text-green-600"
@@ -77,17 +77,17 @@ export function ForgotPasswordForm() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-foreground text-2xl font-semibold tracking-tight">
             Check your email
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             We’ve sent a password reset link to your inbox.
             <br />
             Please follow the instructions to reset your password.
           </p>
           <Link
             href="/signin"
-            className="w-full max-w-[200px] inline-flex justify-center rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            className="inline-flex w-full max-w-[200px] justify-center rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
             Return to Sign in
           </Link>
@@ -97,21 +97,16 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <Card className="relative overflow-hidden max-w-[350px] w-full shadow-xl">
+    <Card className="relative w-full max-w-[350px] overflow-hidden shadow-xl">
       <ShineBorder shineColor={UI_CUSTOM.shine_color} />
       <CardHeader>
         <CardTitle className="text-xl">Forgot Password</CardTitle>
-        <CardDescription>
-          Enter your email to receive a password reset link.
-        </CardDescription>
+        <CardDescription>Enter your email to receive a password reset link.</CardDescription>
       </CardHeader>
 
       <CardContent>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleForgetPassword)}
-            className="grid gap-4"
-          >
+          <form onSubmit={form.handleSubmit(handleForgetPassword)} className="grid gap-4">
             <FormField
               control={form.control}
               name="email"
@@ -133,15 +128,15 @@ export function ForgotPasswordForm() {
 
             <Button
               type="submit"
-              className="w-full mt-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="mt-2 w-full cursor-pointer bg-indigo-500 hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
               disabled={pendingForgetPassword}
             >
-              {pendingForgetPassword ? "Sending..." : "Send Reset Link"}
+              {pendingForgetPassword ? 'Sending...' : 'Send Reset Link'}
             </Button>
           </form>
         </Form>
 
-        <div className="mt-4 text-sm text-muted-foreground flex justify-between">
+        <div className="text-muted-foreground mt-4 flex justify-between text-sm">
           <Link href="/signin" className="text-indigo-500 hover:text-indigo-600">
             Back to login
           </Link>
@@ -151,7 +146,7 @@ export function ForgotPasswordForm() {
         </div>
       </CardContent>
 
-      <CardFooter className="text-xs text-muted-foreground justify-center">
+      <CardFooter className="text-muted-foreground justify-center text-xs">
         © {new Date().getFullYear()} Startalyze. All rights reserved.
       </CardFooter>
     </Card>

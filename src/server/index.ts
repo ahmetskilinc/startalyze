@@ -1,5 +1,5 @@
-import { j } from "./jstack";
-import { mailerRouter } from "./routers/mail-router";
+import { mailerRouter } from './routers/mail-router';
+import { j } from './jstack';
 
 /**
  * This is your base API.
@@ -7,11 +7,7 @@ import { mailerRouter } from "./routers/mail-router";
  *
  * @see https://jstack.app/docs/backend/app-router
  */
-const api = j
-  .router()
-  .basePath("/api")
-  .use(j.defaults.cors)
-  .onError(j.defaults.errorHandler);
+const api = j.router().basePath('/api').use(j.defaults.cors).onError(j.defaults.errorHandler);
 
 /**
  * This is the main router for your server.

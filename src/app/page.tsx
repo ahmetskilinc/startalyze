@@ -1,27 +1,27 @@
-import { cn } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
-import { AuroraText } from "@/components/ui/aurora-text";
-import MotionWrapper from "@/components/motion";
-import Link from "next/link";
-import { DotPattern } from "@/components/ui/dot-pattern";
-import { Separator } from "@/components/ui/separator";
-import HeroVideoDialog from "@/components/ui/hero-video-dialog";
-import { ShineBorder } from "@/components/ui/shine-border";
-import { Card, CardContent } from "@/components/ui/card";
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { features, UI_CUSTOM } from "@/lib/constants";
-import { Globe } from "@/components/ui/globe";
-import { LandingHeader } from "@/components/ui/landing-header";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { TweetCard } from "@/components/ui/tweet-card";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { auth } from "@/server/auth";
-import { headers } from "next/headers";
+} from '@/components/ui/accordion';
+import HeroVideoDialog from '@/components/ui/hero-video-dialog';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { LandingHeader } from '@/components/ui/landing-header';
+import { ShimmerButton } from '@/components/ui/shimmer-button';
+import { ShineBorder } from '@/components/ui/shine-border';
+import { AuroraText } from '@/components/ui/aurora-text';
+import { DotPattern } from '@/components/ui/dot-pattern';
+import { Card, CardContent } from '@/components/ui/card';
+import { TweetCard } from '@/components/ui/tweet-card';
+import { Separator } from '@/components/ui/separator';
+import { features, UI_CUSTOM } from '@/lib/constants';
+import MotionWrapper from '@/components/motion';
+import { Globe } from '@/components/ui/globe';
+import { ChevronRight } from 'lucide-react';
+import { headers } from 'next/headers';
+import { auth } from '@/server/auth';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default async function Home() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -42,15 +42,13 @@ export default async function Home() {
                   <MotionWrapper delay={0.5}>
                     <h1
                       className={cn(
-                        "text-black",
-                        "relative max-w-4xl px-4 py-2 text-balance font-semibold tracking-tight",
-                        "text-3xl sm:text-6xl md:text-7xl",
+                        'text-black',
+                        'relative max-w-4xl px-4 py-2 font-semibold tracking-tight text-balance',
+                        'text-3xl sm:text-6xl md:text-7xl',
                       )}
                     >
                       <span className="whitespace-nowrap">
-                        <AuroraText colors={UI_CUSTOM.aurora_text.color}>
-                          Validate
-                        </AuroraText>{" "}
+                        <AuroraText colors={UI_CUSTOM.aurora_text.color}>Validate</AuroraText>{' '}
                         before you create.
                       </span>
                       <br />
@@ -59,16 +57,15 @@ export default async function Home() {
                   </MotionWrapper>
 
                   <MotionWrapper delay={0.6}>
-                    <p className="max-w-2xl text-base text-black dark:font-medium dark:text-white sm:text-lg">
-                      <strong>Startalyze</strong> helps you test your startup idea in
-                      minutes — paste in your idea and instantly get similar
-                      products, market insights, SWOT analysis, ideal user personas,
-                      and a go-to-market plan.
+                    <p className="max-w-2xl text-base text-black sm:text-lg dark:font-medium dark:text-white">
+                      <strong>Startalyze</strong> helps you test your startup idea in minutes —
+                      paste in your idea and instantly get similar products, market insights, SWOT
+                      analysis, ideal user personas, and a go-to-market plan.
                     </p>
                   </MotionWrapper>
 
                   <MotionWrapper delay={0.7}>
-                    <div className="md:mt-2 mt-0 w-full container mx-auto px-6 z-10">
+                    <div className="z-10 container mx-auto mt-0 w-full px-6 md:mt-2">
                       <HeroVideoDialogDemoTopInBottomOut />
                     </div>
                   </MotionWrapper>
@@ -86,14 +83,14 @@ export default async function Home() {
         {/* CTA Section */}
         <section className="md:py-6" id="cta">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="relative flex flex-col lg:flex-row items-center justify-center overflow-hidden rounded-lg border bg-background px-6 sm:px-10 md:px-20 lg:px-40 pt-8 pb-32 sm:pb-40 md:pb-60">
+            <div className="bg-background relative flex flex-col items-center justify-center overflow-hidden rounded-lg border px-6 pt-8 pb-32 sm:px-10 sm:pb-40 md:px-20 md:pb-60 lg:flex-row lg:px-40">
               <Link href="/signup">
-                <ShimmerButton className="self-end mb-4 lg:absolute lg:top-8 lg:right-8 bg-black text-white py-2 px-4 sm:px-5 md:px-6 rounded-lg text-sm sm:text-base transition-all z-10">
+                <ShimmerButton className="z-10 mb-4 self-end rounded-lg bg-black px-4 py-2 text-sm text-white transition-all sm:px-5 sm:text-base md:px-6 lg:absolute lg:top-8 lg:right-8">
                   Get Early Access
                 </ShimmerButton>
               </Link>
 
-              <span className="pointer-events-none whitespace-nowrap bg-gradient-to-b from-indigo-500 to-indigo-700/80 bg-clip-text text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-tight text-transparent dark:from-indigo-200 dark:to-indigo-800/10">
+              <span className="pointer-events-none bg-gradient-to-b from-indigo-500 to-indigo-700/80 bg-clip-text text-center text-3xl leading-tight font-semibold tracking-tight whitespace-nowrap text-transparent sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl dark:from-indigo-200 dark:to-indigo-800/10">
                 Built for the World
               </span>
 
@@ -106,59 +103,50 @@ export default async function Home() {
         {/* FAQ Section */}
         <section id="faq" className="py-6">
           <div className="container mx-auto px-6">
-            <div className="flex flex-col lg:flex-row items-center lg:space-x-8 space-y-6 lg:space-y-0">
+            <div className="flex flex-col items-center space-y-6 lg:flex-row lg:space-y-0 lg:space-x-8">
               <div className="w-full lg:w-3/4">
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>What does Startalyze do?</AccordionTrigger>
                     <AccordionContent>
-                      We allow you to paste in your startup idea. We provide similar
-                      products, market data, and offer a comprehensive SWOT analysis,
-                      user personas, and a go-to-market plan to guide you.
+                      We allow you to paste in your startup idea. We provide similar products,
+                      market data, and offer a comprehensive SWOT analysis, user personas, and a
+                      go-to-market plan to guide you.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-2">
-                    <AccordionTrigger>
-                      How does the validator analyze the market?
-                    </AccordionTrigger>
+                    <AccordionTrigger>How does the validator analyze the market?</AccordionTrigger>
                     <AccordionContent>
-                      The validator scrapes publicly available data, including
-                      competitor products and market trends, to generate insights
-                      about the potential of your startup idea in the current market.
+                      The validator scrapes publicly available data, including competitor products
+                      and market trends, to generate insights about the potential of your startup
+                      idea in the current market.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-3">
-                    <AccordionTrigger>
-                      Is the SWOT analysis customizable?
-                    </AccordionTrigger>
+                    <AccordionTrigger>Is the SWOT analysis customizable?</AccordionTrigger>
                     <AccordionContent>
-                      Yes, the SWOT analysis is automatically generated based on the
-                      market data and your idea. However, you can adjust it manually
-                      to better fit your specific goals and vision.
+                      Yes, the SWOT analysis is automatically generated based on the market data and
+                      your idea. However, you can adjust it manually to better fit your specific
+                      goals and vision.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-4">
-                    <AccordionTrigger>
-                      Can I validate multiple ideas at once?
-                    </AccordionTrigger>
+                    <AccordionTrigger>Can I validate multiple ideas at once?</AccordionTrigger>
                     <AccordionContent>
-                      Currently, Startalyze focuses on one idea at a time to provide
-                      a deep, detailed analysis. However, multi-idea support is on
-                      our roadmap.
+                      Currently, Startalyze focuses on one idea at a time to provide a deep,
+                      detailed analysis. However, multi-idea support is on our roadmap.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-5">
-                    <AccordionTrigger>
-                      Do I need to sign up to use Startalyze?
-                    </AccordionTrigger>
+                    <AccordionTrigger>Do I need to sign up to use Startalyze?</AccordionTrigger>
                     <AccordionContent>
-                      Yes, signup is required to access the validator and save your
-                      analysis results. It helps us provide a personalized experience
-                      and store your data securely.
+                      Yes, signup is required to access the validator and save your analysis
+                      results. It helps us provide a personalized experience and store your data
+                      securely.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -167,20 +155,16 @@ export default async function Home() {
                       How accurate is the analysis provided by Startalyze?
                     </AccordionTrigger>
                     <AccordionContent>
-                      While we use up-to-date data and proven frameworks like SWOT
-                      and persona modeling, the accuracy depends on the specificity
-                      of your input and the availability of market data. It&apos;s
-                      meant to guide, not guarantee outcomes.
+                      While we use up-to-date data and proven frameworks like SWOT and persona
+                      modeling, the accuracy depends on the specificity of your input and the
+                      availability of market data. It&apos;s meant to guide, not guarantee outcomes.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-7">
-                    <AccordionTrigger>
-                      Can I export or share the analysis reports?
-                    </AccordionTrigger>
+                    <AccordionTrigger>Can I export or share the analysis reports?</AccordionTrigger>
                     <AccordionContent>
-                      Yes, once your analysis is complete, you can export it as a PDF
-                      or share a private link with collaborators or investors for
-                      easy access and review.
+                      Yes, once your analysis is complete, you can export it as a PDF or share a
+                      private link with collaborators or investors for easy access and review.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -195,7 +179,7 @@ export default async function Home() {
 
       {/*Footer */}
       <div className="border-t py-6">
-        <div className="container mx-auto px-6 flex justify-between items-center">
+        <div className="container mx-auto flex items-center justify-between px-6">
           <div className="flex items-center">
             <span className="text-xl font-bold">Startalyze</span>
           </div>
@@ -229,10 +213,9 @@ function SiteBanner() {
         >
           ✨
           <span className="ml-1 font-semibold">
-            Startalyze - Validate ideas, analyze markets, and launch faster than
-            ever.
+            Startalyze - Validate ideas, analyze markets, and launch faster than ever.
           </span>
-          <ChevronRight className="ml-1 mt-[3px] hidden size-4 transition-all duration-300 ease-out group-hover:translate-x-1 lg:inline-block" />
+          <ChevronRight className="mt-[3px] ml-1 hidden size-4 transition-all duration-300 ease-out group-hover:translate-x-1 lg:inline-block" />
         </Link>
       </div>
       <hr className="absolute bottom-0 m-0 h-px w-full bg-neutral-200/30" />
@@ -245,14 +228,14 @@ function AnnouncementPill() {
     <MotionWrapper delay={0.3}>
       <div className="flex flex-col items-center gap-6 text-center">
         <Link
-          href={"/signup"}
+          href={'/signup'}
           target="_blank"
-          className="inline-flex items-center rounded-full border border-input bg-background px-4 py-1 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+          className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center rounded-full border px-4 py-1 text-sm font-medium shadow-sm transition-colors"
         >
           🎉
           <Separator className="mx-2 h-4" orientation="vertical" />
           Introducing Startalyze
-          <ChevronRight className="ml-1 size-4 text-muted-foreground" />
+          <ChevronRight className="text-muted-foreground ml-1 size-4" />
         </Link>
       </div>
     </MotionWrapper>
@@ -266,7 +249,7 @@ function HeroVideoDialogDemoTopInBottomOut() {
 
       <CardContent className="px-1">
         <HeroVideoDialog
-          className="block dark:hidden w-full z-50"
+          className="z-50 block w-full dark:hidden"
           animationStyle="top-in-bottom-out"
           videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
           thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"
@@ -274,7 +257,7 @@ function HeroVideoDialogDemoTopInBottomOut() {
         />
 
         <HeroVideoDialog
-          className="hidden dark:block w-full"
+          className="hidden w-full dark:block"
           animationStyle="top-in-bottom-out"
           videoSrc="https://youtu.be/FO3WwYYzClA?si=IX6bh-2GebD-WEFU"
           thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"

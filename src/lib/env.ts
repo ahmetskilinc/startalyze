@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { createEnv } from "@t3-oss/env-nextjs";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   server: {
@@ -17,7 +17,7 @@ export const env = createEnv({
   },
   client: {},
   shared: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
+    NODE_ENV: z.enum(['development', 'test', 'production']),
     NEXT_PUBLIC_DEVELOPMENT_URL: z.string().optional(),
     NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: z.string(),
     NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: z.string(),

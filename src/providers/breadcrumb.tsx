@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Breadcrumb = {
   label: string;
@@ -14,9 +14,7 @@ type BreadcrumbContextType = {
   clearBreadcrumbs: () => void;
 };
 
-const BreadcrumbContext = createContext<BreadcrumbContextType | undefined>(
-  undefined,
-);
+const BreadcrumbContext = createContext<BreadcrumbContextType | undefined>(undefined);
 
 export function BreadcrumbProvider({ children }: { children: ReactNode }) {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
@@ -46,7 +44,7 @@ export function BreadcrumbProvider({ children }: { children: ReactNode }) {
 export function useBreadcrumb() {
   const context = useContext(BreadcrumbContext);
   if (context === undefined) {
-    throw new Error("useBreadcrumb must be used within a BreadcrumbProvider");
+    throw new Error('useBreadcrumb must be used within a BreadcrumbProvider');
   }
   return context;
 }

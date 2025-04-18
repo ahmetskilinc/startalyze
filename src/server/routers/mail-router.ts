@@ -1,9 +1,9 @@
-import { j, publicProcedure } from "../jstack";
-import { mailer } from "@/lib/mailer";
-import React from "react";
-import { emailTemplates } from "@/components/mail";
-import { mailerInputSchema } from "@/lib/zod";
-import { env } from "@/lib/env";
+import { emailTemplates } from '@/components/mail';
+import { j, publicProcedure } from '../jstack';
+import { mailerInputSchema } from '@/lib/zod';
+import { mailer } from '@/lib/mailer';
+import { env } from '@/lib/env';
+import React from 'react';
 
 export const mailerRouter = j.router({
   send: publicProcedure.input(mailerInputSchema).mutation(async ({ input, c }) => {
@@ -13,7 +13,7 @@ export const mailerRouter = j.router({
       if (!TemplateComponent) {
         return c.superjson({
           success: false,
-          error: "Invalid template selected.",
+          error: 'Invalid template selected.',
         });
       }
 
