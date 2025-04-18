@@ -33,21 +33,33 @@ export const UserMessage = ({ text }: { text: string }) => {
 };
 
 export const AgentMessage = ({ message }: { message: Message }) => {
-  // Try to parse the message content as JSON if it's a validation report
   let validationData = null;
-  if (message.content.includes('```json')) {
-    try {
-      const parts = message.content.split('```json');
-      if (parts[1]) {
-        const jsonStr = parts[1].split('```')[0];
-        if (jsonStr) {
-          validationData = JSON.parse(jsonStr.trim());
-        }
+  let cleanedContent = message.content;
+
+  if (message.content.includes('<think>')) {
+    const parts = message.content.split('<think>');
+    if (parts[1]) {
+      const endThinkIndex = parts[1].indexOf('</think>');
+      if (endThinkIndex !== -1) {
+        cleanedContent = parts[1].substring(endThinkIndex + 8).trim();
       }
-    } catch (error) {
-      console.error('Failed to parse validation report JSON:', error);
     }
   }
+
+  // if (cleanedContent.includes('```json')) {
+  //   try {
+  //     const parts = cleanedContent.split('```json');
+  //     if (parts[1]) {
+  //       const jsonStr = parts[1].split('```')[0];
+  //       if (jsonStr) {
+  //         validationData = JSON.parse(jsonStr.trim());
+  //         console.log(validationData);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to parse validation report JSON:', error);
+  //   }
+  // }
 
   return (
     <div className="flex text-base leading-relaxed">
@@ -60,7 +72,7 @@ export const AgentMessage = ({ message }: { message: Message }) => {
             className="agent-response space-y-6 text-[15px] [&>*:first-child]:mt-0"
             style={geistSans.style}
           >
-            {message.content}
+            {cleanedContent}
           </Markdown>
         )}
         {message.parts && message.parts.filter((part) => part.type === 'source').length >= 1 && (
