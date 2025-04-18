@@ -30,14 +30,6 @@ const ChatMessages = ({ messages, status }: Props) => {
         <div className="mx-auto w-full max-w-[46rem]">
           <div className="flex flex-col space-y-8 p-4 pt-7">
             {messages.map((msg, index) => {
-              const isLastAssistantMsg =
-                msg.role === 'assistant' &&
-                msg.id === messages.filter((m) => m.role === 'assistant').at(-1)?.id;
-
-              if (status === 'streaming' && isLastAssistantMsg) {
-                return null;
-              }
-
               return (
                 <div key={index}>
                   {msg.role === 'user' && <UserMessage text={msg.content} />}

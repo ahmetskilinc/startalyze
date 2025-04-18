@@ -1,6 +1,6 @@
 'use client';
 
-import { useChat, useChatMessages } from '@/hooks/use-chats';
+import { useChat, useChatMessages, useCreateChat } from '@/hooks/use-chats';
 import ChatInput from '@/components/chat-ui/chat-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useChat as useAIChat } from '@ai-sdk/react';
@@ -9,12 +9,15 @@ import { HeaderTitle } from '../ui/header-title';
 import { useRouter } from 'next/navigation';
 import ChatMessages from './chat-messages';
 import { useForm } from 'react-hook-form';
+import { Message } from 'ai';
 import Link from 'next/link';
 import { z } from 'zod';
 
 const FormSchema = z.object({
   prompt: z.string(),
 });
+
+type FormData = z.infer<typeof FormSchema>;
 
 const ChatPage = ({ chatId }: { chatId?: string }) => {
   const router = useRouter();
@@ -24,20 +27,15 @@ const ChatPage = ({ chatId }: { chatId?: string }) => {
   const [error, setError] = useState<string | null>(null);
   const title = isNewChat ? 'New Chat' : chat?.title || `Chat ${chatId?.slice(0, 8)}`;
   const initialMessages = useChatMessages(chatId ?? '').data;
+  const createChat = useCreateChat();
 
-  const { messages, setInput, handleSubmit, status, reload } = useAIChat({
+  const { messages, setInput, handleSubmit: aiHandleSubmit, status, reload } = useAIChat({
     initialMessages,
     id: chatId,
     body: { chatId },
     experimental_prepareRequestBody: ({ messages }) => {
       const last = messages[messages.length - 1];
       return { chatId, message: last };
-    },
-    async onResponse(response) {
-      if (isNewChat) {
-        const { chatId: newChatId } = await response.json();
-        router.push(`/chat/${newChatId}`);
-      }
     },
   });
 
@@ -65,7 +63,7 @@ const ChatPage = ({ chatId }: { chatId?: string }) => {
     }
   }, [initialMessages]);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
   });
 
@@ -75,6 +73,26 @@ const ChatPage = ({ chatId }: { chatId?: string }) => {
   }, [watchedPrompt, setInput]);
 
   const memoMessages = useMemo(() => messages, [messages]);
+
+  const handleFormSubmit = async (event?: { preventDefault?: () => void }) => {
+    event?.preventDefault?.();
+    const formData = form.getValues();
+    
+    if (isNewChat) {
+      const userMessage: Message = {
+        role: 'user',
+        content: formData.prompt,
+        id: Date.now().toString(),
+      };
+      createChat.mutate({
+        userMessage,
+        title: formData.prompt.slice(0, 50) + (formData.prompt.length > 50 ? '...' : ''),
+      });
+      form.reset();
+    } else {
+      aiHandleSubmit(event, { data: formData });
+    }
+  };
 
   if (error) {
     return (
@@ -96,7 +114,7 @@ const ChatPage = ({ chatId }: { chatId?: string }) => {
     <main className="flex h-[calc(100dvh-4rem)] flex-col">
       <HeaderTitle breadcrumbs={[{ label: title }]} />
       <ChatMessages messages={memoMessages} status={status} />
-      <ChatInput form={form} handleSubmit={handleSubmit} status={status} />
+      <ChatInput form={form} handleSubmit={handleFormSubmit} status={status} />
     </main>
   );
 };

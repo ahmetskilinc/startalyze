@@ -42,7 +42,7 @@ export default async function Home() {
                   <MotionWrapper delay={0.5}>
                     <h1
                       className={cn(
-                        'text-black',
+                        'text-black dark:text-white',
                         'relative max-w-4xl px-4 py-2 font-semibold tracking-tight text-balance',
                         'text-3xl sm:text-6xl md:text-7xl',
                       )}
@@ -57,7 +57,7 @@ export default async function Home() {
                   </MotionWrapper>
 
                   <MotionWrapper delay={0.6}>
-                    <p className="max-w-2xl text-base text-black sm:text-lg dark:font-medium dark:text-white">
+                    <p className="max-w-2xl text-base text-black dark:text-white sm:text-lg dark:font-medium">
                       <strong>Startalyze</strong> helps you test your startup idea in minutes —
                       paste in your idea and instantly get similar products, market insights, SWOT
                       analysis, ideal user personas, and a go-to-market plan.
@@ -85,7 +85,7 @@ export default async function Home() {
           <div className="container mx-auto px-4 sm:px-6">
             <div className="bg-background relative flex flex-col items-center justify-center overflow-hidden rounded-lg border px-6 pt-8 pb-32 sm:px-10 sm:pb-40 md:px-20 md:pb-60 lg:flex-row lg:px-40">
               <Link href="/signup">
-                <ShimmerButton className="z-10 mb-4 self-end rounded-lg bg-black px-4 py-2 text-sm text-white transition-all sm:px-5 sm:text-base md:px-6 lg:absolute lg:top-8 lg:right-8">
+                <ShimmerButton className="z-10 mb-4 self-end rounded-lg bg-black px-4 py-2 text-sm text-white transition-all sm:px-5 sm:text-base md:px-6 lg:absolute lg:top-8 lg:right-8 dark:text-white">
                   Get Early Access
                 </ShimmerButton>
               </Link>

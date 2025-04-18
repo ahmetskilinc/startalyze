@@ -14,10 +14,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { useChats, useChat, useChatMessages } from '@/hooks/use-chats';
-import { MessageSquarePlus, Trash, Pencil } from 'lucide-react';
-import { deleteChat, type Chat } from '@/lib/actions/chat';
-import { useRouter, usePathname } from 'next/navigation';
+import { useChats, useDeleteChat } from '@/hooks/use-chats';
+import { MessageSquarePlus, Trash } from 'lucide-react';
+import { type Chat } from '@/lib/actions/chat';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -25,12 +25,10 @@ import * as React from 'react';
 import Link from 'next/link';
 
 export function NavMain() {
-  const router = useRouter();
   const pathname = usePathname();
-  const { data: chats = [], refetch: refetchChats } = useChats();
+  const { data: chats = [] } = useChats();
   const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
-  const { refetch: refetchChat } = useChat(chatToDelete?.id ?? '');
-  const { refetch: refetchMessages } = useChatMessages(chatToDelete?.id ?? '');
+  const deleteChat = useDeleteChat();
 
   const now = new Date();
   const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -77,20 +75,13 @@ export function NavMain() {
               >
                 <span className="truncate">{chat.title || `Chat ${chat.id.slice(0, 8)}`}</span>
                 <div className="absolute right-0 flex translate-x-8 transform gap-2 pr-1 opacity-0 transition-all duration-200 group-hover/link:translate-x-0 group-hover/link:opacity-100">
-                  {/* <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
-                    className="hover:text-blue-600"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button> */}
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       setChatToDelete(chat);
                     }}
                     className="cursor-pointer rounded-md p-1 transition-colors hover:bg-red-100 hover:text-red-600"
+                    disabled={deleteChat.isPending}
                   >
                     <Trash className="h-4 w-4" />
                   </button>
@@ -138,17 +129,13 @@ export function NavMain() {
             </Button>
             <Button
               variant="destructive"
-              onClick={async () => {
+              onClick={() => {
                 if (chatToDelete) {
-                  const chatId = chatToDelete.id;
-                  await deleteChat(chatId);
-                  if (pathname === `/chat/${chatId}`) {
-                    setChatToDelete(null);
-                    router.push('/chat');
-                  }
-                  await Promise.all([refetchChats(), refetchChat(), refetchMessages()]);
+                  deleteChat.mutate(chatToDelete.id);
+                  setChatToDelete(null);
                 }
               }}
+              disabled={deleteChat.isPending}
             >
               Delete
             </Button>

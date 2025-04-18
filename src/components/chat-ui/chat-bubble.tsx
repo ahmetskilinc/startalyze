@@ -95,7 +95,7 @@ export const AgentMessage = ({ message }: { message: Message }) => {
 
 export const AgentThinking = ({ status }: { status: AIResponseStatus }) => {
   return (
-    status === 'submitted' && (
+    (status === 'submitted' || status === 'streaming') && (
       <div className="flex text-base leading-relaxed">
         <AgentAvatar />
         <AnimatedShinyText className="mx-0 inline-flex items-center justify-center text-[15px] tracking-wide transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">

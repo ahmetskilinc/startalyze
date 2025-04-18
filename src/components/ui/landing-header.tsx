@@ -1,6 +1,7 @@
 'use client';
 import { navLinks, UI_CUSTOM } from '@/lib/constants';
 import { ShimmerButton } from './shimmer-button';
+import { ThemeToggle } from './theme-toggle';
 import { Session } from 'better-auth';
 import MotionWrapper from '../motion';
 import { cn } from '@/lib/utils';
@@ -39,19 +40,22 @@ export function LandingHeader({ session }: { session?: Session }) {
             })}
           </nav>
 
-          {session ? (
-            <Link href="/chat">
-              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="px-4 py-1 text-sm">
-                Chat now
-              </ShimmerButton>
-            </Link>
-          ) : (
-            <Link href="/signin">
-              <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="px-4 py-1 text-sm">
-                Sign in
-              </ShimmerButton>
-            </Link>
-          )}
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            {session ? (
+              <Link href="/chat">
+                <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="px-4 py-1 text-sm dark:text-white">
+                  Chat now
+                </ShimmerButton>
+              </Link>
+            ) : (
+              <Link href="/signin">
+                <ShimmerButton {...UI_CUSTOM.shimmer_btn} className="px-4 py-1 text-sm dark:text-white">
+                  Sign in
+                </ShimmerButton>
+              </Link>
+            )}
+          </div>
         </div>
       </MotionWrapper>
     </header>
