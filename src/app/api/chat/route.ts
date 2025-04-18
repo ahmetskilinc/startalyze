@@ -7,11 +7,11 @@ import {
 } from 'ai';
 import { createChat, getChat, getChatMessages, saveMessage } from '@/lib/actions/chat';
 import { generateTitleFromUserPromptAIAccess } from '@/lib/ai/ai-access';
+import { VALIDATE_STARTUP_IDEA_PROMPT } from '@/lib/ai/prompts';
 import { aiProvider } from '@/lib/ai/provider';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { auth } from '@/server/auth';
-import { env } from '@/lib/env';
 
 export async function POST(req: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -29,7 +29,6 @@ export async function POST(req: Request) {
     return Response.json({ success: true, chatId: savedChatId.chatId }, { status: 200 });
   }
 
-  // fetching previous messages to get more context
   const chat = await getChat(chatId);
 
   const previousMessages = await getChatMessages(chat.id);
@@ -61,14 +60,14 @@ export async function POST(req: Request) {
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), 60000);
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
       try {
         const result = streamText({
           model: aiProvider.languageModel('core-work'),
-          system: env.VALIDATE_STARTUP_IDEA_PROMPT,
+          system: VALIDATE_STARTUP_IDEA_PROMPT,
           messages: [
             {
               role: 'user',
@@ -83,17 +82,15 @@ export async function POST(req: Request) {
               responseMessages: response.messages,
             }).at(-1)!;
             await saveMessage(chatId, newMessage.content, 'assistant');
-            clearTimeout(timeoutId); // Clear the timeout when finished successfully
+            clearTimeout(timeoutId);
           },
         });
 
         result.consumeStream();
-        result.mergeIntoDataStream(dataStream, {
-          sendReasoning: true,
-        });
+        result.mergeIntoDataStream(dataStream);
       } catch (error: unknown) {
         console.error('AI Stream Error:', error);
-        clearTimeout(timeoutId); // Clear the timeout on error
+        clearTimeout(timeoutId);
 
         if (error instanceof Error) {
           if (error.message.includes('abort') || error.message.includes('timeout')) {
