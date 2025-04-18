@@ -1,18 +1,21 @@
-import { google } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
 import { createProviderRegistry } from "ai";
 import { customProvider } from "ai";
+import { env } from "../env";
 
-export const aiRegistery = createProviderRegistry({ google });
+const fourLLM = createOpenAI({
+  baseURL: "https://api.4llm.com/v1",
+  apiKey: env.FOURLLM_API_KEY,
+  compatibility: "compatible",
+});
+
+export const aiRegistery = createProviderRegistry({
+  fourLLM,
+});
 
 export const aiProvider = customProvider({
   languageModels: {
-    "title-model": google("gemini-2.0-flash-001"),
-    "core-work": google("gemini-2.0-pro-exp-02-05", {
-      useSearchGrounding: true,
-      dynamicRetrievalConfig: {
-        mode: "MODE_UNSPECIFIED",
-        dynamicThreshold: 0.8,
-      },
-    }),
+    "title-model": fourLLM("pone-chat"),
+    "core-work": fourLLM("pone-reasoner"),
   },
 });

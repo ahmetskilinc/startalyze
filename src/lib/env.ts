@@ -13,6 +13,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
+    FOURLLM_API_KEY: z.string(),
   },
   client: {},
   shared: {
@@ -36,5 +37,6 @@ export const env = createEnv({
     NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_FREE_PRODUCT_ID,
     NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
     NEXT_PUBLIC_DEVELOPMENT_URL: process.env.NEXT_PUBLIC_DEVELOPMENT_URL,
+    FOURLLM_API_KEY: process.env.FOURLLM_API_KEY,
   },
 });
