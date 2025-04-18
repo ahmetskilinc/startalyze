@@ -7,11 +7,11 @@ import {
 } from 'ai';
 import { createChat, getChat, getChatMessages, saveMessage } from '@/lib/actions/chat';
 import { generateTitleFromUserPromptAIAccess } from '@/lib/ai/ai-access';
+import { VALIDATE_STARTUP_IDEA_PROMPT } from '@/lib/ai/prompts';
 import { aiProvider } from '@/lib/ai/provider';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { auth } from '@/server/auth';
-import { env } from '@/lib/env';
 
 export async function POST(req: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       try {
         const result = streamText({
           model: aiProvider.languageModel('core-work'),
-          system: env.VALIDATE_STARTUP_IDEA_PROMPT,
+          system: VALIDATE_STARTUP_IDEA_PROMPT,
           messages: [
             {
               role: 'user',

@@ -1,8 +1,8 @@
 import { ValidationReport } from './validation-report';
 import { CornerDownRight, Ghost } from 'lucide-react';
 import { AnimatedShinyText } from '../ui/shiny-text';
+import ReactMarkdown from 'react-markdown';
 import { geistSans } from '@/lib/fonts';
-import Markdown from 'markdown-to-jsx';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { Message } from 'ai';
@@ -36,30 +36,17 @@ export const AgentMessage = ({ message }: { message: Message }) => {
   let validationData = null;
   let cleanedContent = message.content;
 
-  if (message.content.includes('<think>')) {
-    const parts = message.content.split('<think>');
-    if (parts[1]) {
-      const endThinkIndex = parts[1].indexOf('</think>');
-      if (endThinkIndex !== -1) {
-        cleanedContent = parts[1].substring(endThinkIndex + 8).trim();
-      }
+  const jsonMatch = cleanedContent.match(/```json\s*({[\s\S]*?})\s*```/);
+
+  if (jsonMatch && jsonMatch[1]) {
+    try {
+      const jsonStr = jsonMatch[1].trim();
+      validationData = JSON.parse(jsonStr);
+      console.log('Successfully parsed validation data');
+    } catch (error) {
+      console.error('Failed to parse validation report JSON:', error);
     }
   }
-
-  // if (cleanedContent.includes('```json')) {
-  //   try {
-  //     const parts = cleanedContent.split('```json');
-  //     if (parts[1]) {
-  //       const jsonStr = parts[1].split('```')[0];
-  //       if (jsonStr) {
-  //         validationData = JSON.parse(jsonStr.trim());
-  //         console.log(validationData);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to parse validation report JSON:', error);
-  //   }
-  // }
 
   return (
     <div className="flex text-base leading-relaxed">
@@ -68,12 +55,12 @@ export const AgentMessage = ({ message }: { message: Message }) => {
         {validationData ? (
           <ValidationReport data={validationData} />
         ) : (
-          <Markdown
+          <div
             className="agent-response space-y-6 text-[15px] [&>*:first-child]:mt-0"
             style={geistSans.style}
           >
-            {cleanedContent}
-          </Markdown>
+            <ReactMarkdown>{cleanedContent}</ReactMarkdown>
+          </div>
         )}
         {message.parts && message.parts.filter((part) => part.type === 'source').length >= 1 && (
           <div className="mt-6 flex items-center space-x-3 leading-none" style={geistSans.style}>
