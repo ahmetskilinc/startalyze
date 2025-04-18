@@ -240,8 +240,8 @@ export function ValidationReport({ data }: ValidationReportProps) {
             Array.isArray(techs) &&
             techs.length > 0 && (
               <Card key={category} className="overflow-hidden">
-                <CardContent className="p-6">
-                  <h3 className="mb-4 text-xl font-semibold capitalize">{category}</h3>
+                <CardContent className="">
+                  <h3 className="mt-0 mb-4 text-xl font-semibold capitalize">{category}</h3>
                   <div className="grid gap-6 md:grid-cols-2">
                     {Array.isArray(techs) &&
                       techs.map((tech: any, i: number) => (
@@ -304,6 +304,36 @@ export function ValidationReport({ data }: ValidationReportProps) {
     );
   };
 
+  const renderBusinessModel = (items: any[]) => (
+    <div className="mt-4 space-y-6">
+      {items.map((item, i) => (
+        <Card key={i}>
+          <CardHeader>
+            <CardTitle>{item.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {item.data.map((stream: any, j: number) => (
+                <div key={j} className="border-b pb-4 last:border-0 last:pb-0">
+                  <div className="mb-2 flex items-center justify-between">
+                    <h4 className="font-medium">{stream.stream}</h4>
+                    <Badge variant={stream.potential === 'High' ? 'secondary' : 'default'}>
+                      {stream.potential} Potential
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Progress value={stream.percentage} />
+                    <span className="text-sm font-medium">{stream.percentage}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+
   return (
     <div className="w-full space-y-6" style={geistSans.style}>
       <div className="">
@@ -331,6 +361,7 @@ export function ValidationReport({ data }: ValidationReportProps) {
               {section.type === 'table' && renderTable(section.items)}
               {section.type === 'matrix' && renderMatrix(section.items)}
               {section.type === 'summary' && renderSummary(section.items)}
+              {section.type === 'chart' && renderBusinessModel(section.items)}
               {section.type === 'tech-stack' &&
                 renderTechStack(section.items as unknown as TechStackItems)}
             </AccordionContent>

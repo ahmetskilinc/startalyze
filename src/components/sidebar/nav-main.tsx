@@ -17,7 +17,7 @@ import {
 import { useChats, useChat, useChatMessages } from '@/hooks/use-chats';
 import { MessageSquarePlus, Trash, Pencil } from 'lucide-react';
 import { deleteChat, type Chat } from '@/lib/actions/chat';
-import { redirect, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -25,6 +25,7 @@ import * as React from 'react';
 import Link from 'next/link';
 
 export function NavMain() {
+  const router = useRouter();
   const pathname = usePathname();
   const { data: chats = [], refetch: refetchChats } = useChats();
   const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
@@ -139,12 +140,13 @@ export function NavMain() {
               variant="destructive"
               onClick={async () => {
                 if (chatToDelete) {
-                  await deleteChat(chatToDelete.id);
-                  await Promise.all([refetchChats(), refetchChat(), refetchMessages()]);
-                  setChatToDelete(null);
-                  if (pathname === `/chat/${chatToDelete.id}`) {
-                    redirect(`/chat`);
+                  const chatId = chatToDelete.id;
+                  await deleteChat(chatId);
+                  if (pathname === `/chat/${chatId}`) {
+                    setChatToDelete(null);
+                    router.push('/chat');
                   }
+                  await Promise.all([refetchChats(), refetchChat(), refetchMessages()]);
                 }
               }}
             >
