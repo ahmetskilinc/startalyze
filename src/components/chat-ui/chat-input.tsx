@@ -49,6 +49,20 @@ const ChatInput = ({
                       className="z-[10000] !min-h-28 w-full resize-none border-none bg-transparent px-5 pt-5 text-[15px] text-gray-800 shadow-none placeholder:text-gray-500 focus:outline-none focus-visible:ring-0 dark:text-white dark:placeholder:text-gray-400"
                       translate="no"
                       spellCheck={false}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          if (e.shiftKey) {
+                            // Let the default behavior handle new line
+                            return;
+                          } else {
+                            e.preventDefault();
+                            if (field.value && field.value.trim() !== '') {
+                              handleSubmit();
+                              form.setValue('prompt', '');
+                            }
+                          }
+                        }
+                      }}
                       {...field}
                     />
                   </FormControl>

@@ -2,6 +2,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createProviderRegistry } from 'ai';
 import { customProvider } from 'ai';
 import { env } from '../env';
+import axios from 'axios';
 
 const fourLLM = createOpenAI({
   baseURL: 'https://api.4llm.com/v1',
