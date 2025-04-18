@@ -1,9 +1,9 @@
-import { headers } from "next/headers";
-import { user } from "@/server/db/schema";
-import { auth } from "@/server/auth";
-import { eq } from "drizzle-orm";
-import { db } from "@/server/db";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { user } from '@/server/db/schema';
+import { headers } from 'next/headers';
+import { auth } from '@/server/auth';
+import { eq } from 'drizzle-orm';
+import { db } from '@/server/db';
 
 export async function GET() {
   try {
@@ -20,7 +20,7 @@ export async function GET() {
 
     return NextResponse.json({ isOnboarded: !!userData?.onboardingCompleted });
   } catch (error) {
-    console.error("Error checking user onboarding status:", error);
+    console.error('Error checking user onboarding status:', error);
     return NextResponse.json({ isOnboarded: false }, { status: 500 });
   }
 }

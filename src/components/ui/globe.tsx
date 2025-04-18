@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import createGlobe, { COBEOptions } from "cobe";
-import { useMotionValue, useSpring } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useMotionValue, useSpring } from 'motion/react';
+import createGlobe, { COBEOptions } from 'cobe';
+import { useEffect, useRef } from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const MOVEMENT_DAMPING = 1400;
 
@@ -59,7 +59,7 @@ export function Globe({
   const updatePointerInteraction = (value: number | null) => {
     pointerInteracting.current = value;
     if (canvasRef.current) {
-      canvasRef.current.style.cursor = value !== null ? "grabbing" : "grab";
+      canvasRef.current.style.cursor = value !== null ? 'grabbing' : 'grab';
     }
   };
 
@@ -78,7 +78,7 @@ export function Globe({
       }
     };
 
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     onResize();
 
     const globe = createGlobe(canvasRef.current!, {
@@ -93,23 +93,18 @@ export function Globe({
       },
     });
 
-    setTimeout(() => (canvasRef.current!.style.opacity = "1"), 0);
+    setTimeout(() => (canvasRef.current!.style.opacity = '1'), 0);
     return () => {
       globe.destroy();
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [rs, config]);
 
   return (
-    <div
-      className={cn(
-        "absolute inset-0 mx-auto aspect-[1/1] w-full max-w-[600px]",
-        className,
-      )}
-    >
+    <div className={cn('absolute inset-0 mx-auto aspect-[1/1] w-full max-w-[600px]', className)}>
       <canvas
         className={cn(
-          "size-full opacity-0 transition-opacity duration-500 [contain:layout_paint_size]",
+          'size-full opacity-0 transition-opacity duration-500 [contain:layout_paint_size]',
         )}
         ref={canvasRef}
         onPointerDown={(e) => {

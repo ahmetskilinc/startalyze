@@ -1,3 +1,1 @@
-#!/bin/sh
-
-git diff --name-only --cached --diff-filter=ACM | grep -E '\.(js|ts|tsx|json|css|md)$' | xargs biome format --write
+bun lint-staged

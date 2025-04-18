@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   DropdownMenu,
@@ -8,13 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/dropdown-menu';
 import {
   Bell,
   ChevronsUpDown,
@@ -26,16 +20,22 @@ import {
   Settings,
   Sun,
   User,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { authClient } from "@/server/auth/client";
-import { Badge } from "../ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTheme } from "next-themes";
+} from 'lucide-react';
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { authClient } from '@/server/auth/client';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
+import { Badge } from '../ui/badge';
+import { toast } from 'sonner';
 
 export function NavUser() {
   const router = useRouter();
@@ -51,11 +51,11 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await authClient.signOut();
-      router.push("/signin");
-      toast.success("Logged out successfully");
+      router.push('/signin');
+      toast.success('Logged out successfully');
     } catch (error) {
       console.error(error);
-      toast.error("Failed to log out");
+      toast.error('Failed to log out');
     }
   };
 
@@ -85,54 +85,48 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.image ?? ""} alt={user.name} />
+                <AvatarImage src={user.image ?? ''} alt={user.name} />
                 <AvatarFallback className="rounded-lg">
-                  {user.name?.slice(0, 2).toUpperCase() || "U"}
+                  {user.name?.slice(0, 2).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium flex items-center">
+                <span className="flex items-center truncate font-medium">
                   {user.name}
-                  <Badge className="bg-indigo-500 text-white ml-1 text-[10px]">
-                    {user.plan}
-                  </Badge>
+                  <Badge className="ml-1 bg-indigo-500 text-[10px] text-white">{user.plan}</Badge>
                 </span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
-                </span>
+                <span className="text-muted-foreground truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             align="start"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.image ?? ""} alt={user.name} />
+                  <AvatarImage src={user.image ?? ''} alt={user.name} />
                   <AvatarFallback className="rounded-lg">
-                    {user.name?.slice(0, 2).toUpperCase() || "U"}
+                    {user.name?.slice(0, 2).toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
-                  </span>
+                  <span className="text-muted-foreground truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => handleNavigate("/account")}>
+              <DropdownMenuItem onClick={() => handleNavigate('/account')}>
                 <User className="mr-2 size-4" />
                 <span>Account</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleNavigate("/account/settings")}>
+              <DropdownMenuItem onClick={() => handleNavigate('/account/settings')}>
                 <Settings className="mr-2 size-4" />
                 <span>Settings</span>
               </DropdownMenuItem>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Form,
@@ -7,38 +7,32 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { authClient } from "@/server/auth/client";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { user } from "@/server/db/schema";
-import { toast } from "sonner";
-import * as z from "zod";
+} from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@/server/auth/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { user } from '@/server/db/schema';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
 
 const personalInfoSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, { message: "First name must be at least 2 characters." }),
-  lastName: z
-    .string()
-    .min(2, { message: "Last name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
+  firstName: z.string().min(2, { message: 'First name must be at least 2 characters.' }),
+  lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
 });
 
 const passwordSchema = z
   .object({
-    currentPassword: z.string().min(1, { message: "Current password is required" }),
-    newPassword: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
+    currentPassword: z.string().min(1, { message: 'Current password is required' }),
+    newPassword: z.string().min(8, { message: 'Password must be at least 8 characters' }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ['confirmPassword'],
   });
 
 const billingSchema = z.object({});
@@ -55,9 +49,9 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
   const personalInfoForm = useForm<PersonalInfoValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      firstName: user.firstName || "",
-      lastName: user.lastName || "",
-      email: user.email || "",
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      email: user.email || '',
     },
   });
 
@@ -78,17 +72,13 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
       });
 
       if (error) {
-        toast.error(
-          typeof error === "string"
-            ? error
-            : "Failed to update personal information",
-        );
+        toast.error(typeof error === 'string' ? error : 'Failed to update personal information');
         return;
       }
-      toast.success("Personal information updated successfully.");
+      toast.success('Personal information updated successfully.');
     } catch (error) {
       console.error(error);
-      toast.error("Failed to update personal information.");
+      toast.error('Failed to update personal information.');
     }
   }
 
@@ -99,14 +89,14 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
         newPassword: data.newPassword,
       });
       if (error) {
-        toast.error(typeof error === "string" ? error : "Failed to change password");
+        toast.error(typeof error === 'string' ? error : 'Failed to change password');
         return;
       }
-      toast.success("Password changed successfully.");
+      toast.success('Password changed successfully.');
       passwordForm.reset();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to change password.");
+      toast.error('Failed to change password.');
     }
   }
 
@@ -125,7 +115,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
     //   toast.error("Failed to change password.");
     // }
 
-    toast.success("Billing information updated successfully.");
+    toast.success('Billing information updated successfully.');
   }
 
   return (
@@ -133,10 +123,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="personal">Personal Info</TabsTrigger>
         <TabsTrigger value="password">Password</TabsTrigger>
-        <TabsTrigger
-          value="billing"
-          disabled={process.env.NODE_ENV === "production"}
-        >
+        <TabsTrigger value="billing" disabled={process.env.NODE_ENV === 'production'}>
           Billing
         </TabsTrigger>
       </TabsList>
@@ -156,7 +143,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex flex-col md:flex-row gap-4 w-full">
+                  <div className="flex w-full flex-col gap-4 md:flex-row">
                     <FormField
                       control={personalInfoForm.control}
                       name="firstName"
@@ -192,11 +179,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Enter your email"
-                            {...field}
-                            type="email"
-                          />
+                          <Input placeholder="Enter your email" {...field} type="email" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -214,17 +197,12 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
 
       <TabsContent value="password" className="space-y-4">
         <Form {...passwordForm}>
-          <form
-            onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
-            className="space-y-6"
-          >
+          <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-6">
             <div className="bg-card rounded-lg border p-4">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-lg font-medium">Change Password</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Update your password securely.
-                  </p>
+                  <p className="text-muted-foreground text-sm">Update your password securely.</p>
                 </div>
                 <div className="space-y-4">
                   <FormField
@@ -234,11 +212,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
                       <FormItem>
                         <FormLabel>Current Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Enter current password"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="Enter current password" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -251,11 +225,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
                       <FormItem>
                         <FormLabel>New Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Enter new password"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="Enter new password" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -268,11 +238,7 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Confirm new password"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="Confirm new password" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -290,25 +256,17 @@ export function AccountSettingsForm({ user }: AccountSettingsFormProps) {
 
       <TabsContent value="billing" className="space-y-4">
         <Form {...billingForm}>
-          <form
-            onSubmit={billingForm.handleSubmit(onBillingSubmit)}
-            className="space-y-6"
-          >
+          <form onSubmit={billingForm.handleSubmit(onBillingSubmit)} className="space-y-6">
             <div className="bg-card rounded-lg border p-4">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-lg font-medium">Billing</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Manage your billing information.
-                  </p>
+                  <p className="text-muted-foreground text-sm">Manage your billing information.</p>
                 </div>
                 <div className="space-y-4">{/* FORM FIELDS GO HERE */}</div>
               </div>
               <div className="mt-6 flex justify-end">
-                <Button
-                  type="submit"
-                  disabled={process.env.NODE_ENV === "production"}
-                >
+                <Button type="submit" disabled={process.env.NODE_ENV === 'production'}>
                   Update Billing
                 </Button>
               </div>

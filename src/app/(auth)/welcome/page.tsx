@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Form,
@@ -7,28 +7,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { authClient } from "@/server/auth/client";
-import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { env } from "@/lib/env";
+} from '@/components/ui/form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@/server/auth/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { env } from '@/lib/env';
+import { z } from 'zod';
 
 const onboardingSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  version: z.enum(["free", "pro"]),
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  version: z.enum(['free', 'pro']),
 });
 
 const OnboardingPage = () => {
@@ -37,7 +31,7 @@ const OnboardingPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await fetch("/api/auth/check-onboarded");
+      const response = await fetch('/api/auth/check-onboarded');
       const data = await response.json();
       setUserOnboarded(data.isOnboarded);
     };
@@ -45,7 +39,7 @@ const OnboardingPage = () => {
   }, []);
 
   const updateUser = async (values: z.infer<typeof onboardingSchema>) => {
-    if (values.version === "pro" && !showProPurchase) {
+    if (values.version === 'pro' && !showProPurchase) {
       setShowProPurchase(true);
       return;
     }
@@ -57,14 +51,12 @@ const OnboardingPage = () => {
     });
 
     if (userError) {
-      console.error("Error updating user:", userError);
+      console.error('Error updating user:', userError);
       return;
     }
 
-    if (values.version === "pro" && showProPurchase) {
-      redirect(
-        "/api/auth/checkout?productId=" + env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID,
-      );
+    if (values.version === 'pro' && showProPurchase) {
+      redirect('/api/auth/checkout?productId=' + env.NEXT_PUBLIC_POLAR_PRO_PRODUCT_ID);
     }
 
     const { error: userOnboardedError } = await authClient.updateUser({
@@ -72,7 +64,7 @@ const OnboardingPage = () => {
     });
 
     if (userOnboardedError) {
-      console.error("Error updating user:", userOnboardedError);
+      console.error('Error updating user:', userOnboardedError);
       return;
     }
 
@@ -82,14 +74,14 @@ const OnboardingPage = () => {
   const form = useForm<z.infer<typeof onboardingSchema>>({
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      version: "free",
+      firstName: '',
+      lastName: '',
+      version: 'free',
     },
   });
 
   if (userOnboarded) {
-    redirect("/chat");
+    redirect('/chat');
   }
 
   return (
@@ -101,8 +93,7 @@ const OnboardingPage = () => {
               Welcome to Startalyze
             </CardTitle>
             <CardDescription>
-              Let&apos;s set up your account with some basic information to get you
-              started.
+              Let&apos;s set up your account with some basic information to get you started.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -145,17 +136,17 @@ const OnboardingPage = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <Button
                           type="button"
-                          variant={field.value === "free" ? "default" : "outline"}
+                          variant={field.value === 'free' ? 'default' : 'outline'}
                           className="w-full"
-                          onClick={() => field.onChange("free")}
+                          onClick={() => field.onChange('free')}
                         >
                           Free Plan
                         </Button>
                         <Button
                           type="button"
-                          variant={field.value === "pro" ? "default" : "outline"}
+                          variant={field.value === 'pro' ? 'default' : 'outline'}
                           className="w-full"
-                          onClick={() => field.onChange("pro")}
+                          onClick={() => field.onChange('pro')}
                         >
                           Pro Plan
                         </Button>
@@ -167,7 +158,7 @@ const OnboardingPage = () => {
 
                 {showProPurchase && (
                   <div className="space-y-4">
-                    <div className="rounded-lg bg-muted p-4">
+                    <div className="bg-muted rounded-lg p-4">
                       <h3 className="font-semibold">Pro Plan Features</h3>
                       <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
                         <li>Advanced analytics</li>
@@ -183,7 +174,7 @@ const OnboardingPage = () => {
                 )}
 
                 <Button type="submit" className="w-full">
-                  {showProPurchase ? "Purchase Pro Plan" : "Continue"}
+                  {showProPurchase ? 'Purchase Pro Plan' : 'Continue'}
                 </Button>
               </form>
             </Form>

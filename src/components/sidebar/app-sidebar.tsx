@@ -5,11 +5,11 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { NavMain } from "@/components/sidebar/nav-main";
-import { NavUser } from "@/components/sidebar/nav-user";
-import * as React from "react";
-import { GetProPlanCard } from "@/components/sidebar/get-pro-plan-card";
+} from '@/components/ui/sidebar';
+import { GetProPlanCard } from '@/components/sidebar/get-pro-plan-card';
+import { NavMain } from '@/components/sidebar/nav-main';
+import { NavUser } from '@/components/sidebar/nav-user';
+import * as React from 'react';
 
 export function AppSidebar({
   proPlan,

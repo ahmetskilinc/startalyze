@@ -1,5 +1,5 @@
-"use client";
-import { motion } from "motion/react";
+'use client';
+import { motion } from 'motion/react';
 
 interface MotionWrapperProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function MotionWrapper({
   children,
   delay = 0.2,
   duration = 0.6,
-  className = "",
+  className = '',
 }: MotionWrapperProps) {
   return (
     <motion.div

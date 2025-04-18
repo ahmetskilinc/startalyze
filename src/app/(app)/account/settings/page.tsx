@@ -1,19 +1,19 @@
-import { HeaderTitle } from "@/components/ui/header-title";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { auth } from "@/server/auth";
-import { db } from "@/server/db";
-import { eq } from "drizzle-orm";
-import { user } from "@/server/db/schema";
-import { Suspense } from "react";
-import { AccountSettingsForm } from "@/components/account/account-settings-form";
+import { AccountSettingsForm } from '@/components/account/account-settings-form';
+import { HeaderTitle } from '@/components/ui/header-title';
+import { redirect } from 'next/navigation';
+import { user } from '@/server/db/schema';
+import { headers } from 'next/headers';
+import { auth } from '@/server/auth';
+import { db } from '@/server/db';
+import { eq } from 'drizzle-orm';
+import { Suspense } from 'react';
 
 export default async function AccountPage() {
   const headersList = await headers();
   const session = await auth.api.getSession({ headers: headersList });
 
-  if (!session?.user) throw new Error("Unauthorized");
-  if (!session.user.id) redirect("/auth/signin");
+  if (!session?.user) throw new Error('Unauthorized');
+  if (!session.user.id) redirect('/auth/signin');
 
   const userData = await db.query.user.findFirst({
     where: eq(user.id, session.user.id),
@@ -24,11 +24,11 @@ export default async function AccountPage() {
       <HeaderTitle
         breadcrumbs={[
           {
-            label: "Account",
-            href: "/account",
+            label: 'Account',
+            href: '/account',
           },
           {
-            label: "Settings",
+            label: 'Settings',
           },
         ]}
       />

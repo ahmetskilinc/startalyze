@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Breadcrumb, useBreadcrumb } from "@/providers/breadcrumb";
-import { useEffect } from "react";
+import { Breadcrumb, useBreadcrumb } from '@/providers/breadcrumb';
+import { useEffect } from 'react';
 
 export function HeaderTitle({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) {
   const { setBreadcrumbs } = useBreadcrumb();

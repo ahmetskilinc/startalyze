@@ -1,4 +1,4 @@
-import { VerificationEmail } from "./verification-template";
+import { VerificationEmail } from './verification-template';
 
 export const emailTemplates = {
   verification: VerificationEmail,
