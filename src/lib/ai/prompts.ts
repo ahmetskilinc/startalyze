@@ -336,5 +336,6 @@ Return the analysis in a structured JSON format that can be easily parsed for UI
 \`\`\`
 
 **CHECKS:**
-- Make sure you check the JSON before you return it.
-- Return only the JSON object and nothing else.`;
+* Make sure you check the JSON before you return it.
+* Return only the JSON object and nothing else.
+* You need to check the JSON output.`;

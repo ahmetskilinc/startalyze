@@ -1,3 +1,3 @@
 # Startalyze
 
-![Startalyze Logo](./public/assets/screenshot-github.png)
+[![Watch the video](./public/assets/screenshot-github.png)](./public/assets/github-video.mp4)
