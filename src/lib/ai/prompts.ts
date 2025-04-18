@@ -41,6 +41,7 @@ export const VALIDATE_STARTUP_IDEA_PROMPT = `Analyze the following startup idea 
     * Evaluate customer acquisition and retention strategies.
     * Research similar business models and their success rates.
     * Provide links to comparable business examples.
+    * Make sure business model evalutaion is completed.
 
 5.  **Risk Assessment:**
     * Identify potential risks and challenges, including market, technical, and operational risks.
@@ -331,4 +332,9 @@ Return the analysis in a structured JSON format that can be easily parsed for UI
       }
     },
   ]
-}`;
+}
+\`\`\`
+
+**CHECKS:**
+- Make sure you check the JSON before you return it.
+- Return only the JSON object and nothing else.`;
